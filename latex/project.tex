@@ -147,7 +147,7 @@ From \eqref{eq:SB}, it follows that that $(\bm{\mu}_2 - \bm{\mu}_1)$ is proporti
 \end{align}
 Note that even the terms \textit{variance} and \textit{covariance} are used, the expressions are not averaged. This is just to simplify notation. \\
 \\
-The term Linear discriminant analysis, or LDA, and Fisher's linear discriminant are often used interchangeably, but LDA imposes some more requirements than Fisher's method, as seen above. The derivation is also different, and take a Bayesian approach. Assume the prior distribution of the classes $Y=k$, $\pi_k$, and the conditional distribution of $X$ given $Y$, $f_k(\mathbf{x})$ are known. Simple application of the Bayes theorem yields 
+The term Linear discriminant analysis, or LDA, and Fisher's linear discriminant are often used interchangeably. Only the derivation differs. For LDA it takes a Bayesian approach. Assume the prior distribution of the classes $Y=k$, $\pi_k$, and the conditional distribution of $X$ given $Y$, $f_k(\mathbf{x})$ are known. Simple application of the Bayes theorem yields 
 \begin{align}
   P(Y=k|X=\mathbf{x}) = \frac{f_k(\mathbf{x}) \pi_k}{\sum^{K}_{i=1} f_i(\mathbf{x})\pi_i} .
 \end{align}
@@ -163,12 +163,21 @@ is the best classifier possible. \eqref{eq:bayesian} is referred to as the Bayes
 The classifier is constructed by evaluating the log-ratio of the probabilities
 \begin{align}
   \label{eq:lda} 
-  \log{\frac{P(Y=1|X=\mathbf{x})}{P(Y=2|X=\mathbf{x})}} &= \log{\frac{f_1(\mathbf{x})}{f_2(\mathbf{x})} } + \log{\frac{\pi_1}{\pi_2} } \notag \ \\
-  &= \log{\frac{\pi_1}{\pi_2}} -\frac{1}{2} (\bm \mu_1+\bm \mu_2)' \bm{\Sigma}^{-1} (\bm \mu_1-\bm \mu_2) \\
-  & \quad + \mathbf{x}'\bm{\Sigma}^{-1} (\bm \mu_1-\bm \mu_2).
+  \log{\frac{P(Y=2|X=\mathbf{x})}{P(Y=1|X=\mathbf{x})}} &= \log{\frac{f_2(\mathbf{x})}{f_1(\mathbf{x})} } + \log{\frac{\pi_2}{\pi_1} } \notag \ \\
+  &= \log{\frac{\pi_2}{\pi_1}} -\frac{1}{2} (\bm \mu_2+\bm \mu_1)' \bm{\Sigma}^{-1} (\bm \mu_2-\bm \mu_1) \\
+  & \quad + \mathbf{x}'\bm{\Sigma}^{-1} (\bm \mu_2-\bm \mu_1).
   \notag \ 
 \end{align}
-So one classify to $\mathcal{C}_1$ if \eqref{eq:lda} is positive and to $\mathcal{C}_2$ if not. Another approach is to use the only last part of \eqref{eq:lda}, $\mathbf{x}'\bm{\Sigma}^{-1} (\bm \mu_1-\bm \mu_2)$, and classify based on some threshold $t$ found by e.g. cross-validation. The reasoning behind this is that if the Gaussian assumptions are wrong, a better threshold can be created based on the training data. 
+So one classify to $\mathcal{C}_2$ if \eqref{eq:lda} is positive and to $\mathcal{C}_1$ if not. Another approach is to use the only last part of \eqref{eq:lda}, $\mathbf{x}'\bm{\Sigma}^{-1} (\bm \mu_1-\bm \mu_2)$, and classify based on some threshold $t$ found by e.g. cross-validation. The reasoning behind this is that if the Gaussian assumptions are wrong, a better threshold can be created based on the training data. \\
+\\
+When using LDA, the parameters are not know, so they are usually estimated from the training data by
+\begin{align}
+   \hat{\pi}_k &= \frac{N_k}{N},  \\
+   \hat{\bm \mu}_k &= \frac{1}{N_k} \sum_{i \in \mathcal{C}_k}\mathbf{x}_i, \\
+   \hat{\bm \Sigma} &= \frac{1}{N-2} \sum_{k = 1}^{2} \sum_{i \in \mathcal{C}_k}(\mathbf{x}_i - \hat{\bm{\mu}}_k)(\mathbf{x}_i - \hat{\bm{\mu}}_k)'.
+\end{align}
+It now becomes clear that both LDA and Fisher's linear discriminant do the same projection. The only difference between the methods is that LDA gives a suggested threshold directly, while Fisher's do not.
+
 
 
 %
