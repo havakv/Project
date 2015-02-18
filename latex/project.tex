@@ -1,0 +1,198 @@
+% Created: Tue Feb 17 15:26:53 CET 2015
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc} % Norwegian letters
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{amsfonts}
+\usepackage{float}  % Used for minipage and stuff.
+\usepackage{wrapfig} % Wrap text around figure wrapfig [tab]
+\usepackage{graphicx}
+\usepackage{enumerate} % Use e.g. \begin{enumerate}[a)]
+\usepackage[font={small, it}]{caption} % captions on figures and tables
+\usepackage[toc,page]{appendix} % Page make Appendices title, toc fix table of content 
+\usepackage{todonotes} % Notes. Use \todo{"text"}. Comment out \listoftodos
+\usepackage{microtype} % Improves spacing. Include AFTER fonts
+\usepackage{hyperref} % Use \autoref{} and \nameref{}
+\hypersetup{backref,
+  colorlinks=true,
+  breaklinks=true,
+  %hidelinks, %uncomment to make links black
+  linkcolor=blue,
+  urlcolor=blue,
+  citecolor=blue
+}
+\usepackage[all]{hypcap} % Makes hyperref jup to top of pictures and tables
+%
+%-------------------------------------------------------------------------------
+% Page layout
+%\usepackage{showframe} % Uncomment if you want the margin frames
+\usepackage{fullpage}
+\topmargin=-0.25in
+%\evensidemargin=-0.3in
+%\oddsidemargin=-0.3in
+%\textwidth=6.9in
+%\textheight=9.5in
+\headsep=0.25in
+\footskip=0.50in
+
+%-------------------------------------------------------------------------------
+% Header and footer
+\usepackage{lastpage} % To be able to add last page in footer.
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{fancy} % Use "fancyplain" for header in all pages
+%\renewcommand{\chaptermark}[1]{ \markboth{#1}{} } % Usefull for book?
+\renewcommand{\sectionmark}[1]{ \markright{\thesection\ #1}{} } % Remove formating and nr.
+%\fancyhead[LE, RO]{\footnotesize\leftmark}
+%\fancyhead[RO, LE]{\footnotesize\rightmark}
+\lhead[]{\AuthorName}
+\rhead[]{\rightmark}
+\fancyfoot[L]{} % Empty left footer
+\fancyfoot[C]{} % Empty center footer
+\fancyfoot[R]{Page\ \thepage\ of\ \protect\pageref*{LastPage}} % Page numbering for right footer
+\renewcommand{\headrulewidth}{1pt} % header underlines
+\renewcommand{\footrulewidth}{1pt} % footer underlines
+\setlength{\headheight}{13.6pt} % Customize the height of the header
+
+%-------------------------------------------------------------------------------
+% Suppose to make it easier for LaTeX to place figures and tables where I want.
+\setlength{\abovecaptionskip}{0pt plus 1pt minus 2pt} % Makes caption come closer to figure.
+%\setcounter{totalnumber}{5}
+%\renewcommand{\textfraction}{0.05}
+%\renewcommand{\topfraction}{0.95}
+%\renewcommand{\bottomfraction}{0.95}
+%\renewcommand{\floatpagefraction}{0.35}
+%
+% Math short cuts for expectation, variance and covariance
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+% Commands for argmin and argmax
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-----------------------------------------------------------------------------
+%	TITLE SECTION
+%-----------------------------------------------------------------------------
+\newcommand{\AuthorName}{Håvard Kvamme} % Your name
+
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\title{	
+\normalfont \normalsize 
+\textsc{NTNU} \\ [25pt] % Your university, school and/or department name(s)
+\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
+\huge Project Classification \\ % The assignment title
+\horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
+}
+
+\author{\AuthorName } % Your name
+
+\date{\normalsize\today} % Today's date or a custom date
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\listoftodos{}
+%
+%
+\section{Introduction}
+\label{sec:Introduction}
+\todo{Past tense?}
+This project is an introduction to classification in statistics. The goal was get an overview of methods used in classification and further use this knowledge in a master thesis. \\
+\\
+The idea in classification is to find to which of a set of categories a new observation belongs. This is done by creating a classifier on a training set of observed data $(\mathbf{x}_i, y_i)$, for $i = 1, \ldots, N$, where $\mathbf{x}_i$ is a vector of features, and $y_i$ is to which class it belongs. Over time, there are a variety of approaches, no one methods that can claim the title of the best. This is because different assumptions fits different datasets, and the size of the training data is also important to consider. \\
+\colorbox{yellow}{Write something about how bad methods with larger training sets do better than good algorithms with smaller sets}\\
+\colorbox{yellow}{Should do some simulations on this.}
+
+
+\subsection{Notation}
+\label{sub:Notation}
+
+\section{Linear Classifiers}
+\label{sec:Linear Classifiers}
+It is reasonable to start with two of the most intuitive and famous methods for classification, LDA and Logistic Regression. The point of the following chapters is to give a general introduction to some methods for classification, and therefore only two classes will be considered. Later this framework will be expanded to include multiple classes.
+%
+\subsection{LDA and Fisher's linear discriminant}
+\label{sub:LDA and Fisher's linear discriminant}
+This section should be considered a summary from \cite[ch.~4.1.4]{bishop} and \cite[ch.~4.3]{modstat}, and no further references to these books will be made. \\
+\\
+The idea in Fisher's linear discriminant is to find a discriminant hyperplane in the features $\mathbf{x}\in \mathbb{R}^D$. This is done by finding a vector $\mathbf{w}$, that the features are projected on and thus reducing the problem to one dimension in 
+\begin{align}
+  z = \mathbf{w}'\mathbf{x}.
+\end{align}
+If $\mathbf{w}$ is chosen well, one can find a threshold $t$, and classify to class $\mathcal{C}_1$ if $z > t$ and to class $\mathcal{C}_2$ if not. The problem is therefore, how to find the vector $\mathbf{w}$ that gives the best class separation. One approach is to let $\mathbf{w}$ be proportional to the vector between the class means, i.e. $\mathbf{w} \propto (\bm{\mu}_2 - \bm{\mu}_1)$, where $\bm{\mu}_k = \sum_{i \in \mathcal{C}_k} \mathbf{x}_i/N_k$, and $N_k$ is the number of training points in $\mathcal{C}_k$. However, this does not take into account the orientation of the points around the mean. This causes problems if the variance is high in some direction perpendicular to $(\bm{\mu}_2 - \bm{\mu}_1)$. Fisher's approach is to also take this within-class variance into account, by minimize it on the projected line. So he want the $\mathbf{w}$ that maximize the between-class variance $(\mu_2 - \mu_1)^2$ and minimize the within-class variance $s_1^2 + s_2^2$. 
+\begin{align}
+  \label{eq:fisherMax} 
+  \mathbf{w} &= \argmax_{\mathbf{v}} \frac{(\mu_2 - \mu_1)^2}{s_1^2 + s_2^2} \\
+  s_k^2 &= \sum_{i \in \mathcal{C}_k} (z_i - m_k)^2, \quad \mu_k = \mathbf{v}'\bm{\mu}_k.
+\end{align}
+Now let 
+\begin{align}
+  \mathbf{S}_W &= \mathbf{S}_1 + \mathbf{S}_2, \quad  \mathbf{S}_k =  \sum_{i \in \mathcal{C}_k} (\mathbf{x}_i - \bm{\mu}_k)(\mathbf{x}_i - \bm{\mu}_k)', \\
+  \label{eq:SB} 
+  \mathbf{S}_B &= (\bm{\mu}_2 - \bm{\mu}_1)(\bm{\mu}_2 - \bm{\mu}_1)'
+\end{align}
+\colorbox{yellow}{1/(N-1) differs in wikipedia and bishop}\\
+denote the total within- and between-class covariances, and \eqref{eq:fisherMax} can be written as
+\\ \colorbox{yellow}{Not 1/N means we weight covariances by nr of points}\\
+\begin{align}
+  \mathbf{w} = \argmax_v  \frac{\mathbf{v}'\mathbf{S}_B \mathbf{v}}{\mathbf{v}' \mathbf{S}_W \mathbf{v}}.
+\end{align}
+By differentiating and setting the expression equal to zero one get
+\begin{align}
+  (\mathbf{w}' \mathbf{S}_B \mathbf{w})\mathbf{S}_W \mathbf{w} = (\mathbf{w}' \mathbf{S}_W \mathbf{w})\mathbf{S}_B \mathbf{w}.
+\end{align}
+From \eqref{eq:SB}, it follows that that $(\bm{\mu}_2 - \bm{\mu}_1)$ is proportional to $\mathbf{S}_B \mathbf{v}$. This yields Fisher's linear discriminant
+\begin{align}
+  \mathbf{w} \propto \mathbf{S}_W^{-1} (\bm \mu_2 - \bm \mu_1).
+\end{align}
+Note that even the terms \textit{variance} and \textit{covariance} are used, the expressions are not averaged. This is just to simplify notation. \\
+\\
+The term Linear discriminant analysis, or LDA, and Fisher's linear discriminant are often used interchangeably, but LDA imposes some more requirements than Fisher's method, as seen above. The derivation is also different, and take a Bayesian approach. Assume the prior distribution of the classes $Y=k$, $\pi_k$, and the conditional distribution of $X$ given $Y$, $f_k(\mathbf{x})$ are known. Simple application of the Bayes theorem yields 
+\begin{align}
+  P(Y=k|X=\mathbf{x}) = \frac{f_k(\mathbf{x}) \pi_k}{\sum^{K}_{i=1} f_i(\mathbf{x})\pi_i} .
+\end{align}
+Using this posterior distribution to create the classifier
+\begin{align}
+  \label{eq:bayesian} 
+  C(\mathbf{x}) = \argmax_k P(Y=k|X=\mathbf{x}),
+\end{align}
+is the best classifier possible. \eqref{eq:bayesian} is referred to as the Bayesian classifier. As the prior and conditional distribution are not know, there are numerous approaches use different assumptions on these. LDA assume the conditional distributions are multivariate Gaussian with same covariance $\bm{\Sigma}$ and different mean $\bm\mu_k$
+\begin{align}
+  f_k(\mathbf{x}) =  \frac{1}{(2\pi)^{N_k/2}|\bm{\Sigma}|^{1/2}} \exp\left( -\frac{1}{2} (\mathbf{x}-\bm \mu_k)' \bm{\Sigma}^{-1} (\mathbf{x}-\bm \mu_k)\right).
+\end{align}
+The classifier is constructed by evaluating the log-ratio of the probabilities
+\begin{align}
+  \label{eq:lda} 
+  \log{\frac{P(Y=1|X=\mathbf{x})}{P(Y=2|X=\mathbf{x})}} &= \log{\frac{f_1(\mathbf{x})}{f_2(\mathbf{x})} } + \log{\frac{\pi_1}{\pi_2} } \notag \ \\
+  &= \log{\frac{\pi_1}{\pi_2}} -\frac{1}{2} (\bm \mu_1+\bm \mu_2)' \bm{\Sigma}^{-1} (\bm \mu_1-\bm \mu_2) \\
+  & \quad + \mathbf{x}'\bm{\Sigma}^{-1} (\bm \mu_1-\bm \mu_2).
+  \notag \ 
+\end{align}
+So one classify to $\mathcal{C}_1$ if \eqref{eq:lda} is positive and to $\mathcal{C}_2$ if not. Another approach is to use the only last part of \eqref{eq:lda}, $\mathbf{x}'\bm{\Sigma}^{-1} (\bm \mu_1-\bm \mu_2)$, and classify based on some threshold $t$ found by e.g. cross-validation. The reasoning behind this is that if the Gaussian assumptions are wrong, a better threshold can be created based on the training data. 
+
+
+%
+\subsection{Logistic Regression}
+\label{sub:Logistic Regression}
+
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\clearpage
+%\begin{appendices}
+  %% Use \section
+  %% Can use \phantomsection in text to get back
+%\end{appendices}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\begin{thebibliography}{99} % At most 99 references.
+	\bibitem{bishop}
+  Christopher M. Bishop,
+  \emph{Pattern recognition and machine learning}.
+	\bibitem{modstat}
+  Trevor Hastie, Robert Tibshirani, Jerome Friedman,
+  \emph{The Elements of Statistical Learning: Data Mining, Inference, and Prediction}.
+% Use "bibit" to generate bibitem
+\end{thebibliography}
+%
+\end{document}

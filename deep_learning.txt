@@ -1,0 +1,24 @@
+
+Youtube links to deep learning:
+
+Machine Learning: Deep learning vs. Neural networks:
+https://www.youtube.com/watch?v=1eE_DTWoOKk 
+
+Introduction to deep learning with python:
+https://www.youtube.com/watch?v=S75EdAcXHKk
+
+Deep neural networks are easily fooled:
+https://www.youtube.com/watch?v=M2IebCN9Ht4
+
+Deep learning: Intelligence from Big Data:
+https://www.youtube.com/watch?v=czLI3oLDe8M
+
+Andrew Ng: Deep Learning, Self-Taught Learning and Unsupervised Feature Learning
+https://www.youtube.com/watch?v=n1ViNeWhC24
+
+Deep Learning: Lecture 1
+https://www.youtube.com/watch?v=DLItuVVKJOw
+Web: http://cl.naist.jp/~kevinduh/a/deep2014/
+
+
+

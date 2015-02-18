@@ -1,0 +1,22 @@
+
+Want to look at:
+
+Framework
+- Cross validation
+- EPE (Expected prediction error)
+- Deviance
+- Regularization (logistic, anyone else?)
+- Bayes Classifier
+- Bootstrap
+- NOT Kernel?
+
+Methods
+- Logistic regression
+- LDA (QDA, RDA)
+- Trees (CART, bagging, RF, Boosting)
+- Neural Nets (and deep nural nets)
+
+Other methods?
+- k-NN
+- SVM's
+- Projection pursuit regression (to introduce neural networks?)
