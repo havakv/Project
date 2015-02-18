@@ -1,0 +1,20 @@
+## Special files
+stat154.pdf
+latex/project.pdf
+startLatex/start.pdf
+The\ Elements\ of \Statistical\ Learning.pdf
+
+
+## General
+*.swp
+## Core latex/pdflatex auxiliary files:
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.tdo
+
+
