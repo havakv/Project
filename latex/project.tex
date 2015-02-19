@@ -151,12 +151,12 @@ The term Linear discriminant analysis, or LDA, and Fisher's linear discriminant 
 \begin{align}
   P(Y=k|X=\mathbf{x}) = \frac{f_k(\mathbf{x}) \pi_k}{\sum^{K}_{i=1} f_i(\mathbf{x})\pi_i} .
 \end{align}
-Using this posterior distribution to create the classifier
+Using this posterior distribution to create
 \begin{align}
   \label{eq:bayesian} 
   C(\mathbf{x}) = \argmax_k P(Y=k|X=\mathbf{x}),
 \end{align}
-is the best classifier possible. \eqref{eq:bayesian} is referred to as the Bayesian classifier. As the prior and conditional distribution are not know, there are numerous approaches use different assumptions on these. LDA assume the conditional distributions are multivariate Gaussian with same covariance $\bm{\Sigma}$ and different mean $\bm\mu_k$
+which is called the \textit{Bayes classifier} \cite[p.~21]{modstat}. It is clear that this is the best one can do, and the Bayes classifier is therefor often used as a benchmark in simulation studies. As the prior and conditional distribution are not know, there are numerous approaches use different assumptions on these. LDA assume the conditional distributions are multivariate Gaussian with same covariance $\bm{\Sigma}$ and different mean $\bm\mu_k$
 \begin{align}
   f_k(\mathbf{x}) =  \frac{1}{(2\pi)^{N_k/2}|\bm{\Sigma}|^{1/2}} \exp\left( -\frac{1}{2} (\mathbf{x}-\bm \mu_k)' \bm{\Sigma}^{-1} (\mathbf{x}-\bm \mu_k)\right).
 \end{align}
