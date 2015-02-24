@@ -176,15 +176,12 @@ When using LDA, the parameters are not know, so they are usually estimated from 
    \hat{\bm \mu}_k &= \frac{1}{N_k} \sum_{i \in \mathcal{C}_k}\mathbf{x}_i, \\
    \hat{\bm \Sigma} &= \frac{1}{N-2} \sum_{k = 1}^{2} \sum_{i \in \mathcal{C}_k}(\mathbf{x}_i - \hat{\bm{\mu}}_k)(\mathbf{x}_i - \hat{\bm{\mu}}_k)'.
 \end{align}
-It now becomes clear that both LDA and Fisher's linear discriminant do the same projection. The only difference between the methods is that LDA gives a suggested threshold directly, while Fisher's do not.
-
-
-
+It now becomes clear that both LDA and Fisher's linear discriminant do the same projection. The only difference between the methods is that because of the Gaussian assumptions LDA can give a suggested threshold.
 %
 \subsection{Logistic Regression}
 \label{sub:Logistic Regression}
-
-
+\colorbox{yellow}{Optimization algorithms for finding parameters?}\\
+While the goal of LDA is to finds a discriminating hyperplane between the classes, Logistic regression tries to model the posterior class probabilities in a linear form. \todo{This is wrong!}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\clearpage
