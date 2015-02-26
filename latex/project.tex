@@ -181,7 +181,46 @@ It now becomes clear that both LDA and Fisher's linear discriminant do the same 
 \subsection{Logistic Regression}
 \label{sub:Logistic Regression}
 \colorbox{yellow}{Optimization algorithms for finding parameters?}\\
-While the goal of LDA is to finds a discriminating hyperplane between the classes, Logistic regression tries to model the posterior class probabilities in a linear form. \todo{This is wrong!}
+The goal of Logistic regression is to model the posterior class-probabilities and create a classifier based on them. As the probabilities should sum to one, it is obvious that they can not be linear in $\mathbf{x}$. The approach is therefore to assume the log-odds are linear in $\mathbf{x}$. 
+\begin{align}
+  \label{eq:logclass} 
+   \log \frac{P(Y=2|X=\mathbf{x})}{P(Y=1|X=\mathbf{x})} = \beta_0 + \mathbf{x}'\bm \beta.
+\end{align}
+From now on it is assumed that $\beta_0 + \mathbf{x}' \bm \beta$ is written as $\mathbf{x}' \bm \beta$.
+The function
+\begin{align}
+  logit(p_{ki}) = \log  \frac{p_{ki}}{1-p_{ki}},
+\end{align}
+where $p_{ki} = P(Y=k|X=\mathbf{x_i})$, is called \textit{the logit function} or \textit{link}. By inverting the logit function it becomes clear that the posterior probabilities sum to \textit{one}.
+\begin{align}
+  p_{2i} &=  \frac{e^{\mathbf{x}_i'\bm \beta}}{1 + e^{\mathbf{x}_i'\bm \beta}} \\
+  p_{1i} &=  \frac{1}{1 + e^{\mathbf{x}_i'\bm \beta}}.
+\end{align}
+There are other choices than the logit function, e.g. the probit function based on Gaussian assumptions, however, they will not be covered in this paper. 
+\todo{Refer to paper?}
+Often there is little knowledge about the posterior distribution, so the logit might be as good a choice as any other. 
+\todo{Remove this?}
+To find good values for $\bm \beta$, it is common to use the MLE (Maximum likelihood estimator). Let $n_i$ be the number of training samples in gourp $i$ (common $\mathbf{x}_i$), and let $Z_i$ the amount in group $i$ that has class $2$. This means $Z_i$ is binomial distributed with
+\begin{align}
+  P(Z_i = z_i) = \binom{n_i}{z_i} p_{2i}^{z_i} (1-p_{2i})^{n_i - z_i}.
+\end{align}
+So the likelihood and log-likelihood are
+\begin{align}
+  L(\beta) &= \prod_{i = 1}^{N} P(Z_i = z_i). \\
+  l(\beta) &\propto \sum^{N}_{i=1} z_i \log p_{2i} + (n_i - z_i) \log (1- p_{2i}).
+\end{align}
+There is no analytical solution that maximizes the likelihood, so one has to use a numerical optimization algorithm to find the MLE.  \todo{Elaborate optimization?}
+After $\bm \beta$ is found, one can create a classifier the same way as for logistic regression, i.e. classify to $\mathcal{C}_2$ if \eqref{eq:logclass} is positive and to $\mathcal{C}_1$ if not. However, this assumes the logit link gives accurate probabilities. Often the choice of logit link is based on lack of a better choice so there is little suggesting the probabilities are particularly accurate. It might therefore be better to classify based on a threshold found by e.g. cross-validation. 
+\\\colorbox{yellow}{Have hear a lot that logit is used because: "Why not".}
+%
+\subsection{LDA and Logistic Regression}
+\label{sub:LDA and Logistic Regre}
+\colorbox{yellow}{Show an example of how Logistic compares to LDA with and without thresholds.}\\
+Comparing LDA and Logistic regression, it is clear that they are both linear in the log odds. Obviously, this does not restrict the decision boundary to be linear in $x_1, x_2, \ldots , x_D$. One can easily let $\mathbf{x}$ contain polynomial terms and interaction terms, like $(x_1, x_2, x_1^2, x_1 x_2, \ldots )$. This way one see that the decision boundary can be pretty flexible. Both methods are also easy to generalize to multi class classifiers, but this will not be done in this section.
+\colorbox{yellow}{Do it later?}
+
+
+
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\clearpage
