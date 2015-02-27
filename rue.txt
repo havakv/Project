@@ -1,0 +1,11 @@
+
+skrive om nedre grense (hvordan det finnes en nedre grense for hvor bra man kan klassifisere)
+
+legge til beste linje i plot (bayes linje. Bruk LDA med ordentlig mu og sigma)
+
+Skrive om CART: generelt (kan bruke hva som helst for å splitte på hver node)
+Skriv om vanligste splitting, pruning og optimering 
+
+Gå over til boosting, bagging, random forest 
+
+
