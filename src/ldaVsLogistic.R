@@ -26,10 +26,7 @@ X <- data.frame(rbind(x1, x2))
 Y <- c(rep(0, N), rep(1, N))
 
 fitLda <- lda(X, Y, CV=FALSE) 
-betaLda <- coef(fitLda)
 
-plot(x1, col = 'blue', pch = 1, xlim = xlim, ylim = ylim) 
-points(x2, col = 'red', pch = "+")
 
 
 # Prediction
@@ -59,7 +56,30 @@ print(mceLog)
 
 
 # Find decision boundary
-points(Xtest[predLda$class == 1,])
-#plot(Xtest[predLda$class == 1,])
-#abline(3, betaLda[1]/ betaLda[2], col = 'green')
-abline(betaLda[2]/betaLda[1], betaLda[1])
+plot(x1, col = 'blue', pch = 1, xlim = xlim, ylim = ylim,
+     xlab = "x1", ylab = "x2") 
+points(x2, col = 'red', pch = "+")
+
+# Logistic
+betaLog <- fitLog$coefficients
+abline(-betaLog[1]/betaLog[3], -betaLog[2]/betaLog[3], col = 6)
+
+# Lda
+betaLdaFromFit <- coef(fitLda)
+covLda <- (cov(x1)+cov(x2))*(N-1)/(N-2)
+m2minusm1 <- matrix((fitLda$means[2,]-fitLda$means[1,]), D, 1)
+betaLda <- c(log(fitLda$prior[2]/fitLda$prior[1]) - 0.5 * matrix((fitLda$means[2,]+fitLda$means[1,]), 1, 2) %*% solve(covLda, m2minusm1),
+             solve(covLda, m2minusm1))
+names(betaLda) <- c("Intercept", "X1", "X2")
+
+abline(-betaLda[1]/betaLda[3], -betaLda[2]/betaLda[3], col = 1)
+
+legend(x = "topright", c("LDA", "Logistic"), lty = c(1, 1), lwd = c(1, 1), col = c(1, 6))
+
+
+#abline(0, -betaLda[2]/betaLda[3], col = 1)
+#abline(0, -betaLdaFromFit[1]/ betaLdaFromFit[2])
+
+
+#points(Xtest[predLog == 1,])
+#points(Xtest[predLda$class == 1,])
