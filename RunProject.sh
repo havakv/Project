@@ -5,9 +5,7 @@ cd ./code/common
 ./INSTALL.sh
 cd -
 
-./R/ldaVsLogistic.R
-
 cd latex
-pdflatex ./project.tex
+./compile_Rnw.sh
 cp ./project.pdf ../
 
