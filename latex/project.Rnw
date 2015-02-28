@@ -93,9 +93,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \listoftodos{}
 %
-\input{./introduction.tex}
+%\input{./introduction.tex}
+<<introduction, child='./introduction.tex', chache=TRUE>>=
+@
 %
-\input{./Linear_Classifiers.tex}
+% Section on Linear classifiers should really be an Rnw file. Just use .tex because of my editor...
+<<Linear_Classifiers, child='./Linear_Classifiers.tex', cache=TRUE>>=
+@
+
 
 
 

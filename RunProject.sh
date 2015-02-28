@@ -6,6 +6,6 @@ cd ./code/common
 cd -
 
 cd latex
-./compile_Rnw.sh
+./compile.sh
 cp ./project.pdf ../
 
