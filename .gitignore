@@ -1,9 +1,13 @@
 ## Special files
 stat154.pdf
 latex/project.pdf
+project.pdf
 startLatex/start.pdf
 The\ Elements\ of \Statistical\ Learning.pdf
+latex/project.tex
+latex/cache
 
+latex/figures
 
 ## General
 *.swp

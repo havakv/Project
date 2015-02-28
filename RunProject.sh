@@ -10,6 +10,7 @@ if [ ! -d "$figures" ]; then
     mkdir figures
 fi
 
-./compile_Rnw.sh
+./compile.sh
+
 cp ./project.pdf ../
 
