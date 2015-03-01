@@ -100,7 +100,10 @@
 % Section on Linear classifiers should really be an Rnw file. Just use .tex because of my editor...
 <<Linear_Classifiers, child='./Linear_Classifiers.tex', cache=TRUE>>=
 @
-
+%
+% Section on Tree-based methods should be and Rnw file.
+<<Tree-based_metods, child='./Tree-based_methods.tex', cache=TRUE>>=
+@
 
 
 
@@ -121,6 +124,9 @@
 	\bibitem{modstat}
   Trevor Hastie, Robert Tibshirani, Jerome Friedman,
   \emph{The Elements of Statistical Learning: Data Mining, Inference, and Prediction}.
+	\bibitem{breiman}
+  Breiman et al., 1984
+  \emph{Find paper}.
 % Use "bibit" to generate bibitem
 \end{thebibliography}
 %
