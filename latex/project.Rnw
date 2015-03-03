@@ -1,5 +1,5 @@
 % Created: Tue Feb 17 15:26:53 CET 2015
-\documentclass[10pt,a4paper]{article}
+\documentclass[11pt,a4paper]{article}
 \usepackage[utf8]{inputenc} % Norwegian letters
 \usepackage{amsmath}
 \usepackage{bm}

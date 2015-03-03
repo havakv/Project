@@ -2,43 +2,74 @@
 \label{sec:Tree-based methods}
 \todo{Is boosting a tree method?}
 \colorbox{yellow}{Change name of section if boosting is not a tree-based method}\\
-In Section~\ref{sec:Linear Classifiers}, only very basic linear methods for classification was discussed. The log odds were modeled in a linear fashion and a decision boundary was drawn based on this. In this section the framework is completely different. The linearity assumptions are removed and the multi class case is considered immediately. 
+In Section~\ref{sec:Linear Classifiers}, only very basic linear methods for classification were discussed. The log odds were modeled in a linear fashion and a decision boundary was drawn based on this. In this section the framework is completely different. The linearity assumptions are removed and the multi class case is considered immediately. 
 First, classification trees will be discussed. When this framework is clear, ensemble methods, that try to improve the trees performance, will be presented and compared. This will be done in the following order: Boosting, Bagging and Random forest. 
 %
 \subsection{Classification trees}
 \label{sub:Classification trees}
-The idea behind a classification tree is that to make local decisions based on a subset of the predictors. This means that the data is split in subsets, that are again split in new subsets and so on. At the end the subsets are given a class label based on some vote-measure between the data points (usually the majority).
+The idea behind a classification tree is to make local decisions based on a subset of the predictors. This means that the data is split in subsets, that are again independently split in new subsets and so on. At the end the subsets are given a class label based on some vote-measure between the data points (usually the majority).
 \todo{Always majority?}
-This makes the method very general, both in terms of nonlinearity and in type of predictors. The method works with continuous, discrete ordered, and categorical predictors. The tree is also easy to interpret, as one can just follow the splits. For prediction one also just follow the tree down to the decision node, giving the predicted class. There are several different algorithms using this framework. They differ in the methods used for splitting, and in how large to grow the tree. Obviously, growing a full tree, i.e. only one training point in each end node, will cause overfitting, while growing it too short will cause underfitting. This bias-variance tradeoff is important to consider, and there are different methods derived to optimize it. More on the bias-variance tradeoff in appendix~\ref{sub:EPE}. In this \colorbox{yellow}{paper?} only one of the classification tree algorithms will be covered. That is one of the most famous tree methods, proposed by \colorbox{yellow}{reference} \cite{breiman} in 1984, and it is called \textit{Classification And Regression Trees}, or \textit{CART}.
+This makes the method very general, both in terms of nonlinearity and in type of predictors. The method works with continuous, discrete ordered, and categorical predictors. The tree is also easy to interpret, as one can just follow the splits. For prediction one also just follow the tree down to the decision node, giving the predicted class. An example of such a tree can be found in Figure~\ref{fig:cartTree1}.
+There are several different algorithms using this framework. They differ in the methods used for splitting, and in how large to grow the tree. Obviously, growing a full tree, i.e. only one training point in each end node, will cause overfitting, while growing it too short will cause underfitting. This bias-variance tradeoff is important to consider, and there are different methods derived to optimize it. More on the bias-variance tradeoff in appendix~\ref{sub:EPE}. In this \colorbox{yellow}{paper?} only one of the classification tree algorithms will be covered. That is one of the most famous tree methods, proposed by \colorbox{yellow}{reference} \cite{breiman} in 1984, and it is called \textit{Classification And Regression Trees}, or \textit{CART}.
 %
 \subsubsection{CART}
 \label{subsub:CART}
 <<cartSim, echo=FALSE>>=
+# Simple simulation to get nice areas and tree
 source("../code/cartSim.R")
 @
 \colorbox{yellow}{This is a special method, not just a general framework}\\
-\url{http://stackoverflow.com/questions/9979461/different-decision-tree-algorithms-with-comparison-of-complexity-or-performance}
+\url{http://stackoverflow.com/questions/9979461/different-decision-tree-algorithms-with-comparison-of-complexity-or-performance}\\
+\colorbox{yellow}{In this section use both \cite{bishop} , \cite{modstat} and \cite{breiman}.}\\
+\url{http://edoc.hu-berlin.de/master/timofeev-roman-2004-12-20/PDF/timofeev.pdf}\\
 %
-In this section use both \cite{bishop} , \cite{modstat} and \cite{breiman}.
-
+The Classificatoin And Regression Trees algorithm only split on one variable at the time. This means that the domain is split into rectangles, aligned withe the different axes. 
+Also, each split divide the domain in two parts. This is called binary splitting. This is the easiest way to do this splitting, but as will become clear later, it is pretty effective \todo{Show this}. CART is used both for classification and regression, but only its abilities as a classifier will be considered.
+In Figure~\ref{fig:animals} a toy example was simulated to illustrate how the CART algorithm works. To make it easy to visualize, only two predictors were used. In Figure~\ref{fig:cartAreas1} the domains created by the splits are displayed, and it shows how it follows the axes. It is clear that the data is not linear, and the figure shows how easy it handles that.
+For more than two predictors it is no longer possible to visualize the splits on the actual domain, so a tree view is used instead.
+ In Figure~\ref{fig:cartTree1} the tree is displayed. It is clear that it generalizes to more than two dimensions. \\
+%
 \begin{figure}[h!]
   \centering
   \begin{subfigure}[b]{0.48\textwidth}
     \includegraphics[width=\textwidth]{./figures/cartAreas1.pdf}
-    \caption{A gull}
-    \label{fig:gull}
+    \caption{Decisions displayed as boxes.}
+    \label{fig:cartAreas1}
   \end{subfigure}%
   \quad
-          %(or a blank line to force the subfigure onto a new line)
   \begin{subfigure}[b]{0.48\textwidth}
     \includegraphics[width=\textwidth]{./figures/cartTree1.pdf}
-    \caption{A tiger}
-    \label{fig:tiger}
+    \caption{Decisions displayed as a tree.}
+    \label{fig:cartTree1}
   \end{subfigure}
           %(or a blank line to force the subfigure onto a new line)
-  \caption{Pictures of animals}\label{fig:animals}
+  \vspace{1\baselineskip}
+  \caption{CART run on simulated data in two dimensions. }
+  \label{fig:animals}
 \end{figure}
-
+%
+\\
+By now the intuition behind CART should be clear. What is not clear yet is how to grow the tree and how large the tree should be grown. As it is too computationally extensive to create an optimal tree, greedy algorithms for splitting are used for local splitting. A split needs to to be based on a criterion and one of the more used is the \textit{Gini index}
+\begin{align}
+  g_m(T) &= \sum^{K}_{k=1} \hat{p}_{mk} (1 - \hat{p}_{mk}),  \\ 
+  \label{eq:pmk} 
+  \text{where}& \quad \hat{p}_{mk} = \frac{1}{N_m} \sum_{\mathbf{x}_i \in R_m} I(y_i = k).
+\end{align}
+Here $T$ is the tree, $m$ is a node, $N_m$ is the number of data points in node $m$, $y_i$ is the class of point $i$ and $R_m$ is the region defined by the node.
+$\hat{p}_{mk}$ is therefore the proportions of class $k$ in node $m$.
+The Gini index gives a measure of \textit{node impurity}, as it increase with the diversity in the node. For nodes with only one class it is zero, and for homogeneous nodes it gets its maximum value. The greedy algorithm used by CART finds the split that gives the lowest total node impurity, and weight the nodes by the probability of sending a new point to that node.  \todo{confirm this} 
+Consider the case where a split is performed on node $P$. By splitting on the variable $x_j$, let $R_L(j,s) = \{\mathbf{x} | x_j \leq s\}$ denote the region of the "left" split,  and $R_R(j,s) = \{\mathbf{x} | x_j > s\}$ denote the "right". To find the variable $x_j$ and split point $s$ that gives the lowest node impurity, one solve
+\begin{align}
+  \min_{j,s} \left\{ \frac{N_L}{N_P} g_L(T)
+  + \frac{N_R}{N_P} g_R(T) \right\}.
+\end{align}
+Here $j$ and $s$ lies in $\hat{p}_{mk}$ in \eqref{eq:pmk}.
+\todo{interpret gini indiex}
+There are other measure of node impurity, like \textit{deviance} and \textit{misclassification error} used by CART. \colorbox{yellow}{These will be visited later}.\\
+\colorbox{yellow}{Make sure that Gini is the original choice. If not, comment} \\
+\\
+By using the method using the method above, one can grow a tree, but it is important to prevent over- or under fitting. The immediate ideas one might get is to stop when the nods are of a specific size, or maybe stop when the total Gini index do not change less than a threshold. The first is just to simple, wile the second suggestion does not take into account that a seemingly worthless split can cause the next split to be good. 
+What CART does instead is to grow a large tree, and then \textit{prune} it back to find a local optimum. To prune a tree, is to collapse any number of internal nodes. Let $T_0$ denote the full tree and $T$ a subtree of $T_0$ that can be obtained by pruning.
 
 
 

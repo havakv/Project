@@ -60,9 +60,9 @@ mkGroup <- setRefClass("groupRefClass",
             if (!dim == 2)
                 stop("Not 2-D")
             if (add){
-                points(x, pch = as.character(id), col = id, ...)
+                points(x, pch = as.character(id), col = id+1, ...)
             } else {
-                plot.default(x, pch = as.character(id), col = id, ...)
+                plot.default(x, pch = as.character(id), col = id+1, ...)
             }
         }
     )
@@ -115,21 +115,3 @@ plot.groups <- function(groups, ...){
     }
 }
 
-#plot.groups <- function(groups, ...){
-    #n <- length(groups)
-    #xmin = ymin = Inf
-    #xmax = ymax = -Inf
-    #for (i in 1:n){
-        #xmin <- min(c(xmin, min(groups[[i]]$x[,1])))
-        #ymin <- min(c(ymin, min(groups[[i]]$x[,2])))
-        #xmax <- max(c(xmax, max(groups[[i]]$x[,1])))
-        #ymax <- max(c(ymax, max(groups[[i]]$x[,2])))
-    #}
-    #plot(groups[[1]]$x[,1:2], pch = as.character(groups[[1]]$id), 
-         #xlim = c(xmin, xmax), ylim = c(ymin, ymax), 
-         #col = groups[[1]]$id, ...)
-    #for (i in 2:length(groups)){
-        #points(groups[[i]]$x, pch = as.character(groups[[i]]$id),
-               #col = groups[[i]]$id, ...)
-    #}
-#}

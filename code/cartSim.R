@@ -9,6 +9,7 @@ set.seed(929253)
 # ----------------------------------------------------
 # CART simulations with 3 groups and 2 dimensions
 
+# Create data points
 N <- 20
 D <- 2
 g2 <- mkGroup(2, N, D) # group 2
@@ -18,14 +19,18 @@ g3 <- mkGroup(3, N, D) # group 3
 sim1 <- collectGroups(list(g1, g2, g22, g3))
 X <- getX(sim1)              
 
+# fit CART
 fit <- rpart(Y~., data = X)
+
+# plot tree
 printfig("cartTree1", NOPRINT)
 plot(fit)
 text(fit, use.n = FALSE)
 off(NOPRINT)
 
+# plot areas. NOT GENERAL!!!!!
 printfig("cartAreas1", NOPRINT)
-plot(sim1, xlab = "x1", ylab = "x1")
+plot(sim1, xlab = "X1", ylab = "X2")
 sp <- fit$split
 abline(h = sp[1,4])
 segments(sp[2,4], sp[1,4], sp[2,4], 10)
