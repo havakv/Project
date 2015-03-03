@@ -13,10 +13,33 @@ This makes the method very general, both in terms of nonlinearity and in type of
 %
 \subsubsection{CART}
 \label{subsub:CART}
+<<cartSim, echo=FALSE>>=
+source("../code/cartSim.R")
+@
 \colorbox{yellow}{This is a special method, not just a general framework}\\
 \url{http://stackoverflow.com/questions/9979461/different-decision-tree-algorithms-with-comparison-of-complexity-or-performance}
 %
 In this section use both \cite{bishop} , \cite{modstat} and \cite{breiman}.
+
+\begin{figure}[h!]
+  \centering
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{./figures/cartAreas1.pdf}
+    \caption{A gull}
+    \label{fig:gull}
+  \end{subfigure}%
+  \quad
+          %(or a blank line to force the subfigure onto a new line)
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{./figures/cartTree1.pdf}
+    \caption{A tiger}
+    \label{fig:tiger}
+  \end{subfigure}
+          %(or a blank line to force the subfigure onto a new line)
+  \caption{Pictures of animals}\label{fig:animals}
+\end{figure}
+
+
 
 
 \colorbox{yellow}{9.2.4 modstat Other issues: Categorical predictors} \\ \\

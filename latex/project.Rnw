@@ -7,6 +7,7 @@
 \usepackage{float}  % Used for minipage and stuff.
 \usepackage{wrapfig} % Wrap text around figure wrapfig [tab]
 \usepackage{graphicx}
+\usepackage{subcaption}
 \usepackage{enumerate} % Use e.g. \begin{enumerate}[a)]
 \usepackage[font={small, it}]{caption} % captions on figures and tables
 \usepackage[toc,page]{appendix} % Page make Appendices title, toc fix table of content 
