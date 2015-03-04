@@ -50,8 +50,8 @@
 \fancyfoot[L]{} % Empty left footer
 \fancyfoot[C]{} % Empty center footer
 \fancyfoot[R]{Page\ \thepage\ of\ \protect\pageref*{LastPage}} % Page numbering for right footer
-\renewcommand{\headrulewidth}{1pt} % header underlines
-\renewcommand{\footrulewidth}{1pt} % footer underlines
+\renewcommand{\headrulewidth}{0.5pt} % header underlines
+\renewcommand{\footrulewidth}{0.5pt} % footer underlines
 \setlength{\headheight}{13.6pt} % Customize the height of the header
 
 %-------------------------------------------------------------------------------
@@ -126,8 +126,9 @@
   Trevor Hastie, Robert Tibshirani, Jerome Friedman,
   \emph{The Elements of Statistical Learning: Data Mining, Inference, and Prediction}.
 	\bibitem{breiman}
-  Breiman et al., 1984
-  \emph{Find paper}.
+  Leo Breiman, Jerome Friedman, Richard Olshen, Charles Stone. 
+  \emph{Classification and Regression Trees.}
+  Wadsworth International Group, 1984.
 % Use "bibit" to generate bibitem
 \end{thebibliography}
 %

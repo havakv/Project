@@ -51,33 +51,44 @@ For more than two predictors it is no longer possible to visualize the splits on
 \\
 By now the intuition behind CART should be clear. What is not clear yet is how to grow the tree and how large the tree should be grown. As it is too computationally extensive to create an optimal tree, greedy algorithms for splitting are used for local splitting. A split needs to to be based on a criterion and one of the more used is the \textit{Gini index}
 \begin{align}
-  g_m(T) &= \sum^{K}_{k=1} \hat{p}_{mk} (1 - \hat{p}_{mk}),  \\ 
+  Q_m(T) &= \sum^{K}_{k=1} \hat{p}_{mk} (1 - \hat{p}_{mk}),  \\ 
   \label{eq:pmk} 
-  \text{where}& \quad \hat{p}_{mk} = \frac{1}{N_m} \sum_{\mathbf{x}_i \in R_m} I(y_i = k).
+  \text{where}& \quad \hat{p}_{mk} = \frac{1}{N_m} \sum_{\mathbf{x}_i \in R_m} I\{y_i = k\}.
 \end{align}
 Here $T$ is the tree, $m$ is a node, $N_m$ is the number of data points in node $m$, $y_i$ is the class of point $i$ and $R_m$ is the region defined by the node.
 $\hat{p}_{mk}$ is therefore the proportions of class $k$ in node $m$.
 The Gini index gives a measure of \textit{node impurity}, as it increase with the diversity in the node. For nodes with only one class it is zero, and for homogeneous nodes it gets its maximum value. The greedy algorithm used by CART finds the split that gives the lowest total node impurity, and weight the nodes by the probability of sending a new point to that node.  \todo{confirm this} 
+\\ \colorbox{yellow}{Comment how the length of a branch in Figure~\ref{fig:cartTree1} is proportional to the quality of the split.} \\ 
 Consider the case where a split is performed on node $P$. By splitting on the variable $x_j$, let $R_L(j,s) = \{\mathbf{x} | x_j \leq s\}$ denote the region of the "left" split,  and $R_R(j,s) = \{\mathbf{x} | x_j > s\}$ denote the "right". To find the variable $x_j$ and split point $s$ that gives the lowest node impurity, one solve
 \begin{align}
-  \min_{j,s} \left\{ \frac{N_L}{N_P} g_L(T)
-  + \frac{N_R}{N_P} g_R(T) \right\}.
+  \min_{j,s} \left\{ \frac{N_L}{N_P} Q_L(T)
+  + \frac{N_R}{N_P} Q_R(T) \right\}.
 \end{align}
 Here $j$ and $s$ lies in $\hat{p}_{mk}$ in \eqref{eq:pmk}.
 \todo{interpret gini indiex}
 There are other measure of node impurity, like \textit{deviance} and \textit{misclassification error} used by CART. \colorbox{yellow}{These will be visited later}.\\
 \colorbox{yellow}{Make sure that Gini is the original choice. If not, comment} \\
 \\
-By using the method using the method above, one can grow a tree, but it is important to prevent over- or under fitting. The immediate ideas one might get is to stop when the nods are of a specific size, or maybe stop when the total Gini index do not change less than a threshold. The first is just to simple, wile the second suggestion does not take into account that a seemingly worthless split can cause the next split to be good. 
-What CART does instead is to grow a large tree, and then \textit{prune} it back to find a local optimum. To prune a tree, is to collapse any number of internal nodes. Let $T_0$ denote the full tree and $T$ a subtree of $T_0$ that can be obtained by pruning.
+It is now clear how to grow a tree, so the next step is to examine the tree size, to prevent over- or under fitting. The immediate idea one might get is to stop when the total Gini index change less than some threshold. This does not take into account that a seemingly worthless split might cause an excellent successive split. 
+What CART does instead is to grow a large tree, and then \textit{prune} it back to find a local optimum. To prune a tree, is to collapse any number of internal nodes. 
 
-
-
+Let $T_0$ denote the full tree and $T$ a subtree of $T_0$ that can be obtained by pruning. $|T|$ is the number of terminal nodes and $R_{\tau}$ is the region of of the terminal node $\tau$. The goal is to find the subtree $T_\alpha$ that minimizes some cost function $C_\alpha (T)$. It is usually the total terminal node impurity, but regularized by penalizing on the number of terminal nodes
+\begin{align}
+  C_\alpha (T) = \sum_{\tau = 1}^{|T|} Q_\tau (T) + \alpha |T|. 
+\end{align}
+This method is referred to as \textit{const-complexity pruning}.
+Here the total Gini index can be used for $Q_\tau (T)$, but a more common choice is to use the \textit{misclassification rate} \todo{reference}
+\begin{align}
+  Q_\tau (T) =  \frac{1}{N_{\tau}} \sum_{\mathbf{x}_i \in R_{\tau}} I\{y_i \neq k(\tau)\},
+\end{align}
+where $k(\tau)$ is the predicted class in node $\tau$ (majority vote).
+\\ \colorbox{yellow}{Is $y_i$ training data, test data, or CV?} \\
+However, this is not an optimization problem easily solved by general solvers. Breiman et al. \cite{breiman} suggested a method called \textit{weakest link} pruning to find $T\alpha$. They sequentially collapse the nodes that gives the smallest increase in $C_\alpha(T)$.
+They proved that if continuing to collapse all the way back to a single node, $T_\alpha$ has to be in this sequence of subtrees.  \todo{Need to prove this?}. The only thing remaining then is to find the best $\alpha$. This is usually done by cross-validation, or, if the dataset is large, by misclassification error on a subset the training data, not used to build the tree. The latter is less computationally expensive, but can only be used on larger datasets. The final tree chosen is either the tree with the lowest MCE or the most parsimonious tree within 1 SD of that.
+\\ \colorbox{yellow}{Not sure if $T_\alpha$ is found by $\min C_\alpha$ or CV over all sequential trees. Sources don't agree!}
+\\ Pruning: \url{http://www.cbcb.umd.edu/~salzberg/docs/murthy_thesis/survey/node14.html}\\
 \colorbox{yellow}{9.2.4 modstat Other issues: Categorical predictors} \\ \\
 %
-
-
-
 
 \subsection{Boosting}
 \label{sub:Boosting}
