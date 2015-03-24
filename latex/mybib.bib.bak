@@ -1,0 +1,14 @@
+% This file was created with JabRef 2.10b2.
+% Encoding: UTF-8
+
+
+@Article{friedman,
+  Title                    = {Greedy function approximation: a gradient boosting machine},
+  Author                   = {Friedman, Jerome H},
+  Journal                  = {Annals of statistics},
+  Year                     = {2001},
+  Pages                    = {1189--1232},
+
+  Publisher                = {JSTOR}
+}
+

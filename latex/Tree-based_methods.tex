@@ -83,16 +83,48 @@ Here the total Gini index can be used for $Q_\tau (T)$, but a more common choice
 \end{align}
 where $k(\tau)$ is the predicted class in node $\tau$ (majority vote).
 \\ \colorbox{yellow}{Is $y_i$ training data, test data, or CV?} \\
-However, this is not an optimization problem easily solved by general solvers. Breiman et al. \cite{breiman} suggested a method called \textit{weakest link} pruning to find $T\alpha$. They sequentially collapse the nodes that gives the smallest increase in $C_\alpha(T)$.
+However, this is not an optimization problem easily solved by general solvers. Breiman et al. \cite{breiman} suggested a method called \textit{weakest link} pruning to find $T_\alpha$. They sequentially collapse the nodes that gives the smallest increase in $C_\alpha(T)$.
 They proved that if continuing to collapse all the way back to a single node, $T_\alpha$ has to be in this sequence of subtrees.  \todo{Need to prove this?}. The only thing remaining then is to find the best $\alpha$. This is usually done by cross-validation, or, if the dataset is large, by misclassification error on a subset the training data, not used to build the tree. The latter is less computationally expensive, but can only be used on larger datasets. The final tree chosen is either the tree with the lowest MCE or the most parsimonious tree within 1 SD of that.
 \\ \colorbox{yellow}{Not sure if $T_\alpha$ is found by $\min C_\alpha$ or CV over all sequential trees. Sources don't agree!}
 \\ Pruning: \url{http://www.cbcb.umd.edu/~salzberg/docs/murthy_thesis/survey/node14.html}\\
 \colorbox{yellow}{9.2.4 modstat Other issues: Categorical predictors} \\ \\
 %
+\colorbox{yellow}{Somethig on splitting on linear combinations of predictros. Good for prediction bad for interpreabillity}\\
+\colorbox{yellow}{Do some simulations?}
 
 \subsection{Boosting}
-\label{sub:Boosting}
+\label{subsub:Boosting}
+In this part boosting will be discussed, first in general terms with \textit{Adaboost} as an example. However, the main focus will be on boosting trees and their performance, hereunder \textit{Gradient boosting} and \textit{Stochastic gradient boosting}.
+\subsubsection{Adaboost}
+\label{subsub:Adaboost}
+\colorbox{yellow}{Talk about adaboost??? Or just about gradient boostin?}\\
+\colorbox{yellow}{Any point talking about exponential loss if not adaboost?}\\
+\colorbox{yellow}{In R: adabag.}\\
+Adaboost.M1 \url{http://cseweb.ucsd.edu/~yfreund/papers/IntroToBoosting.pdf} This is mentioned in the start of boosting \cite{modstat} \\
+Algorithm 10.1 in \cite{modstat} only works for two classes, as $\alpha$ changes sign for $err > 0.5$.
 
+\subsubsection{Gradient boosting}
+\label{subsub:Gradient boosting}
+\colorbox{yellow}{Gradient boosting use regression trees, NOT classification. Include section on regression trees?} \\
+\colorbox{yellow}{Both stochastic and "non-stochastic" gradient boosting?} In that case do regularization in \cite{modstat}.
+\\ Gradient boosting paper \cite{friedman}. \colorbox{yellow}{Algo 6 is equal to algo 5  for K = 2}\\
+\colorbox{yellow}{Take a look at 7. Tree boosting \cite[p.~22]{friedman}} \\
+Zhu et al. (2005) generalize exponential loss for K-class problems \cite[p.~349]{modstat}.
+
+\colorbox{yellow}{Look at influence trimmin \cite{friedman}}.
+
+
+
+
+
+
+
+
+
+
+\colorbox{yellow}{Section on stochastic gradient boosting}\\
+ada: an R package for stochastic boosting \url{http://dept.stat.lsa.umich.edu/~gmichail/ada_final.pdf} \\
+Friedman \url{https://statweb.stanford.edu/~jhf/ftp/stobst.pdf} \\
 \subsection{Bagging}
 \label{sub:Bagging}
 

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+bibtex project.aux
+
 # This script checks if there are any differences in the *R files.
 # If that is the case, the cache is deleted so that they are not cached in the Rnw file
 

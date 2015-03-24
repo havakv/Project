@@ -118,18 +118,23 @@
 \end{appendices}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
-\begin{thebibliography}{99} % At most 99 references.
-	\bibitem{bishop}
-  Christopher M. Bishop,
-  \emph{Pattern recognition and machine learning}.
-	\bibitem{modstat}
-  Trevor Hastie, Robert Tibshirani, Jerome Friedman,
-  \emph{The Elements of Statistical Learning: Data Mining, Inference, and Prediction}.
-	\bibitem{breiman}
-  Leo Breiman, Jerome Friedman, Richard Olshen, Charles Stone. 
-  \emph{Classification and Regression Trees.}
-  Wadsworth International Group, 1984.
-% Use "bibit" to generate bibitem
-\end{thebibliography}
+\bibliographystyle{plain}
+\bibliography{referances}
+%\bibliography{mybib}
+%\begin{thebibliography}{99} % At most 99 references.
+    %\bibitem{bishop}
+  %Christopher M. Bishop,
+  %\emph{Pattern recognition and machine learning}.
+    %\bibitem{modstat}
+  %Trevor Hastie, Robert Tibshirani, Jerome Friedman,
+  %\emph{The Elements of Statistical Learning: Data Mining, Inference, and Prediction}.
+    %\bibitem{breiman}
+  %Leo Breiman, Jerome Friedman, Richard Olshen, Charles Stone. 
+  %\emph{Classification and Regression Trees.}
+  %Wadsworth International Group, 1984.
+    %\bibitem{friedman}
+    %Jerome H. Friedman. \url{http://statweb.stanford.edu/~jhf/ftp/trebst.pdf}
+%% Use "bibit" to generate bibitem
+%\end{thebibliography}
 %
 \end{document}
