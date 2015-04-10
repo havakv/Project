@@ -90,18 +90,38 @@ They proved that if continuing to collapse all the way back to a single node, $T
 \colorbox{yellow}{9.2.4 modstat Other issues: Categorical predictors} \\ \\
 %
 \colorbox{yellow}{Somethig on splitting on linear combinations of predictros. Good for prediction bad for interpreabillity}\\
-\colorbox{yellow}{Do some simulations?}
+\colorbox{yellow}{Do some simulations?}\\
+\\\colorbox{yellow}{Mention other tree building algorithms? Shortly?}
 
 \subsection{Boosting}
 \label{subsub:Boosting}
-In this part boosting will be discussed, first in general terms with \textit{Adaboost} as an example. However, the main focus will be on boosting trees and their performance, hereunder \textit{Gradient boosting} and \textit{Stochastic gradient boosting}.
+In this part boosting will be discussed, first in general terms with \textit{Adaboost} as an introductory example. However, the main focus will be on boosting trees and their performance, hereunder mainly \textit{Gradient boosting}. \\
+\\
+The idea behind boosting is to combine many ''weak'' classifiers to create one ''strong''. This is usually referred to as a committee-based classifier, and bears some resemblance to other committee-based approaches such as \textit{bagging} as will be discussed in section \todo{section}. Roughly said, the algorithms trains weak classifiers sequentially, and for each new classifier the data points are weighted by how hard they were for previous classifiers to classify correctly. At the end all the classifiers are combined and weighted based on how well they preform. The idea is better illustrated in Freund and Schapire's (1997) \todo{ref} algorithm \textit{AdaBoost.M1}.
 \subsubsection{Adaboost}
 \label{subsub:Adaboost}
-\colorbox{yellow}{Talk about adaboost??? Or just about gradient boostin?}\\
+\todo{Adaboost or AdaBoost}
 \colorbox{yellow}{Any point talking about exponential loss if not adaboost?}\\
 \colorbox{yellow}{In R: adabag.}\\
 Adaboost.M1 \url{http://cseweb.ucsd.edu/~yfreund/papers/IntroToBoosting.pdf} This is mentioned in the start of boosting \cite{modstat} \\
-Algorithm 10.1 in \cite{modstat} only works for two classes, as $\alpha$ changes sign for $err > 0.5$.
+Algorithm 10.1 in \cite{modstat} only works for two classes, as $\alpha$ changes sign for $err > 0.5$. \\
+\\
+Adaboost.M1 was created in (1997) \todo{ref} and \colorbox{yellow}{some history}. Hastie et al. \cite{modstat} describes it as the ''the most popular boosting algorithm''. Only the two class case will be discussed here, but it generalizes easily. 
+
+Consider output variable coded as $Y \in \{-1, 1\}$. A weak classifier $C(X)$ is chosen to do the ground work. This can for instance be a shallow tree, or some other algorithm that does not perform much better than random guessing. All the data points $\mathbf{x}_i$, $i = 1, 2, \ldots, N$, are initialized with weights $w_i = 1/N$. Then $C_1(\mathbf{x}_i)$ is trained using the weights. As a performance measure 
+\begin{align}
+  err_1 =  \frac{\sum^{N}_{i=1} w_i I\{y_i \neq C_1(\mathbf{x}_i)\}}{\sum^{N}_{i=1} w_i},
+\end{align}
+is used. Then the weights are updated using 
+\begin{align}
+  w_i &\leftarrow w_i \exp\left( \alpha_1 I\{y_i \neq C_1(\mathbf{x}_i)\} \right), \\
+  &\text{where} \quad \alpha_1 = \log\left(  \frac{1-err_1}{err_1} \right).
+\end{align}
+All this is repeated for $C_m(\mathbf{x}_i)$, $err_m$ and $\alpha_m$, for $m = 1, \ldots, M$. Finally the classifier is created
+\begin{align}
+  C( \mathbf{x}) = \text{sign}\left( \sum^{M}_{m=1} \alpha_m C_m(\mathbf{x}) \right).
+\end{align}
+
 
 \subsubsection{Gradient boosting}
 \label{subsub:Gradient boosting}

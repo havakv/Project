@@ -2,6 +2,7 @@
 # Simulation to create a pretty picture of how CART works
 
 NOPRINT = FALSE # Set to TRUE if you don't want to print figures to pdf files.
+library(methods)
 library(common)
 library(rpart)
 set.seed(929253)
