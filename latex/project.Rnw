@@ -119,8 +119,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 \bibliographystyle{plain}
-\bibliography{referances}
-%\bibliography{mybib}
+%\bibliography{referances}
+\bibliography{mybib}
 %\begin{thebibliography}{99} % At most 99 references.
     %\bibitem{bishop}
   %Christopher M. Bishop,

@@ -20,5 +20,6 @@ latex/figures
 *.out
 *.toc
 *.tdo
-
+*.bbl
+*.blg
 

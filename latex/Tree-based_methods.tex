@@ -25,7 +25,7 @@ source("../code/cartSim.R")
 %
 The Classificatoin And Regression Trees algorithm only split on one variable at the time. This means that the domain is split into rectangles, aligned withe the different axes. 
 Also, each split divide the domain in two parts. This is called binary splitting. This is the easiest way to do this splitting, but as will become clear later, it is pretty effective \todo{Show this}. CART is used both for classification and regression, but only its abilities as a classifier will be considered.
-In Figure~\ref{fig:animals} a toy example was simulated to illustrate how the CART algorithm works. To make it easy to visualize, only two predictors were used. In Figure~\ref{fig:cartAreas1} the domains created by the splits are displayed, and it shows how it follows the axes. It is clear that the data is not linear, and the figure shows how easy it handles that.
+In Figure~\ref{fig:cart} a toy example was simulated to illustrate how the CART algorithm works. The three is made by the r function \verb+rpart+ \cite{rpart}. To make it easy to visualize, only two predictors were used. In Figure~\ref{fig:cartAreas1} the domains created by the splits are displayed, and it shows how it follows the axes. It is clear that the data is not linear, and the figure shows how easy it handles that.
 For more than two predictors it is no longer possible to visualize the splits on the actual domain, so a tree view is used instead.
  In Figure~\ref{fig:cartTree1} the tree is displayed. It is clear that it generalizes to more than two dimensions. \\
 %
@@ -45,7 +45,7 @@ For more than two predictors it is no longer possible to visualize the splits on
           %(or a blank line to force the subfigure onto a new line)
   \vspace{1\baselineskip}
   \caption{CART run on simulated data in two dimensions. }
-  \label{fig:animals}
+  \label{fig:cart}
 \end{figure}
 %
 \\
@@ -97,30 +97,43 @@ They proved that if continuing to collapse all the way back to a single node, $T
 \label{subsub:Boosting}
 In this part boosting will be discussed, first in general terms with \textit{Adaboost} as an introductory example. However, the main focus will be on boosting trees and their performance, hereunder mainly \textit{Gradient boosting}. \\
 \\
-The idea behind boosting is to combine many ''weak'' classifiers to create one ''strong''. This is usually referred to as a committee-based classifier, and bears some resemblance to other committee-based approaches such as \textit{bagging} as will be discussed in section \todo{section}. Roughly said, the algorithms trains weak classifiers sequentially, and for each new classifier the data points are weighted by how hard they were for previous classifiers to classify correctly. At the end all the classifiers are combined and weighted based on how well they preform. The idea is better illustrated in Freund and Schapire's (1997) \todo{ref} algorithm \textit{AdaBoost.M1}.
+The idea behind boosting is to combine many ''weak'' classifiers to create one ''strong''. This is usually referred to as a committee-based classifier, and bears some resemblance to other committee-based approaches such as \textit{bagging} as will be discussed in section \todo{section}. Roughly said, the algorithms trains weak classifiers sequentially, and for each new classifier the data points are weighted by how hard they were for previous classifiers to classify correctly. At the end all the classifiers are combined and weighted based on how well they preform. The idea is better illustrated in Freund and Schapire's (1997) \todo{ref} algorithm \textit{AdaBoost.M1} \cite{adaboostM1}.
 \subsubsection{Adaboost}
 \label{subsub:Adaboost}
+\colorbox{yellow}{Wikipedia calls adaboost the best out-of-the-box classifier}
 \todo{Adaboost or AdaBoost}
 \colorbox{yellow}{Any point talking about exponential loss if not adaboost?}\\
 \colorbox{yellow}{In R: adabag.}\\
 Adaboost.M1 \url{http://cseweb.ucsd.edu/~yfreund/papers/IntroToBoosting.pdf} This is mentioned in the start of boosting \cite{modstat} \\
 Algorithm 10.1 in \cite{modstat} only works for two classes, as $\alpha$ changes sign for $err > 0.5$. \\
 \\
-Adaboost.M1 was created in (1997) \todo{ref} and \colorbox{yellow}{some history}. Hastie et al. \cite{modstat} describes it as the ''the most popular boosting algorithm''. Only the two class case will be discussed here, but it generalizes easily. 
+Adaboost.M1 was created in (1997) \todo{ref} and \colorbox{yellow}{some history}. Hastie et al. (2006) \cite{modstat} described it as the ''the most popular boosting algorithm''. Only the two class case will be discussed here, but it generalizes easily. The method requires, both for two class and multi class, that the weak classifiers has prediction error less than $1/2$.
 
-Consider output variable coded as $Y \in \{-1, 1\}$. A weak classifier $C(X)$ is chosen to do the ground work. This can for instance be a shallow tree, or some other algorithm that does not perform much better than random guessing. All the data points $\mathbf{x}_i$, $i = 1, 2, \ldots, N$, are initialized with weights $w_i = 1/N$. Then $C_1(\mathbf{x}_i)$ is trained using the weights. As a performance measure 
+Consider output variable coded as $Y \in \{-1, 1\}$. A weak classifier $C(X)$ is chosen to do the ground work. This can for instance be a shallow tree, or some other algorithm that does not perform much better than random guessing. All the data points $\mathbf{x}_i$, $i = 1, 2, \ldots, N$, are initialized with weights $w_i = 1/N$. Then, for $m = 1$, $C_m(\mathbf{x}_i)$ is trained using the weights. $err_m$ is used as a performance measure for $C_m(\mathbf{x}_i)$.
 \begin{align}
-  err_1 =  \frac{\sum^{N}_{i=1} w_i I\{y_i \neq C_1(\mathbf{x}_i)\}}{\sum^{N}_{i=1} w_i},
+  err_m =  \frac{\sum^{N}_{i=1} w_i I\{y_i \neq C_m(\mathbf{x}_i)\}}{\sum^{N}_{i=1} w_i}.
 \end{align}
-is used. Then the weights are updated using 
+Then the weights are updated using 
 \begin{align}
-  w_i &\leftarrow w_i \exp\left( \alpha_1 I\{y_i \neq C_1(\mathbf{x}_i)\} \right), \\
-  &\text{where} \quad \alpha_1 = \log\left(  \frac{1-err_1}{err_1} \right).
+  w_i &\leftarrow w_i \exp\left( \alpha_m I\{y_i \neq C_m(\mathbf{x}_i)\} \right), \\
+  &\text{where} \quad \alpha_m = \log\left(  \frac{1-err_m}{err_m} \right).
 \end{align}
-All this is repeated for $C_m(\mathbf{x}_i)$, $err_m$ and $\alpha_m$, for $m = 1, \ldots, M$. Finally the classifier is created
+This is repeated for $m = 1, \ldots, M$. Finally the classifier is created
 \begin{align}
   C( \mathbf{x}) = \text{sign}\left( \sum^{M}_{m=1} \alpha_m C_m(\mathbf{x}) \right).
 \end{align}
+There are many choices of weak classifiers, but one of the more common is to use classification trees. It is then important to not grow an optimal tree as with CART, but instead grow a shallow tree or just stumps (one split).
+\\ \colorbox{yellow}{Why does the weak classifier has to be weak? Why not grow a large tree?}. An example of this implementation can be found in the r package \verb+adabag+ \cite{adabag}. How to best grow a weak classification tree for AdaBoost will not be further covered in this paper.
+
+\subsection{Forward stagewise Additive Modeling}
+\label{sub:Forward stagewise additive modeling}
+A common way to view the goal of classification and regression problems is to find 
+\begin{align}
+  F^* = \argmin_F \E_{Y, X}[L(Y,F(X))] = \argmin_F \E_{X}[ \E_Y (L(Y,F(X))|X) ].
+\end{align}
+
+
+Another way to view boosting is
 
 
 \subsubsection{Gradient boosting}
