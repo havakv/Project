@@ -93,13 +93,14 @@ They proved that if continuing to collapse all the way back to a single node, $T
 \colorbox{yellow}{Do some simulations?}\\
 \\\colorbox{yellow}{Mention other tree building algorithms? Shortly?}
 
-\subsection{Boosting}
-\label{subsub:Boosting}
+\section{Boosting}
+\label{sec:Boosting}
+%%fakesubsection Boosting
 In this part boosting will be discussed, first in general terms with \textit{Adaboost} as an introductory example. However, the main focus will be on boosting trees and their performance, hereunder mainly \textit{Gradient boosting}. \\
 \\
 The idea behind boosting is to combine many ''weak'' classifiers to create one ''strong''. This is usually referred to as a committee-based classifier, and bears some resemblance to other committee-based approaches such as \textit{bagging} as will be discussed in section \todo{section}. Roughly said, the algorithms trains weak classifiers sequentially, and for each new classifier the data points are weighted by how hard they were for previous classifiers to classify correctly. At the end all the classifiers are combined and weighted based on how well they preform. The idea is better illustrated in Freund and Schapire's (1997) \todo{ref} algorithm \textit{AdaBoost.M1} \cite{adaboostM1}.
-\subsubsection{Adaboost}
-\label{subsub:Adaboost}
+\subsection{Adaboost}
+\label{sub:Adaboost}
 \colorbox{yellow}{Wikipedia calls adaboost the best out-of-the-box classifier}
 \todo{Adaboost or AdaBoost}
 \colorbox{yellow}{Any point talking about exponential loss if not adaboost?}\\
@@ -127,17 +128,69 @@ There are many choices of weak classifiers, but one of the more common is to use
 
 \subsection{Forward stagewise Additive Modeling}
 \label{sub:Forward stagewise additive modeling}
-A common way to view the goal of classification and regression problems is to find 
+A common way to view the goal of classification problems is through the expected prediction error (Appendix~\ref{sub:EPE}). The goal is to find
 \begin{align}
-  F^* = \argmin_F \E_{Y, X}[L(Y,F(X))] = \argmin_F \E_{X}[ \E_Y (L(Y,F(X))|X) ].
+  \label{eq:fargmin} 
+  f^* = \argmin_f \E_{Y, X}[L(Y,F(X))] = \argmin_f \E_Y [L(Y,f(X))|X] ,
 \end{align}
+where $L(Y, f(X))$ is some loss function. Note that $L$ does not necessarily need to be the misclassification rate, but can be a continuous loss like squared-error loss, $(Y - f(X))^2$. As $f^*$ is usually hard to obtain, a common procedure is restrict $f$ to be a member of a parameterized class of function. In this section $f$ will be an additive expansion in a set of elementary basis functions 
+\begin{align}
+  \label{eq:additive} 
+  f(\mathbf{x}) =  \sum^{M}_{m=1} \beta_m h(\mathbf{x}; \bm{\gamma}_m).
+\end{align}
+Here $h$ is usually a simple function of $\mathbf{x}$ an parameters $\bm{\gamma}$. These expansions are used in many different learning techniques like neural networks, wavelets, MARS and support vector machines.
 
+Under \eqref{eq:additive}, the solution of \eqref{eq:fargmin} is still hard to obtain. Therefor \textit{forward stagewise additive modelling} approximates the solution by sequentially adding new basis functions without changing parameters of basis functions already fitted. The algorithm works the following way:\\
+\\
+$f_0$ is initialized to 0. For $m = 1, \ldots, M$, $\beta_m$ and $\bm \gamma_m$ is found by
+\begin{align}
+  \label{eq:forStageWise} 
+  (\beta_m, \bm \gamma_m) = \argmin_{\beta, \bm \gamma} \sum^{N}_{i=1} L(y_i, f_{m-1}(\mathbf{x}_i) + \beta h(\mathbf{x}_i; \bm \gamma)).
+\end{align}
+Then $f_m(\mathbf{x})$ is updated to $f_m(\mathbf{x}) = f_{m-1}(\mathbf{x}) + \beta_m h(\mathbf{x}; \bm \gamma_m)$.\\
+\\
+If the basis functions are set to be a classifier $h(\mathbf{x}; \bm \gamma) \in \{-1, 1\}$, and the loss is exponential
+\begin{align}
+  \label{eq:expLoss} 
+  L(y, f(\mathbf{x})) = \exp (-y f(\mathbf{x})),
+\end{align}
+it is pretty straight forward to show \cite{modstat} that forward stagewise modeling is equivalent to the Adaboost.M1 classifier in the previous section. This was not the original motivation for Adaboost.M1. The way Adaboost.M1 fits in the forward stagewise framework, was only discovered years later. However, the forward stargewise framework give the opportunity to compare the Adaboost.M1 to different loss functions. Under the exponential loss in \eqref{eq:expLoss}, the solution of \eqref{eq:fargmin} is 
+\begin{align}
+  f^*( \mathbf{x}) = \frac{1}{2} \log \frac{P(Y=1 |X=x)}{P(Y=-1 | X = x)} .
+\end{align}
+So the classification rule in Adabost.M1 approximates one half of the log-odds. That justifies using its sign as a classification rule.
+%
+\subsubsection{Loss functions}
+\label{sub:Loss functions}
+<<lossFunctions, echo=FALSE>>=
+# Plot of different loss functions
+source("../code/lossFunctions.R")
+@
+\colorbox{yellow}{Drawing of different loss functions}
+The choice of loss function is important in terms of both accuracy and computations. While the use of $0/1$ loss might be intuitive, a differentiable loss function might have a computational advantage. By using squared-error loss, $L = (Y - f(X))^2$, \eqref{eq:forStageWise} fit a basis function to the residual of the previous function. There exist fast algorithms for solving these type of problems, but squared-error loss is still not considered a good choice for classification. That can be explained by Figure~\ref{fig:lossFunctions}. The figure shows the loss $L(y, f(\mathbf{x}))$ for different loss functions, where $y \in \left\{ -1, 1 \right\}$. If the classification rule is $C(\mathbf{x}) = \mathrm{sign}(f(\mathbf{x}))$, then a positive margin $y f(\mathbf{x}) > 0$ implies a correct classification, while a negative margin implies a wrong. It is clear from the figure that squared-error loss start increasing when the margin is higher than $1$. As any loss function should penalize a negative margin more than a positive one, this makes squared-error loss not very well suited for classification.
 
-Another way to view boosting is
-
-
-\subsubsection{Gradient boosting}
-\label{subsub:Gradient boosting}
+From the figure it is clear that exponential and misclassification loss decrease with the margin and are therefore better choices than square-error loss. But as mentioned earlier, and will become more clear in \colorbox{yellow}{the next section}, a differentiable loss is easier to use. The last loss function in Figure~\ref{fig:lossFunctions} is the \textit{negative binomial log-likelihood}, or \textit{binomial deviance},
+\begin{align}
+  L(y, f(\mathbf{x})) = \log \left( 1 + \exp (-2 y f(\mathbf{x})) \right).
+\end{align}
+This locks very similar to the exponential loss, but might be the preferred choice. The main difference is that for increasingly negative margins the exponential loss penalize exponentially, while the binomial deviance penalize linearly. Therefore the binomial deviance is not as vulnerable in noisy settings. The binomial deviance is a very common choice and is was will be used for the rest of this section. For multi class cases, the binomial deviance generalizes to the \textit{multinomial deviance}
+\begin{align}
+  &L(y, f( \mathbf{x })) = - \sum^{K}_{k=1} I\{y = k\} \log p_k(\mathbf{x}), \\
+  &\text{where} \quad p_k(\mathbf{x}) = \frac{\exp (f_k(\mathbf{x}))}{\sum^{K}_{k=1} \exp (f_l(\mathbf{x}))}.
+\end{align}
+As with logistic regression, this is a probabilistic classifier, ie. it returns class probabilities. That is very useful in fields like data mining, but can also be useful in pure classification when combining into ensembles. \colorbox{yellow}{Need to mention ensemble learning somewhere.}
+\colorbox{yellow}{More loss functions?}
+%
+\begin{figure}[h!]
+\begin{center}
+    \includegraphics[scale=0.5]{./figures/lossFunctions.pdf}
+\end{center}
+\caption{Different loss functions $L(y, f)$ as function of the margin $yf$, scaled so all goes through point $(0, 1)$. $y \in \{-1, 1\}$}.
+\label{fig:lossFunctions}
+\end{figure}
+%
+\subsection{Gradient boosting}
+\label{sub:Gradient boosting}
 \colorbox{yellow}{Gradient boosting use regression trees, NOT classification. Include section on regression trees?} \\
 \colorbox{yellow}{Both stochastic and "non-stochastic" gradient boosting?} In that case do regularization in \cite{modstat}.
 \\ Gradient boosting paper \cite{friedman}. \colorbox{yellow}{Algo 6 is equal to algo 5  for K = 2}\\
@@ -145,22 +198,17 @@ Another way to view boosting is
 Zhu et al. (2005) generalize exponential loss for K-class problems \cite[p.~349]{modstat}.
 
 \colorbox{yellow}{Look at influence trimmin \cite{friedman}}.
-
-
-
-
-
-
-
+\\
+\\Gradient boosting is a smart method developed by Jerome H. Friedman (1999) \cite{friedman}. It is built on the stagewise fashion for arbitrary differentiable loss functions.
 
 
 
 \colorbox{yellow}{Section on stochastic gradient boosting}\\
 ada: an R package for stochastic boosting \url{http://dept.stat.lsa.umich.edu/~gmichail/ada_final.pdf} \\
 Friedman \url{https://statweb.stanford.edu/~jhf/ftp/stobst.pdf} \\
-\subsection{Bagging}
-\label{sub:Bagging}
+\section{Bagging}
+\label{sec:Bagging}
 
-\subsection{Random forest}
-\label{sub:Random forest}
+\section{Random forest}
+\label{sec:Random forest}
 

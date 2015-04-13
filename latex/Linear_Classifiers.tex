@@ -47,7 +47,9 @@ Using this posterior distribution to create
   \label{eq:bayesian} 
   C(\mathbf{x}) = \argmax_k P(Y=k|X=\mathbf{x}),
 \end{align}
-which is called the \textit{Bayes classifier} \cite[p.~21]{modstat}. It is clear that this is the best one can do, and the Bayes classifier is therefor often used as a benchmark in simulation studies. As the prior and conditional distribution are not know, there are numerous approaches use different assumptions on these. LDA assume the conditional distributions are multivariate Gaussian with same covariance $\bm{\Sigma}$ and different mean $\bm\mu_k$
+which is called the \textit{Bayes classifier} \cite[p.~21]{modstat}. Under 0/1 loss it is clear that this is the best one can do, and the Bayes classifier is therefor often used as a benchmark in simulation studies. In Appendix~\ref{sub:EPE}, there is also a derivation of the Bayes classifier from an EPE point of view. 
+
+As the prior and conditional distribution are not know, there are numerous approaches use different assumptions on these. LDA assume the conditional distributions are multivariate Gaussian with same covariance $\bm{\Sigma}$ and different mean $\bm\mu_k$
 \begin{align}
   f_k(\mathbf{x}) =  \frac{1}{(2\pi)^{N_k/2}|\bm{\Sigma}|^{1/2}} \exp\left( -\frac{1}{2} (\mathbf{x}-\bm \mu_k)' \bm{\Sigma}^{-1} (\mathbf{x}-\bm \mu_k)\right).
 \end{align}

@@ -3,7 +3,21 @@
 \todo{Find better name}
 \subsection{EPE}
 \label{sub:EPE}
-Bias-varance tradeoff \url{http://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff} \\
+The engine in prediction problems is to minimize the expected prediction error $\mathrm{EPE}$, under some loss functoin $L$
+\begin{align}
+  \mathrm{EPE}(f) = \E[L(Y-f(X))] = \E_X [\E_Y (L(Y-f(X))|X)].
+\end{align}
+Thus 
+\begin{align}
+  f^* = \argmin_f \mathrm{EPE}(f) = \argmin_f \E_Y [L(Y-f(X)) | X ].
+\end{align}
+Under squared error loss, $L(Y-f(X)) = (Y-f(X)^2)$, the solution is 
+$f^*(x) = \E[Y | X=x]$. And under $0/1$ loss $f^*(x)$ is the \textit{Bayes classifier} 
+\begin{align}
+  f^*(x) = \E[Y | X=x].
+\end{align}
+\\
+\\Bias-varance tradeoff \url{http://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff} \\
 This is also important for classificatoin (see article).
 
 \subsection{Cross-validation}
