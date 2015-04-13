@@ -140,7 +140,7 @@ where $L(Y, f(X))$ is some loss function. Note that $L$ does not necessarily nee
 \end{align}
 Here $h$ is usually a simple function of $\mathbf{x}$ an parameters $\bm{\gamma}$. These expansions are used in many different learning techniques like neural networks, wavelets, MARS and support vector machines.
 
-Under \eqref{eq:additive}, the solution of \eqref{eq:fargmin} is still hard to obtain. Therefor \textit{forward stagewise additive modelling} approximates the solution by sequentially adding new basis functions without changing parameters of basis functions already fitted. The algorithm works the following way:\\
+Under \eqref{eq:additive}, the solution of \eqref{eq:fargmin} is usually still hard to obtain. Therefor \textit{forward stagewise additive modelling} approximates the solution by sequentially adding new basis functions without changing parameters of basis functions already fitted. The algorithm works the following way:\\
 \\
 $f_0$ is initialized to 0. For $m = 1, \ldots, M$, $\beta_m$ and $\bm \gamma_m$ is found by
 \begin{align}
@@ -185,7 +185,7 @@ As with logistic regression, this is a probabilistic classifier, ie. it returns 
 \begin{center}
     \includegraphics[scale=0.5]{./figures/lossFunctions.pdf}
 \end{center}
-\caption{Different loss functions $L(y, f)$ as function of the margin $yf$, scaled so all goes through point $(0, 1)$. $y \in \{-1, 1\}$}.
+\caption{Different loss functions $L(y, f)$ as function of the margin $yf$, scaled so all goes through point $(0, 1)$. $y \in \{-1, 1\}$.}
 \label{fig:lossFunctions}
 \end{figure}
 %
@@ -199,9 +199,92 @@ Zhu et al. (2005) generalize exponential loss for K-class problems \cite[p.~349]
 
 \colorbox{yellow}{Look at influence trimmin \cite{friedman}}.
 \\
-\\Gradient boosting is a smart method developed by Jerome H. Friedman (1999) \cite{friedman}. It is built on the stagewise fashion for arbitrary differentiable loss functions.
+\\Gradient boosting is a smart method developed by Jerome H. Friedman (1999) \cite{friedman}. It is built on the stagewise fashion for arbitrary differentiable loss functions. The idea behind the method is to solve for $f^*$ \eqref{eq:fargmin} numerically, using steepest decent in function space.
+
+Let $g_m$ denote the gradient at step $m$
+\begin{align}
+  g_{m}(\mathbf{x}) = \left[ \frac{\partial \E_{Y} \left[ L(Y, f(\mathbf{x})) \right | \mathbf{x}]}{\partial f(\mathbf{x})}  \right]_{f(\mathbf{x}) = f_{m-1}(\mathbf{x})},
+\end{align}
+or assuming sufficient regularity that integration and differentiation can be interchanged, 
+\begin{align}
+  g_{m}(\mathbf{x}) = \E_{Y} \left[ \frac{\partial L(Y, f(\mathbf{x})) }{\partial f(\mathbf{x})}  | \mathbf{x}\right]_{f(\mathbf{x}) = f_{m-1}(\mathbf{x})}.
+\end{align}
+$f_m$ is then updated to
+\begin{align}
+  f_m(\mathbf{x}) = f_{m-1}(\mathbf{x}) - \rho_m  g_m(\mathbf{x}),
+\end{align}
+where $\rho_m$ is the step length found by
+\begin{align}
+  \rho_m = \argmin_{\rho}  \E_{Y} \left[ L(Y, f_{m-1}(\mathbf{x}) - \rho g_m(\mathbf{x})) \right | \mathbf{x}].
+\end{align}
+By repeating these steps, the function is moving towards a minimum of $L$ (in the steepest decent direction $-g_m$), though in a very greedy matter. \\
+\\
+In the steepest decent algorithm above above $\mathbf{x}$ is considered a stochastic variable, but that is not really the case. For finite data $(\mathbf{x}_i, y_i)$ for $i = 1, \ldots, N$, $E_Y \left[\: \cdot \:| \mathbf{x} \right]$ can not be accurately estimated by the data values, and is only defined at the training points. As the goal is to find a good approximation for $f^*(\mathbf{x})$ for all $\mathbf{x}$, a different approach is needed. Friedman's approach to tackle this was to impose an additive parameterized form of $f$ as in \eqref{eq:additive}, and do parameter optimization over those constraints. By doing the fitting in a stagewise matter, the optimization problem was reduced to the forward stagewise additive modeling problem \eqref{eq:forStageWise}. As this is often difficult to solve, he approximated a solution based on the steepest decent algorithm.
+
+For a given $f_{m-1}(\mathbf{x})$, the function $\beta_m h(\mathbf{x}; \mathbf{\gamma}_m)$ can be viewed as the best step toward the databased $f^*$, under the given constraint \eqref{eq:additive}, and is can therefore be considered a steepest decent step. It is often hard to find the solution to \eqref{eq:forStageWise}, but as $\beta_m h(\mathbf{x}; \mathbf{\gamma}_m)$ is comparable to the unconstrained negative gradient $g_m$, it can be fitted to $-g_m$ instead. This is done by finding the $\beta_m h(\mathbf{x}; \mathbf{\gamma}_m)$ highest correlated to $-g_m(\mathbf{x})$,
+\begin{align}
+  \label{eq:gradBoostFit} 
+  \bm \gamma_m = \argmin_{\beta, \bm \gamma} \sum^{N}_{i=1} \left( -g_m(\mathbf{x}_i) - \beta h(\mathbf{x}_i; \bm \gamma) \right)^2.
+\end{align}
+Then $f_m$ is updated using
+\begin{align}
+  &f_m(\mathbf{x}) = f_{m-1}(\mathbf{x}) + \rho_m h(\mathbf{x}; \mathbf{\gamma}_{m}),\\
+  \label{eq:lineSearch} 
+  &\text{where} \quad \rho_m = \argmin_\rho \sum^{N}_{i=1} L(y_i, f_{m-1}(\mathbf{x}) + \rho h(\mathbf{x}; \mathbf{\gamma}_m)).
+\end{align}
+These last three equations are know as the \textit{gradient boosting algorithm}.
+As \eqref{eq:forStageWise} is replaced by \eqref{eq:gradBoostFit}, $\tilde{y}_i = -g_m(\mathbf{x}_i)$ is often referred to as the ''pseudo-responce''. 
+Note here that $h$ and $f$ are continuous functions and not classifiers. The classification is done after all the $M$ iterations, usually trough some relationship between $f_M$ and class probabilities. For the binomial deviance loss this relationships are the log-odds,
+\begin{align}
+  &P(Y = 1 |  \mathbf{x}) = \left( 1+ \exp\left( -2 f_M (\mathbf{x}) \right) \right)^{-1},\\
+  &P(Y = -1 |  \mathbf{x}) = \left( 1+ \exp\left( 2 f_M (\mathbf{x}) \right) \right)^{-1}.
+\end{align}
+Later it will be show how powerful this simple algorithm is, but first trees will be used as the basis functions $\beta_m h(\mathbf{x}; \mathbf{\gamma}_m)$.
+
+\subsubsection{Regression Trees}
+\label{sub:Regression Trees}
+It was earlier mentioned that the basis functions $h(\mathbf{x}; \mathbf{\gamma}_m)$ in gradient boosting are continuous functions. Therefore, classification trees can not be used and the regression framework needs to be explored.
+In section \ref{sub:Classification trees} it was show how classification trees can be fitted using the CART method. CART stands for \textit{Classification And Regression Trees} and can obviously also be used for regression. The ides behind fitting regression trees are almost identical to classification, but the functions used during growing, estimating and pruning are different. However, this will not be investigated deeply, only what is needed in the boosting framework.\\
+\\
+A regression tree $T$ can be represented in the following form 
+\begin{align}
+  T(\mathbf{x}; \left\{ c_j, R_j \right\}_{j = 1}^J)  = \sum^{J}_{j=1} c_j I\left\{ \mathbf{x} \in R_j \right\}.
+\end{align}
+As with classification all the regions $R_j$ are disjunct and collectively cover all possible values of $\mathbf{x}$. If fitting a tree to the response $\tilde y$ under squared error loss, it is straight forward to see that the solution in each region $R_j$ is just the region average
+\begin{align}
+  \hat{c}_j = \mathrm{ave}(\tilde y_i | \mathbf{x}_i \in R_j).
+\end{align}
+The tree is grown sequentially, similarly as with classification, by finding the split that minimize the total squared error loss. When a larger tree is grown, it can then be pruned back using \textit{const-complexity pruning} based on the squared error and penalized by the number of terminal nodes. In the boosing context however, pruning is not really an alternative. Usually less than 10 end-nodes will be sufficient \cite[p.~363]{modstat}, and thus growing a larger tree and pruning it back will only be very computationally expensive, probably with worse end results. \todo{Discuss this later?}\\
+\\
+In gradient boosting trees are fitted in \eqref{eq:gradBoostFit}, in place of $\beta h(\mathbf{x}_i; \mathbf{\gamma})$ and $f_m$ can be created by
+\begin{align}
+  f_m(\mathbf{x}) = f_{m-1}(\mathbf{x}) + \rho_m T(\mathbf{x}; \left\{ c_{m j}, R_{m j} \right\}_{j=1}^{J}),
+\end{align}
+where $\rho_m$ is the solution of the line search in \eqref{eq:lineSearch}.  However, what is more common is to use one variable $\eta_{m j}$ instead of $\rho_m c_{m j}$. Thus one fit $J$ separate basis functions instead of a single additive. This gives the opportunity to better tune the coefficients and improving the fit. So $f_m$ is set to 
+\begin{align}
+  f_m(\mathbf{x}) = f_{m-1}(\mathbf{x}) +  \sum^{J}_{j=0} \eta_{m j} I\left\{ \mathbf{x} \in R_{m j} \right\}.
+\end{align}
+Do to the disjunct nature of the trees, each $\eta_{m j}$ can be found independently.
+\begin{align}
+  \eta_{m j} = \argmin_\eta  \sum_{\mathbf{x}_i \in R_{m j}} L(y_i, f_{m-1}(\mathbf{x}) + \eta).
+\end{align}
+
+\subsubsection{The two-class logistic regression classifier}
+\label{sub:The two-class logistic regression classifier}
+The framework for gradient boosting is now reviewed, and final step is to summarize the algorithm for the binomial deviance loss. As before $y \in \left\{ -1, 1 \right\}$ and the loss is 
+\begin{align}
+  &L(Y, f(\mathbf{x})) = \log (1 + \exp (-2 Y f(\mathbf{x}))),\\
+  &\text{where} \quad f(\mathbf{x}) = \frac{1}{2} \log \left( \frac{P(Y = 1 | \mathbf{x})}{P(Y = -1 | \mathbf{x})}  \right).
+\end{align}
+$f_0(\mathbf{x})$ is initialized to $\frac{1}{2} \log \left( \frac{1+\bar{y}}{1-\bar{y}}  \right)$.
 
 
+
+
+\todo{Section on boosting and overfitting}
+
+\subsection{Stochastic gradient boosting}
+\label{sub:Stochastic gradient boosting}
 
 \colorbox{yellow}{Section on stochastic gradient boosting}\\
 ada: an R package for stochastic boosting \url{http://dept.stat.lsa.umich.edu/~gmichail/ada_final.pdf} \\
