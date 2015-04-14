@@ -105,6 +105,12 @@
 % Section on Tree-based methods should be and Rnw file.
 <<Tree-based_metods, child='./Tree-based_methods.tex', cache=TRUE>>=
 @
+%
+<<boosting, child='./boosting.tex', cache=TRUE>>=
+@
+%
+<<bagging_random_forest, child='./bagging_random_forest.tex', cache=TRUE>>=
+@
 
 
 
