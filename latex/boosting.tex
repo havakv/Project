@@ -1,9 +1,12 @@
+<<set-parent, echo=FALSE, cache=FALSE>>=
+set_parent('./project.Rnw')
+@
 \section{Boosting}
 \label{sec:Boosting}
 %%fakesubsection Boosting
 In this part boosting will be discussed, first in general terms with \textit{Adaboost} as an introductory example. However, the main focus will be on boosting trees and their performance, hereunder mainly \textit{Gradient boosting}. \\
 \\
-The idea behind boosting is to combine many ''weak'' classifiers to create one ''strong''. This is usually referred to as a committee-based classifier, and bears some resemblance to other committee-based approaches such as \textit{bagging} as will be discussed in section \todo{section}. Roughly said, the algorithms trains weak classifiers sequentially, and for each new classifier the data points are weighted by how hard they were for previous classifiers to classify correctly. At the end all the classifiers are combined and weighted based on how well they preform. The idea is better illustrated in Freund and Schapire's (1997) \todo{ref} algorithm \textit{AdaBoost.M1} \cite{adaboostM1}.
+The idea behind boosting is to combine many ''weak'' classifiers to create one ''strong''. This is usually referred to as a committee-based classifier, and bears some resemblance to other committee-based approaches such as \textit{bagging} as will be discussed in section \todo{section}. Roughly said, the algorithms trains weak classifiers sequentially, and for each new classifier the data points are weighted by how hard they were for previous classifiers to classify correctly. At the end all the classifiers are combined and weighted based on how well they preform. The idea is better illustrated in Freund and Schapire's (1997) algorithm \textit{AdaBoost.M1} \cite{adaboostM1}.
 \subsection{Adaboost}
 \label{sub:Adaboost}
 \colorbox{yellow}{Wikipedia calls adaboost the best out-of-the-box classifier}
@@ -13,7 +16,7 @@ The idea behind boosting is to combine many ''weak'' classifiers to create one '
 Adaboost.M1 \url{http://cseweb.ucsd.edu/~yfreund/papers/IntroToBoosting.pdf} This is mentioned in the start of boosting \cite{modstat} \\
 Algorithm 10.1 in \cite{modstat} only works for two classes, as $\alpha$ changes sign for $err > 0.5$. \\
 \\
-Adaboost.M1 was created in (1997) \todo{ref} and \colorbox{yellow}{some history}. Hastie et al. (2006) \cite{modstat} described it as the ''the most popular boosting algorithm''. Only the two class case will be discussed here, but it generalizes easily. The method requires, both for two class and multi class, that the weak classifiers has prediction error less than $1/2$.
+Adaboost.M1 was created in (1997) and \colorbox{yellow}{some history}. Hastie et al. (2006) \cite{modstat} described it as the ''the most popular boosting algorithm''. Only the two class case will be discussed here, but it generalizes easily. The method requires, both for two class and multi class, that the weak classifiers has prediction error less than $1/2$.
 
 Consider output variable coded as $Y \in \{-1, 1\}$. A weak classifier $C(X)$ is chosen to do the ground work. This can for instance be a shallow tree, or some other algorithm that does not perform much better than random guessing. All the data points $\mathbf{x}_i$, $i = 1, 2, \ldots, N$, are initialized with weights $w_i = 1/N$. Then, for $m = 1$, $C_m(\mathbf{x}_i)$ is trained using the weights. $err_m$ is used as a performance measure for $C_m(\mathbf{x}_i)$.
 \begin{align}
@@ -99,6 +102,7 @@ As with logistic regression, this is a probabilistic classifier, ie. it returns 
 %
 \subsection{Gradient boosting}
 \label{sub:Gradient boosting}
+%%fakesubsubsection Gradient boosting
 \colorbox{yellow}{Gradient boosting use regression trees, NOT classification. Include section on regression trees?} \\
 \colorbox{yellow}{Both stochastic and "non-stochastic" gradient boosting?} In that case do regularization in \cite{modstat}.
 \\ Gradient boosting paper \cite{friedman}. \colorbox{yellow}{Algo 6 is equal to algo 5  for K = 2}\\
@@ -129,16 +133,16 @@ By repeating these steps, the function is moving towards a minimum of $L$ (in th
 \\
 In the steepest decent algorithm above above $\mathbf{x}$ is considered a stochastic variable, but that is not really the case. For finite data $(\mathbf{x}_i, y_i)$ for $i = 1, \ldots, N$, $E_Y \left[\: \cdot \:| \mathbf{x} \right]$ can not be accurately estimated by the data values, and is only defined at the training points. As the goal is to find a good approximation for $f^*(\mathbf{x})$ for all $\mathbf{x}$, a different approach is needed. Friedman's approach to tackle this was to impose an additive parameterized form of $f$ as in \eqref{eq:additive}, and do parameter optimization over those constraints. By doing the fitting in a stagewise matter, the optimization problem was reduced to the forward stagewise additive modeling problem \eqref{eq:forStageWise}. As this is often difficult to solve, he approximated a solution based on the steepest decent algorithm.
 
-For a given $f_{m-1}(\mathbf{x})$, the function $\beta_m h(\mathbf{x}; \mathbf{\gamma}_m)$ can be viewed as the best step toward the databased $f^*$, under the given constraint \eqref{eq:additive}, and is can therefore be considered a steepest decent step. It is often hard to find the solution to \eqref{eq:forStageWise}, but as $\beta_m h(\mathbf{x}; \mathbf{\gamma}_m)$ is comparable to the unconstrained negative gradient $g_m$, it can be fitted to $-g_m$ instead. This is done by finding the $\beta_m h(\mathbf{x}; \mathbf{\gamma}_m)$ highest correlated to $-g_m(\mathbf{x})$,
+For a given $f_{m-1}(\mathbf{x})$, the function $\beta_m h(\mathbf{x}; \bm{\gamma}_m)$ can be viewed as the best step toward the databased $f^*$, under the given constraint \eqref{eq:additive}, and is can therefore be considered a steepest decent step. It is often hard to find the solution to \eqref{eq:forStageWise}, but as $\beta_m h(\mathbf{x}; \bm{\gamma}_m)$ is comparable to the unconstrained negative gradient $g_m$, it can be fitted to $-g_m$ instead. This is done by finding the $\beta_m h(\mathbf{x}; \bm{\gamma}_m)$ highest correlated to $-g_m(\mathbf{x})$,
 \begin{align}
   \label{eq:gradBoostFit} 
   \bm \gamma_m = \argmin_{\beta, \bm \gamma} \sum^{N}_{i=1} \left( -g_m(\mathbf{x}_i) - \beta h(\mathbf{x}_i; \bm \gamma) \right)^2.
 \end{align}
 Then $f_m$ is updated using
 \begin{align}
-  &f_m(\mathbf{x}) = f_{m-1}(\mathbf{x}) + \rho_m h(\mathbf{x}; \mathbf{\gamma}_{m}),\\
+  &f_m(\mathbf{x}) = f_{m-1}(\mathbf{x}) + \rho_m h(\mathbf{x}; \bm{\gamma}_{m}),\\
   \label{eq:lineSearch} 
-  &\text{where} \quad \rho_m = \argmin_\rho \sum^{N}_{i=1} L(y_i, f_{m-1}(\mathbf{x}) + \rho h(\mathbf{x}; \mathbf{\gamma}_m)).
+  &\text{where} \quad \rho_m = \argmin_\rho \sum^{N}_{i=1} L(y_i, f_{m-1}(\mathbf{x}) + \rho h(\mathbf{x}; \bm{\gamma}_m)).
 \end{align}
 These last three equations are know as the \textit{gradient boosting algorithm}.
 As \eqref{eq:forStageWise} is replaced by \eqref{eq:gradBoostFit}, $\tilde{y}_i = -g_m(\mathbf{x}_i)$ is often referred to as the ''pseudo-responce''. 
@@ -149,11 +153,11 @@ Note here that $h$ and $f$ are continuous functions and not classifiers. The cla
   \label{eq:boostLogOdds2} 
   &\hat P(Y = -1 |  \mathbf{x}) = \left( 1+ \exp\left( 2 f_M (\mathbf{x}) \right) \right)^{-1}.
 \end{align}
-Later it will be show how powerful this simple algorithm is, but first trees will be used as the basis functions $\beta_m h(\mathbf{x}; \mathbf{\gamma}_m)$.
+Later it will be show how powerful this simple algorithm is, but first trees will be used as the basis functions $\beta_m h(\mathbf{x}; \bm{\gamma}_m)$.
 
 \subsubsection{Regression Trees}
 \label{sub:Regression Trees}
-It was earlier mentioned that the basis functions $h(\mathbf{x}; \mathbf{\gamma}_m)$ in gradient boosting are continuous functions. Therefore, classification trees can not be used and the regression framework needs to be explored.
+It was earlier mentioned that the basis functions $h(\mathbf{x}; \bm{\gamma}_m)$ in gradient boosting are continuous functions. Therefore, classification trees can not be used and the regression framework needs to be explored.
 In section \ref{sub:Classification trees} it was show how classification trees can be fitted using the CART method. CART stands for \textit{Classification And Regression Trees} and can obviously also be used for regression. The ides behind fitting regression trees are almost identical to classification, but the functions used during growing, estimating and pruning are different. However, this will not be investigated deeply, only what is needed in the boosting framework.\\
 \\
 A regression tree $T$ can be represented in the following form 
@@ -166,7 +170,7 @@ As with classification all the regions $R_j$ are disjunct and collectively cover
 \end{align}
 The tree is grown sequentially, similarly as with classification, by finding the split that minimize the total squared error loss. When a larger tree is grown, it can then be pruned back using \textit{const-complexity pruning} based on the squared error and penalized by the number of terminal nodes. In the boosing context however, pruning is not really an alternative. Usually $J \leq 10$ end-nodes will be sufficient \cite[p.~363]{modstat}, and thus growing a larger tree and pruning it back will only be very computationally expensive, probably with worse end results. \todo{Discuss this later?}\\
 \\
-In gradient boosting trees are fitted in \eqref{eq:gradBoostFit}, in place of $\beta h(\mathbf{x}_i; \mathbf{\gamma})$ and $f_m$ can be created by
+In gradient boosting trees are fitted in \eqref{eq:gradBoostFit}, in place of $\beta h(\mathbf{x}_i; \bm{\gamma})$ and $f_m$ can be created by
 \begin{align}
   f_m(\mathbf{x}) = f_{m-1}(\mathbf{x}) + \rho_m T(\mathbf{x}; \left\{ c_{m j}, R_{m j} \right\}_{j=1}^{J}),
 \end{align}
@@ -207,17 +211,43 @@ but this expression has no closed form solution. A common way to approximate the
 \end{align}
 Here  $\tilde y_i$ is found in \eqref{eq:ytildeGradboost}. $f$ can now be updated by
 \begin{align}
+  \label{eq:gradBoostUpdateF} 
   f_m(\mathbf{x}) = f_{m-1}(\mathbf{x}) +  \sum^{J}_{j=0} \eta_{m j} I\left\{ \mathbf{x} \in R_{m j} \right\}.
 \end{align}
 All this is repeated $M$ times, and classification can be done based on the log-odds, as mentioned in \eqref{eq:boostLogOdds1} and \eqref{eq:boostLogOdds2}. \\
 \\
-It is pretty straight forward to expand the algorithm to multi-class classification. As mentioned earlier, the binomial deviance generalizes to the multinomial deviance in \eqref{eq:multinomialDeviance}. As there are now $K$ functions $f_k$, $K$ different trees has to be fitted at each iteration, on for each pair $(\tilde y_{k i}, f_k)$.Correspondingly, $J$ coefficients $\eta_{m k j}$ has to be fit for each tree, using the Newton-Raphson step. At he end the classifier is created based on the estimated class probabilities in \eqref{eq:multinomialDevianceProb}. For a more details see for example \cite{friedman}.
+It is pretty straight forward to expand the algorithm to multi-class classification. As mentioned earlier, the binomial deviance generalizes to the multinomial deviance in \eqref{eq:multinomialDeviance}. As there are now $K$ functions $f_k$, $K$ different trees has to be fitted at each iteration, on for each pair $(\tilde y_{k i}, f_k)$.Correspondingly, $J$ coefficients $\eta_{m k j}$ has to be fit for each tree, using the Newton-Raphson step. At he end the classifier is created based on the estimated class probabilities in \eqref{eq:multinomialDevianceProb}. For more details see for example \cite{friedman}.
 
+\subsection{Tweaking gradient boosting}
+\label{sub:Tweaking gradient boosting}
 
+\subsubsection{Influence trimming}
+\label{sub:Influence trimming}
+\todo{influence trimming \cite{friedman}?}
+For $y_i f_{m-1}(\mathbf{x}_i)$ large, the effect of of $\beta_m h(\mathbf{x}_i; \bm{\gamma}_m)$ is very small, so the data point $(\mathbf{x}_i, y_i)$ can be removed from the computations without any impact on the results. See \cite{friedman}.
 
-
-
+\subsubsection{Regularization}
+\label{sub:Regularizatoin}
 \todo{Section on boosting and overfitting}
+The number of components $M$ in the additive model \eqref{eq:additive}, is a tuning parameter that can prevent overfitting. $M$ can be optimized using a test set or cross-validation.\\
+\\
+Test has shown that this might be better than tuning $M$ \cite{copas1983} \colorbox{yellow}{see \cite{friedman} for explanation}. The updating of $f$ can now be changed form \eqref{eq:gradBoostUpdateF} to 
+\begin{align}
+  f_m(\mathbf{x}) = f_{m-1}(\mathbf{x}) +  \nu \sum^{J}_{j=0} \eta_{m j} I\left\{ \mathbf{x} \in R_{m j} \right\}, \quad 0 < \nu < 1,
+\end{align}
+where $\nu$ is often referred to as the ''learning rate''. Empirically it has been found \cite{friedman} that smaller values of $\nu$ give better test error. However, it requires a correspondingly larger $M$, and its computations scales with $M$. \cite{breiman}.
+\todo{Simulation example to show different tuning parameters?}
+
+\subsubsection{Tree size}
+\label{sub:Tree size}
+The number of terminal nodes in the trees $J$ can be tuned.
+
+
+\subsection{Variable selection}
+\label{sub:Variable selection}
+Should at least mention something about variable selection. See \cite[sec. 8.1]{friedman}?
+
+
 
 \subsection{Stochastic gradient boosting}
 \label{sub:Stochastic gradient boosting}
