@@ -80,8 +80,11 @@ From the figure it is clear that exponential and misclassification loss decrease
 \end{align}
 This locks very similar to the exponential loss, but might be the preferred choice. The main difference is that for increasingly negative margins the exponential loss penalize exponentially, while the binomial deviance penalize linearly. Therefore the binomial deviance is not as vulnerable in noisy settings. The binomial deviance is a very common choice and is was will be used for the rest of this section. For multi class cases, the binomial deviance generalizes to the \textit{multinomial deviance}
 \begin{align}
-  &L(y, f( \mathbf{x })) = - \sum^{K}_{k=1} I\{y = k\} \log p_k(\mathbf{x}), \\
-  &\text{where} \quad p_k(\mathbf{x}) = \frac{\exp (f_k(\mathbf{x}))}{\sum^{K}_{k=1} \exp (f_l(\mathbf{x}))}.
+  \label{eq:multinomialDeviance} 
+  &L(y, \mathbf{f}( \mathbf{x })) = - \sum^{K}_{k=1} I\{y = k\} \log p_k(\mathbf{x}), \\
+  \label{eq:multinomialDevianceProb} 
+  &\text{where} \quad p_k(\mathbf{x}) = \frac{\exp (f_k(\mathbf{x}))}{\sum^{K}_{k=1} \exp (f_l(\mathbf{x}))}\\
+  &\text{and} \quad \mathbf{f} = (f_1, \ldots, f_K)^T.
 \end{align}
 As with logistic regression, this is a probabilistic classifier, ie. it returns class probabilities. That is very useful in fields like data mining, but can also be useful in pure classification when combining into ensembles. \colorbox{yellow}{Need to mention ensemble learning somewhere.}
 \colorbox{yellow}{More loss functions?}
@@ -141,8 +144,10 @@ These last three equations are know as the \textit{gradient boosting algorithm}.
 As \eqref{eq:forStageWise} is replaced by \eqref{eq:gradBoostFit}, $\tilde{y}_i = -g_m(\mathbf{x}_i)$ is often referred to as the ''pseudo-responce''. 
 Note here that $h$ and $f$ are continuous functions and not classifiers. The classification is done after all the $M$ iterations, usually trough some relationship between $f_M$ and class probabilities. For the binomial deviance loss this relationships are the log-odds,
 \begin{align}
-  &P(Y = 1 |  \mathbf{x}) = \left( 1+ \exp\left( -2 f_M (\mathbf{x}) \right) \right)^{-1},\\
-  &P(Y = -1 |  \mathbf{x}) = \left( 1+ \exp\left( 2 f_M (\mathbf{x}) \right) \right)^{-1}.
+  \label{eq:boostLogOdds1} 
+  &\hat P(Y = 1 |  \mathbf{x}) = \left( 1+ \exp\left( -2 f_M (\mathbf{x}) \right) \right)^{-1},\\
+  \label{eq:boostLogOdds2} 
+  &\hat P(Y = -1 |  \mathbf{x}) = \left( 1+ \exp\left( 2 f_M (\mathbf{x}) \right) \right)^{-1}.
 \end{align}
 Later it will be show how powerful this simple algorithm is, but first trees will be used as the basis functions $\beta_m h(\mathbf{x}; \mathbf{\gamma}_m)$.
 
@@ -159,29 +164,55 @@ As with classification all the regions $R_j$ are disjunct and collectively cover
 \begin{align}
   \hat{c}_j = \mathrm{ave}(\tilde y_i | \mathbf{x}_i \in R_j).
 \end{align}
-The tree is grown sequentially, similarly as with classification, by finding the split that minimize the total squared error loss. When a larger tree is grown, it can then be pruned back using \textit{const-complexity pruning} based on the squared error and penalized by the number of terminal nodes. In the boosing context however, pruning is not really an alternative. Usually less than 10 end-nodes will be sufficient \cite[p.~363]{modstat}, and thus growing a larger tree and pruning it back will only be very computationally expensive, probably with worse end results. \todo{Discuss this later?}\\
+The tree is grown sequentially, similarly as with classification, by finding the split that minimize the total squared error loss. When a larger tree is grown, it can then be pruned back using \textit{const-complexity pruning} based on the squared error and penalized by the number of terminal nodes. In the boosing context however, pruning is not really an alternative. Usually $J \leq 10$ end-nodes will be sufficient \cite[p.~363]{modstat}, and thus growing a larger tree and pruning it back will only be very computationally expensive, probably with worse end results. \todo{Discuss this later?}\\
 \\
 In gradient boosting trees are fitted in \eqref{eq:gradBoostFit}, in place of $\beta h(\mathbf{x}_i; \mathbf{\gamma})$ and $f_m$ can be created by
 \begin{align}
   f_m(\mathbf{x}) = f_{m-1}(\mathbf{x}) + \rho_m T(\mathbf{x}; \left\{ c_{m j}, R_{m j} \right\}_{j=1}^{J}),
 \end{align}
-where $\rho_m$ is the solution of the line search in \eqref{eq:lineSearch}.  However, what is more common is to use one variable $\eta_{m j}$ instead of $\rho_m c_{m j}$. Thus one fit $J$ separate basis functions instead of a single additive. This gives the opportunity to better tune the coefficients and improving the fit. So $f_m$ is set to 
+where $\rho_m$ is the solution of the line search in \eqref{eq:lineSearch}.  However, what is more common is to use one variable $\eta_{m j}$ instead of $\rho_m c_{m j}$. Thus $J$ separate basis functions are fitted instead of one single additive. This gives the opportunity to better tune the coefficients and improving the fit. So $f_m$ is set to 
 \begin{align}
+  \label{eq:etaLineSearch} 
   f_m(\mathbf{x}) = f_{m-1}(\mathbf{x}) +  \sum^{J}_{j=0} \eta_{m j} I\left\{ \mathbf{x} \in R_{m j} \right\}.
 \end{align}
-Do to the disjunct nature of the trees, each $\eta_{m j}$ can be found independently.
+As the trees are disjunct, each $\eta_{m j}$ can be found independently.
 \begin{align}
   \eta_{m j} = \argmin_\eta  \sum_{\mathbf{x}_i \in R_{m j}} L(y_i, f_{m-1}(\mathbf{x}) + \eta).
 \end{align}
 
 \subsubsection{The two-class logistic regression classifier}
 \label{sub:The two-class logistic regression classifier}
-The framework for gradient boosting is now reviewed, and final step is to summarize the algorithm for the binomial deviance loss. As before $y \in \left\{ -1, 1 \right\}$ and the loss is 
+The framework for gradient boosting is now reviewed, and the final step is to summarize the algorithm under binomial deviance loss. As before $y \in \left\{ -1, 1 \right\}$ and the loss is 
 \begin{align}
   &L(Y, f(\mathbf{x})) = \log (1 + \exp (-2 Y f(\mathbf{x}))),\\
-  &\text{where} \quad f(\mathbf{x}) = \frac{1}{2} \log \left( \frac{P(Y = 1 | \mathbf{x})}{P(Y = -1 | \mathbf{x})}  \right).
+  &\text{where} \quad f(\mathbf{x}) = \frac{1}{2} \log \frac{ P(Y = 1 | \mathbf{x})}{ P(Y = -1 | \mathbf{x})}  .
 \end{align}
-$f_0(\mathbf{x})$ is initialized to $\frac{1}{2} \log \left( \frac{1+\bar{y}}{1-\bar{y}}  \right)$.
+$f_0(\mathbf{x})$ is initialized to $\frac{1}{2} \log \frac{1+\bar{y}}{1-\bar{y}}$.  The ''pseudo-responce'' is
+\begin{align}
+  \label{eq:ytildeGradboost} 
+  &\tilde{y}_i = -g_m(\mathbf{x}_i) = 2 y_i / (1 + \exp \left( 2 y_i f_{m-1}(\mathbf{x}_i) \right), \quad i = 1, \ldots, N.
+\end{align}
+A regression tree $T$ is fitted to $\tilde y_i$,
+\begin{align}
+  \left\{ R_{m j} \right\}_{j = 1}^J  = 
+  \argmin_{\left\{ c_j, R_{j} \right\}_{j = 1}^J} \sum^{N}_{i=1} \left( \tilde y_i - T(\mathbf{x}_i; \left\{ c_j, R_j \right\}_{j = 1}^J) \right)^2.
+\end{align}
+The line searches in \eqref{eq:etaLineSearch} becomes
+\begin{align}
+  \eta_{m j} = \argmin_\eta  \sum_{\mathbf{x}_i \in R_{m j}} \log (1 + \exp [-2 y_i (f_{m-1}(\mathbf{x}_i) + \eta) ]), \quad j = 1, \ldots, J,
+\end{align}
+but this expression has no closed form solution. A common way to approximate the solution is by doing a Newton-Raphson step instead \cite{friedman}.
+\begin{align}
+  \eta_{m j} =  \frac{\sum_{\mathbf{x}_i \in R_{m j}} \tilde y_i}{\sum_{\mathbf{x}_i \in R_{m j}} |\tilde y_i|(2-|\tilde y_i|)}.
+\end{align}
+Here  $\tilde y_i$ is found in \eqref{eq:ytildeGradboost}. $f$ can now be updated by
+\begin{align}
+  f_m(\mathbf{x}) = f_{m-1}(\mathbf{x}) +  \sum^{J}_{j=0} \eta_{m j} I\left\{ \mathbf{x} \in R_{m j} \right\}.
+\end{align}
+All this is repeated $M$ times, and classification can be done based on the log-odds, as mentioned in \eqref{eq:boostLogOdds1} and \eqref{eq:boostLogOdds2}. \\
+\\
+It is pretty straight forward to expand the algorithm to multi-class classification. As mentioned earlier, the binomial deviance generalizes to the multinomial deviance in \eqref{eq:multinomialDeviance}. As there are now $K$ functions $f_k$, $K$ different trees has to be fitted at each iteration, on for each pair $(\tilde y_{k i}, f_k)$.Correspondingly, $J$ coefficients $\eta_{m k j}$ has to be fit for each tree, using the Newton-Raphson step. At he end the classifier is created based on the estimated class probabilities in \eqref{eq:multinomialDevianceProb}. For a more details see for example \cite{friedman}.
+
 
 
 
