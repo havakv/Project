@@ -1,4 +1,4 @@
-<<set-parent, echo=FALSE, cache=FALSE>>=
+<<echo=FALSE, cache=FALSE>>=
 set_parent('./project.Rnw')
 @
 \section{Boosting}
@@ -231,7 +231,7 @@ For $y_i f_{m-1}(\mathbf{x}_i)$ large, the effect of of $\beta_m h(\mathbf{x}_i;
 \todo{Section on boosting and overfitting}
 The number of components $M$ in the additive model \eqref{eq:additive}, is a tuning parameter that can prevent overfitting. $M$ can be optimized using a test set or cross-validation.\\
 \\
-Test has shown that this might be better than tuning $M$ \cite{copas1983} \colorbox{yellow}{see \cite{friedman} for explanation}. The updating of $f$ can now be changed form \eqref{eq:gradBoostUpdateF} to 
+Test has shown that \textit{shrinkage} might be better than tuning $M$ \cite{copas1983} \colorbox{yellow}{see \cite{friedman} for explanation}. The updating of $f$ can now be changed form \eqref{eq:gradBoostUpdateF} to 
 \begin{align}
   f_m(\mathbf{x}) = f_{m-1}(\mathbf{x}) +  \nu \sum^{J}_{j=0} \eta_{m j} I\left\{ \mathbf{x} \in R_{m j} \right\}, \quad 0 < \nu < 1,
 \end{align}
@@ -245,13 +245,23 @@ The number of terminal nodes in the trees $J$ can be tuned.
 
 \subsection{Variable selection}
 \label{sub:Variable selection}
-Should at least mention something about variable selection. See \cite[sec. 8.1]{friedman}?
+\colorbox{yellow}{Should at least mention something about variable selection. See \cite[sec. 8.1]{friedman}?}
 
-
+\subsection{Interpretation}
+\label{sub:Interpretation}
+\colorbox{yellow}{Section on interpretation? See \cite[10.3]{modstat} and \cite{friedman}.}
 
 \subsection{Stochastic gradient boosting}
 \label{sub:Stochastic gradient boosting}
-
-\colorbox{yellow}{Section on stochastic gradient boosting}\\
 ada: an R package for stochastic boosting \url{http://dept.stat.lsa.umich.edu/~gmichail/ada_final.pdf} \\
-Friedman \url{https://statweb.stanford.edu/~jhf/ftp/stobst.pdf} \\
+Friedman \url{https://statweb.stanford.edu/~jhf/ftp/stobst.pdf} \cite{FriedmanStochBoost}. \\
+\\
+In 1996, Breiman \cite{Breiman1996} introduced his \textit{bagging} procedure, as will be further explained in  \colorbox{yellow}{sectionref}. He showed that the performance of function estimation procedures could be improved by introducing randomness in the training data. Inspired by this, in addition to Freund and Schapire's randomization of Adaboost in 1996 \cite{freund1996} and Breiman's hybrid procedure of boosting and bagging in 1999 \cite{breiman1999}, Friedman developed in 1999 the \textit{stochastic gradient boosting} algorithm \cite{FriedmanStochBoost}.
+This new method is only a slight modification of the gradient boosting algorithm, but has been shown capable of outperforming its gradient boosting, both in terms of accuracy and computational speed  \cite{FriedmanStochBoost}.
+
+The idea is draw a random subsample of the training data, without replacement, at each iteration. All the steps are exactly the same as in the gradient boosting algorithm, but they are performed on the subsample. \\
+\\
+The size of the subset, $N_{sub}$, introduce another tuning parameter. Smaller values of $N_{sub}$ introduce more randomness to the procedure, while reducing computing time by the fraction $N_{sub}/N$. However, as the data trained on at each iterations becomes smaller, the variance of the individual base learners will increase. The gain comes from reduction in the correlation between estimates at each iteration, as this tend to reduce the variance of the combined model \eqref{eq:additive}.
+
+For $N_{sub} = 0.5$, the algorithm is approximately equivalent to drawing bootstrap samples. Therefore, typical values used for $N_{sub}$ is around $0.5$ \cite{modstat}, but can be made substantially lower for larger datasets.
+
