@@ -23,6 +23,31 @@
   Volume                   = {4}
 }
 
+@Article{randomforests,
+  Title                    = {Random Forests},
+  Author                   = {Breiman, Leo},
+  Journal                  = {Machine Learning},
+  Year                     = {2001},
+  Number                   = {1},
+  Pages                    = {5–32},
+  Volume                   = {45},
+
+  __markedentry            = {[havakv:6]},
+  Doi                      = {10.1023/a:1010933404324},
+  ISSN                     = {0885-6125},
+  Owner                    = {havakv},
+  Publisher                = {Springer Science + Business Media},
+  Timestamp                = {2015.04.20},
+  Url                      = {http://dx.doi.org/10.1023/A:1010933404324}
+}
+
+@TechReport{breiman1999,
+  Title                    = {Using adaptive bagging to debias regressions},
+  Author                   = {Breiman, Leo},
+  Institution              = {Technical Report 547, Statistics Dept. UCB},
+  Year                     = {1999}
+}
+
 @Article{Breiman1996,
   Title                    = {Bagging predictors},
   Author                   = {Breiman, Leo},
@@ -34,7 +59,7 @@
   Pages                    = {123–140},
   Volume                   = {24},
 
-  __markedentry            = {[havakv:6]},
+  __markedentry            = {[havakv:]},
   Doi                      = {10.1007/bf00058655},
   ISSN                     = {1573-0565},
   Owner                    = {havakv},
@@ -107,8 +132,6 @@
   Number                   = {4},
   Pages                    = {367–378},
   Volume                   = {38},
-
-  __markedentry            = {[havakv:]},
   Doi                      = {10.1016/s0167-9473(01)00065-2},
   ISSN                     = {0167-9473},
   Owner                    = {havakv},
