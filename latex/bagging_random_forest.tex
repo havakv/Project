@@ -9,9 +9,9 @@ Consider a scenario where a learning set $\left\{ \mathbf{x}_i, y_i \right\}_{i=
   \label{eq:aggClass} 
   C_{agg}(\mathbf{x}) = \mathrm{majority} \left\{ C_b(\mathbf{x}) \right\}_{b=1}^{B}.
 \end{align}
-In 1996 Leo Breiman found that this process could be imitated on a single learning set by drawing \textit{bootstrap} samples from the data. He called this method \textit{bagging}, or bootstrap aggregating \cite{Breiman1996}. 
+In 1996 Leo Breiman found that this process could be imitated on a single learning set by drawing \textit{bootstrap} samples \todo{referance here?}from the data. He called this method \textit{bagging}, or bootstrap aggregating \cite{Breiman1996}. 
 
-The way it works is to draw $N$ samples (with replacement) from the data set $\left\{ \mathbf{x}_i, y_i \right\}_{i=1}^{N}$, and train a classifier $C_b(\mathbf{x})$ on the samples. Repeat this $B$ times and get the aggregated classifier in  \eqref{eq:aggClass}. The use of bootstrap samples makes the computations for each individual classifier independent. This mean that the training is easy to parallelize for faster computation. However, if the underlying method is interpretable, this will be lost in bagging.\\
+The way it works is to draw $N$ samples (with replacement) from the data set $\left\{ \mathbf{x}_i, y_i \right\}_{i=1}^{N}$, and train a classifier $C_b(\mathbf{x})$ on the samples. Repeat this $B$ times and get the aggregated classifier in  \eqref{eq:aggClass}. The use of bootstrap samples makes the computations for each individual classifier independent. This mean that the training is easy to parallelize for faster computation. However, if the underlying method is interpretable, this will be lost in bagging.
 \colorbox{yellow}{Background on bootstrapping? Se Efron and Tibshirani 1993.} \\
 It is important to note that even though the votes gives proportions of sets predicting class $k$, these proportions should not be used at estimates for the class probabilities. Consider a two class experiment where the probability of class 1 is $0.75$. It is not unlikely that all the bagged classifiers predict class $1$, which gives a good aggregated classifier, but a horrible estimate of the class probability. However, often the underlying method used for each single classifier has a probability estimate (eg. trees). An alternative method to \eqref{eq:aggClass} is to average theses probabilities instead.
 \begin{align}
@@ -29,38 +29,39 @@ In \cite{Breiman1996} classification trees were fitted to a variety of dataset, 
 
 \subsubsection{Why bagging works}
 \label{sub:Why bagging works}
-This arguments is taken from \cite{Breiman1996}. Denote $c \in \left\{ 1, \ldots, K \right\}$ as the correct classification for a given $\mathbf{x}$. Then the probability of correct classification for a classifier $C(\mathbf{x})$ given the predictor $\mathbf{x}$ is 
+\todo{Change $c$ to $y$ in this subsection}
+This arguments is taken from \cite{Breiman1996}. Denote $y \in \left\{ 1, \ldots, K \right\}$ as the correct class for a given $\mathbf{x}$. Then the probability of correct classification for a classifier $C(\mathbf{x})$ given the predictor $\mathbf{x}$ is 
 \begin{align}
-  P(C(\mathbf{x}) = c \mid \mathbf{x})  &= \sum^{K}_{k=1} P(C(\mathbf{x})=c \medcap c = k \mid \mathbf{x}) \notag \\
-  &= \sum^{K}_{k=1} P(C(\mathbf{x}) = c \mid c = k, \mathbf{x}) \cdot P(c=k \mid \mathbf{x}) \notag \\
-  &= \sum^{K}_{k=1} P(C(\mathbf{x}) = k \mid \mathbf{x}) \cdot P(c=k \mid \mathbf{x}) 
+  P(C(\mathbf{x}) = y \mid \mathbf{x})  &= \sum^{K}_{k=1} P(C(\mathbf{x})=y \medcap y = k \mid \mathbf{x}) \notag \\
+  &= \sum^{K}_{k=1} P(C(\mathbf{x}) = y \mid y = k, \mathbf{x}) \cdot P(y=k \mid \mathbf{x}) \notag \\
+  &= \sum^{K}_{k=1} P(C(\mathbf{x}) = k \mid \mathbf{x}) \cdot P(y=k \mid \mathbf{x}) 
 \end{align}
-where $P(C(\mathbf{x})=c \mid \mathbf{x})$ is the probability of $C$ predicting class $k$ for a certain $\mathbf{x}$, and $P(c=k \mid \mathbf{x})$ is the probability of class $k$ being the correct class for a certain $\mathbf{x}$. Thus the total probability of correct classification is 
+where $P(C(\mathbf{x})=y \mid \mathbf{x})$ is the probability of $C$ predicting class $k$ for a certain $\mathbf{x}$, and $P(y=k \mid \mathbf{x})$ is the probability of class $k$ being the correct class for a certain $\mathbf{x}$. Thus the total probability of correct classification is 
 \begin{align}
-  P(C(\mathbf{x}) = c) = \int_{\mathbf{x}} \left(\sum^{K}_{k=1} P(C(\mathbf{x}) = k \mid \mathbf{x}) \cdot P(c=k \mid \mathbf{x})   \right) p(\mathbf{x}) d\mathbf{x},
+  P(C(\mathbf{x}) = y) = \int_{\mathbf{x}} \left(\sum^{K}_{k=1} P(C(\mathbf{x}) = k \mid \mathbf{x}) \cdot P(y=k \mid \mathbf{x})   \right) p(\mathbf{x}) d\mathbf{x},
 \end{align}
 where $p(\mathbf{x})$ is the probability distribution of $\mathbf{x}$. Observe that 
 \begin{align}
-  \sum^{K}_{k=1} P(C(\mathbf{x}) = k \mid \mathbf{x}) \cdot P(c=k \mid \mathbf{x}) \leq \max_k P(c = k \mid \mathbf{x}),
+  \sum^{K}_{k=1} P(C(\mathbf{x}) = k \mid \mathbf{x}) \cdot P(y=k \mid \mathbf{x}) \leq \max_k P(y = k \mid \mathbf{x}),
 \end{align}
 with equality if and only if 
 \begin{align}
   P(C(\mathbf{x}) = k \mid \mathbf{x}) = \left\{ 
   \begin{array}{l l}
-    1 & \quad \text{if } P(c = k \mid \mathbf{x}) = \max_j P(c = j \mid \mathbf{x})\\
+    1 & \quad \text{if } P(y = k \mid \mathbf{x}) = \max_j P(y = j \mid \mathbf{x})\\
     0 & \quad \text{else}
   \end{array} \right. .
 \end{align}
-The Bayes classifier, $C_{Bayes}(\mathbf{x}) = \argmax_k P(c = k \mid \mathbf{x})$, discussed earlier gives the expression above, and gives thus the lowes obtainable misclassification rate
+The Bayes classifier, $C_{Bayes}(\mathbf{x}) = \argmax_k P(y = k \mid \mathbf{x})$, discussed earlier gives the expression above, and gives thus the lowes obtainable misclassification rate
 \begin{align}
   \label{eq:bayesBagg} 
-  P(C_{Bayes}(\mathbf{x}) = c) = \int_{\mathbf{x}} \max_k P(c=k \mid \mathbf{x})  p(\mathbf{x}) d\mathbf{x}.
+  P(C_{Bayes}(\mathbf{x}) = y) = \int_{\mathbf{x}} \max_k P(y=k \mid \mathbf{x})  p(\mathbf{x}) d\mathbf{x}.
 \end{align}
 $C(\mathbf{x})$ is called \textit{order-correct} if it follows the following criterion
 \begin{align}
-  \argmax_k P(C(\mathbf{x}) = k \mid \mathbf{x}) = \argmax_k  P(c = k \mid \mathbf{x}).
+  \argmax_k P(C(\mathbf{x}) = k \mid \mathbf{x}) = \argmax_k  P(y = k \mid \mathbf{x}).
 \end{align}
-This means that if $\mathbf{x}$ gives class $k$ more than any other class, $C(\mathbf{x})$ predicts class $k$ more than any other class. This does not make $C(\mathbf{x})$ accurate as the probabilities $P(C(\mathbf{x}) = k \mid \mathbf{x}) $ and $P(c = k \mid \mathbf{x})$ can still be very different. For example consider the two class case where $P(c = 1 \mid \mathbf{x})  = 0.99$, while $P(C(\mathbf{x}) = 1\mid \mathbf{x}) = 0.51$, $C(\mathbf{x})$ is order correct, but not much better than pure guessing.
+This means that if $\mathbf{x}$ gives class $k$ more than any other class, $C(\mathbf{x})$ predicts class $k$ more than any other class. This does not make $C(\mathbf{x})$ accurate as the probabilities $P(C(\mathbf{x}) = k \mid \mathbf{x}) $ and $P(y = k \mid \mathbf{x})$ can still be very different. For example consider the two class case where $P(y = 1 \mid \mathbf{x})  = 0.99$, while $P(C(\mathbf{x}) = 1\mid \mathbf{x}) = 0.51$, $C(\mathbf{x})$ is order correct, but not much better than pure guessing.
 
 The aggregated predictors $C_{agg}$ in \eqref{eq:aggClass} and \eqref{eq:aggClassP} are approximations of  
 \todo{Is this correct?}
@@ -69,17 +70,17 @@ The aggregated predictors $C_{agg}$ in \eqref{eq:aggClass} and \eqref{eq:aggClas
 \end{align}
 Given $\mathbf{x}$, the probability for correct classification is 
 \begin{align}
-  P(G(\mathbf{x}) = c \mid \mathbf{x})  
-  = \sum^{K}_{k=1} I\{ \argmax_j P(C(\mathbf{x}) = j \mid \mathbf{x}) = k \} P(c=k \mid \mathbf{x}).
+  P(G(\mathbf{x}) = y \mid \mathbf{x})  
+  = \sum^{K}_{k=1} I\{ \argmax_j P(C(\mathbf{x}) = j \mid \mathbf{x}) = k \} P(y=k \mid \mathbf{x}).
 \end{align}
 If $C(\mathbf{x})$ is order-correct this becomes
 \begin{align}
-  P(G(\mathbf{x}) = c \mid \mathbf{x})  = \max_k P(c = k \mid \mathbf{x}),
+  P(G(\mathbf{x}) = y \mid \mathbf{x})  = \max_k P(y = k \mid \mathbf{x}),
 \end{align}
 and $G(\mathbf{x})$ will have the same probability of correct classification as the Bayes classifier in  \eqref{eq:bayesBagg}. Now let $H$ be the set of all inputs $\mathbf{x}$ for which $C(\mathbf{x})$ is order-correct, and $H^C$ be its compliment in terms of $C(\mathbf{x})$ not being order-correct. The probability of correct classification is now
 \begin{align}
-  P(G(\mathbf{x}) = c) = &\int_{\mathbf{x} \in H} \max_k P(c=k \mid \mathbf{x})  p(\mathbf{x}) d\mathbf{x} \quad + \\
-  &\int_{\mathbf{x} \in H^C} \left(\sum^{K}_{k=1} I\{ G(\mathbf{x}) = k \} P(c=k \mid \mathbf{x})   \right) p(\mathbf{x}) d\mathbf{x}.
+  P(G(\mathbf{x}) = y) = &\int_{\mathbf{x} \in H} \max_k P(y=k \mid \mathbf{x})  p(\mathbf{x}) d\mathbf{x} \quad + \\
+  &\int_{\mathbf{x} \in H^C} \left(\sum^{K}_{k=1} I\{ G(\mathbf{x}) = k \} P(y=k \mid \mathbf{x})   \right) p(\mathbf{x}) d\mathbf{x}.
 \end{align}
 This shows that if a classifier is good in the sense that it is order-correct for most inputs $\mathbf{x}$, then the $G(\mathbf{x})$ is very good, and so should its approximation $C_{agg}(\mathbf{x})$ be. On the other hand, if $C(\mathbf{x})$ is not a good classifier, aggregating it can actually make it worse.
 
@@ -89,3 +90,46 @@ This shows that if a classifier is good in the sense that it is order-correct fo
 Hei \cite{randomforests}.
 \\ \colorbox{yellow}{Boosting seems to outperform RF, but more tuning and takes longer to run?} \\
 \colorbox{yellow}{RF and overfitting in modstat}\\
+\url{http://www.montefiore.ulg.ac.be/~glouppe/pdf/phd-thesis.pdf} \\
+\colorbox{yellow}{referance to random variable selection at each node. See phd. above p. 72} \\
+\colorbox{yellow}{Write something about how boosting focus on reducing bias, while RF reduce variance?} \\
+\\
+In this section the method \textit{Random forests} proposed by Breiman \cite{randomforests} in 2001, will be investigated. The term \textit{random forests} is often used as a collection of methods building an ensemble of decision trees, grown in a randomized way, but only Breiman's method will be investigated here. 
+\\\colorbox{yellow}{Other methods include ... see phd thesis p. 72}
+
+The idea behind bagging was to reduce the instability of a classifier through aggregation of bootstrap samples. From a regression point of view, the success is is explained through variance reduction. Trees are very well suited for bagging, as they are  high variance and low bias. In 2001, Breiman suggested an improvement of this method, by reducing the variance further through de-correlating the trees in the method. He called this method \textit{Random forests} \cite{randomforests}.
+
+The idea is very similar to bagging. The only difference is in the growing of a tree for each bootstrap sample. To grow a tree, each split should be done in the following fashion:
+\begin{enumerate}
+  \item Select $m$ predictors from the total amount of $p$ predictors ($\mathrm{dim}(\mathbf{x}) = p$).
+  \item Do \textit{one} split, based on these $m$ variables (pick best variable and split-point). 
+  \item Start over for the next split.
+\end{enumerate}
+Each tree is grown large and not pruned. Usually the stopping criterion is some minimum terminal node size.
+
+Intuitively, the correlation between the trees should decrease by reducing $m$, but increase the variance of the single trees. Therefore $m$ should be considered a tuning parameter. However, the inventors recommend using $m = \lfloor \sqrt{p} \rfloor$, as a default value.
+\\\colorbox{yellow}{Something about how few tuning parameters RF has compared to boosting}\\
+
+\subsection{Why random forests works}
+\label{sub:Why random forests works}
+\url{https://stat.ethz.ch/education/semesters/ss2012/ams/slides/v10.2.pdf} \\
+\colorbox{yellow}{The url has nice derivation of bias/variance tradeoff for regression (p. 6)}\\
+\\
+In section \ref{sub:Why bagging works} an argument was made for why aggregating bootstrap samples can improved the prediction power of a classifier.This argument is still valid for the random forest algorithm, but in this section the effect of de-correlating the trees will be investigated.
+
+
+\subsection{Out-of-bag}
+\label{sub:Out-of-bag}
+
+\subsection{Tuning}
+\label{sub:Tuning}
+Something about tuning, and how this is easier to do than for boosting.
+
+\subsection{Robustness and overfitting}
+\label{sub:Robustness and overfitting}
+\colorbox{yellow}{Say something about how adding noise compares to adding noise in boosting?}
+\\ \colorbox{yellow}{Maybe overfitting is covered enough in the Why random forests work?}
+
+\subsection{Variable importance}
+\label{sub:Variable importance}
+\colorbox{yellow}{Should I write about this? In that case, should do the same for boosting.}
