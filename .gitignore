@@ -12,6 +12,7 @@ latex/figures
 
 ## General
 *.swp
+*.dat
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof

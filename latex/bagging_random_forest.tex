@@ -64,7 +64,7 @@ $C(\mathbf{x})$ is called \textit{order-correct} if it follows the following cri
 This means that if $\mathbf{x}$ gives class $k$ more than any other class, $C(\mathbf{x})$ predicts class $k$ more than any other class. This does not make $C(\mathbf{x})$ accurate as the probabilities $P(C(\mathbf{x}) = k \mid \mathbf{x}) $ and $P(y = k \mid \mathbf{x})$ can still be very different. For example consider the two class case where $P(y = 1 \mid \mathbf{x})  = 0.99$, while $P(C(\mathbf{x}) = 1\mid \mathbf{x}) = 0.51$, $C(\mathbf{x})$ is order correct, but not much better than pure guessing.
 
 The aggregated predictors $C_{agg}$ in \eqref{eq:aggClass} and \eqref{eq:aggClassP} are approximations of  
-\todo{Is this correct?}
+\todo{Is this correct? NOT \eqref{eq:aggClassP}}
 \begin{align}
   G(\mathbf{x}) = \argmax_k P(C(\mathbf{x})=k \mid \mathbf{x}).
 \end{align}
@@ -83,7 +83,7 @@ and $G(\mathbf{x})$ will have the same probability of correct classification as 
   &\int_{\mathbf{x} \in H^C} \left(\sum^{K}_{k=1} I\{ G(\mathbf{x}) = k \} P(y=k \mid \mathbf{x})   \right) p(\mathbf{x}) d\mathbf{x}.
 \end{align}
 This shows that if a classifier is good in the sense that it is order-correct for most inputs $\mathbf{x}$, then the $G(\mathbf{x})$ is very good, and so should its approximation $C_{agg}(\mathbf{x})$ be. On the other hand, if $C(\mathbf{x})$ is not a good classifier, aggregating it can actually make it worse.
-
+\\ \colorbox{yellow}{Mention that this only applies to the voting in \eqref{eq:aggClass}, not the averaging of probabilities \eqref{eq:aggClassP}. }
 
 \section{Random forests}
 \label{sec:Random forests}

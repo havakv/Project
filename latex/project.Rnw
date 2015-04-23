@@ -112,7 +112,9 @@
 %
 <<bagging_random_forest, child='./bagging_random_forest.tex', cache=TRUE>>=
 @
-
+%
+<<simulations, child='./simulations.tex', cache=TRUE>>=
+@
 
 
 %

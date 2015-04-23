@@ -115,3 +115,23 @@ plot.groups <- function(groups, ...){
     }
 }
 
+
+getSpam <- function(path = "../dataset", testToTrainRatio = 1) {
+    # Get dataset: Spam
+    X <- read.table(paste(path, "/spambase.dat", sep = ''), skip = 62)
+    names(X)[58] <- "spam"
+    X$spam <- as.factor(X$spam)
+
+    # Partition data in training and test set
+    nData  <- nrow(X)
+    nTrain <- round(nData/(testToTrainRatio+1))
+    nTest  <- nData - nTrain
+
+    shuffledIX <- sample(nData)
+
+    Xtrain <- X[shuffledIX[1:nTrain] ,]
+    Xtest  <- X[shuffledIX[(nTrain+1):nData] ,]
+
+    L <- list(train = Xtrain, test = Xtest, nTrain = nTrain, nTest = nTest)
+    return(L)
+}
