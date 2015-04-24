@@ -1,33 +1,50 @@
 #!/usr/bin/env Rscript
+# Script for simulations for adaboost.M1
+
 NOPRINT=FALSE
 set.seed(0)
+
+# Check if environment variables are fine.
+if(system("echo $OMP_NUM_THREADS", intern = TRUE) != 1)
+    stop("OMP_NUM_THREADS is not 1")
+
+argv <- commandArgs(trailingOnly=TRUE)
+if (identical(argv, character(0)))
+    stop("Need number of threads as input parameter")
+
+nCores <- as.integer(argv[1])
+
 library(common)    
 library(adabag)
+require(parallel) # one of the core R packages
+require(doParallel)
+library(foreach)
+
+# Get training and test data
 X <- getSpam()
 
-
-# AdaBoost.M1
-
-# mfinal = nr of boosting iterations/nr of trees used.
 maxdepth <- c(1, 3, 10, 30)
-its      <- round(seq(10, 300, length.out = 10))
+its      <- round(c(seq(1, 10, length.out = 5), 
+                    seq(20, 300, length.out = 10)))
 ndept    <- length(maxdepth)
 nit      <- length(its)
 Errors <- matrix(NA, nit, ndept)
 
-count <- 1
-for (j in 1:ndept) {
-    for (i in 1:nit) {
-        cat(count, " of ", nit*ndept, "\n")
-        count <- count + 1
+registerDoParallel(nCores)
+Errors <- foreach(i = 1:nit, .combine = rbind) %dopar% {
+    err <- rep(NA, ndept)
+    for (j in 1:ndept) {
+        cat("it: ", its[i], ",\t depth: ", maxdepth[j], "\n")
 
         ada2 <- boosting(spam ~ ., X$train, boos=FALSE, mfinal=its[i], coeflearn="Freund",
                          control = rpart.control(maxdepth=maxdepth[j]))
         predAda2 <- predict(ada2, X$test)
-        Errors[i, j]  <-  sum(predAda2$class != X$test$spam)/X$nTest
+        err[j] <- sum(predAda2$class != X$test$spam)/X$nTest
     }
+    err
 }
 
+# Plot figures
 printfig("adaboost", NOPRINT)
 ylim <- c(min(Errors), max(Errors))
 plot(its, Errors[,1], type="l", xlab = "iterations", ylab = "error", ylim = ylim)
@@ -38,6 +55,7 @@ legend(x = "topright", as.character(maxdepth), lty = rep(1, 4), lwd = rep(1, 4),
 off(NOPRINT)
 
 
+# Save variables
 save(maxdepth, its, ndept, nit, Errors, file = "../latex/dataR/adaboostSim.Rdata")
 
 
