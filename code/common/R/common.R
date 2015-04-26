@@ -118,7 +118,8 @@ plot.groups <- function(groups, ...){
 
 getSpam <- function(path = "../dataset", testToTrainRatio = 1) {
     # Get dataset: Spam
-    X <- read.table(paste(path, "/spambase.dat", sep = ''), skip = 62)
+    #X <- read.table(paste(path, "/spambase.dat", sep = ''), skip = 62)
+    X <- read.csv(paste(path, "/spambase.dat", sep = ''), skip = 62, header=FALSE)
     names(X)[58] <- "spam"
     X$spam <- as.factor(X$spam)
 
