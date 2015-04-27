@@ -21,7 +21,7 @@ fitControl <- trainControl(## 10-fold CV
                           repeats = 10)
 
 gbmGrid <-  expand.grid(interaction.depth = c(1, 2, 3, 5, 9),
-                        n.trees = seq(1000, 100000, length.out = 30),
+                        n.trees = round(seq(1000, 100000, length.out = 30)),
                         shrinkage = 0.001)
 
 gbmFit1 <- train(spam ~ ., data = X$train,

@@ -45,7 +45,7 @@ Errors <- foreach(i = 1:nit, .combine = rbind) %dopar% {
 }
 
 # Save variables
-save(maxdepth, its, ndept, nit, Errors, file = "../latex/dataR/adaboostSim.Rdata")
+save(maxdepth, its, ndept, nit, Errors, file = "../dataset/spamResults/adaboostSpam.Rdata")
 
 
 

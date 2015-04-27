@@ -32,7 +32,9 @@ This is repeated for $m = 1, \ldots, M$. Finally the classifier is created
   C( \mathbf{x}) = \text{sign}\left( \sum^{M}_{m=1} \alpha_m C_m(\mathbf{x}) \right).
 \end{align}
 There are many choices of weak classifiers, but one of the more common is to use classification trees. It is then important to not grow an optimal tree as with CART, but instead grow a shallow tree or just stumps (one split).
-\\ \colorbox{yellow}{Why does the weak classifier has to be weak? Why not grow a large tree?}. An example of this implementation can be found in the r package \verb+adabag+ \cite{adabag}. How to best grow a weak classification tree for AdaBoost will not be further covered in this paper.
+\\ \colorbox{yellow}{Why does the weak classifier has to be weak? Why not grow a large tree?}. An example of this implementation can be found in the r package \verb+adabag+ \cite{adabag}. How to best grow a weak classification tree for AdaBoost will not be further covered in this paper. But rather considered a tuning parameter.
+\\\colorbox{yellow}{Refer to paper where this is discussed?}\\
+Later when adaboost is used on data, there is supplied a maximum depth of the trees to \verb+adabag+. So the trees will be grown to this size (no pruning) unless there are too few datapoints in the splitting node.
 
 \subsection{Forward stagewise Additive Modeling}
 \label{sub:Forward stagewise additive modeling}

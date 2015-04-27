@@ -2,7 +2,7 @@
 # Plotting for adaboost on spam data
     
 
-load("../latex/dataR/adaboostSim.Rdata")
+load("../dataset/spamResults/adaboostSpam.Rdata")
 
 # Plot figures
 printfig("adaboost", NOPRINT)
