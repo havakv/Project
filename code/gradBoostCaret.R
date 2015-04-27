@@ -20,12 +20,17 @@ fitControl <- trainControl(## 10-fold CV
                           ## repeated ten times
                           repeats = 10)
 
+gbmGrid <-  expand.grid(interaction.depth = c(1, 2, 3, 5, 9),
+                        n.trees = seq(1000, 100000, length.out = 30),
+                        shrinkage = 0.001)
+
 gbmFit1 <- train(spam ~ ., data = X$train,
                  method = "gbm",
                  trControl = fitControl,
                  ## This last option is actually one
                  ## for gbm() that passes through
-                 verbose = FALSE)
+                 verbose = FALSE,
+                 tuneGrid = gbmGrid)
 gbmFit1
 pred <- predict(gbmFit1, X$test)
 err <- sum(pred != X$test$spam)/X$nTest
