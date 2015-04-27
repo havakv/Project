@@ -43,7 +43,7 @@ cat("Done with sim 1 \n")
 # Stochastic gradient boosting
 shrink <- 0.01
 nTrees <- 10000
-bag    <- seq(1, 0.75, 0.5, 0.25, 0.1)
+bag    <- c(1, 0.75, 0.5, 0.25, 0.1)
 fit2 <- list()
 registerDoParallel(nCores)
 fit2 <- foreach(i = 1:length(shrink)) %dopar% {
