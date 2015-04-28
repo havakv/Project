@@ -46,7 +46,7 @@ nTrees <- 10000
 bag    <- c(1, 0.75, 0.5, 0.25, 0.1)
 fit2 <- list()
 registerDoParallel(nCores)
-fit2 <- foreach(i = 1:length(shrink)) %dopar% {
+fit2 <- foreach(i = 1:length(bag)) %dopar% {
     t <- system.time(
     obj <- gbm(spam ~ ., distribution = "bernoulli", data = X$train, 
                n.trees=nTrees, shrinkage=shrink, bag.fraction=bag[i], 
@@ -67,7 +67,7 @@ bag    <- 0.5
 interaction <- c(1, 2, 3, 5, 10)
 fit3 <- list()
 registerDoParallel(nCores)
-fit3 <- foreach(i = 1:length(shrink)) %dopar% {
+fit3 <- foreach(i = 1:length(interaction)) %dopar% {
     obj <- gbm(spam ~ ., distribution = "bernoulli", data = X$train, 
                n.trees=nTrees, shrinkage=shrink, bag.fraction=bag, 
                keep.data=FALSE, interaction.depth = interaction[i])
@@ -78,7 +78,7 @@ cat("Done with sim 3 \n")
 
 #-----------------------------------------------------------------------------
 # Saving results
-save(fit1, fit2, fit3, file = "../dataset/spamResults/gradBoostSpam.Rdata")
+save(fit1, fit2, fit3, X, file = "../dataset/spamResults/gradBoostSpam.Rdata")
 cat("Done!\n")
 quit()
 

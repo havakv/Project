@@ -19,6 +19,17 @@ Need to to simulations of boosting.
 Simulation 1: \\
 Chose, 4 or 5 different amount of depths of trees used. Plot test error as function of boosting iterations.\\
 \\
+In Figure~\ref{fig:adaboostSpam}, it is clear that the results are better for deeper trees. This is quite surprising, as according to theory weak classifiers are needed. \\
+\colorbox{yellow}{Find some explanation!}\\
+\\
+\begin{figure}[h!]
+\begin{center}
+    \includegraphics[scale=0.5]{./figures/adaboostSpam.pdf}
+\end{center}
+\caption{AdaBoost on spam data. For different tree depths.}
+\label{fig:adaboostSpam}
+\end{figure}
+
 Simulation 2: \\
 With and without bootstraping. Maybe include this in Simulation 1.
 
@@ -37,27 +48,75 @@ Simulation 1:\\
 Plot error as function of iterations. This should be done for different shrinkage parameters.\\
 Consider plotting training error as well.\\
 \\
+\begin{figure}[h!]
+\begin{center}
+    \includegraphics[scale=0.5]{./figures/gradboostSpamShrink2.pdf}
+\end{center}
+\caption{Gradient boosting on spam data. The shrinkage of each line is specified in the legend.}
+\label{fig:gradboostSpamShrink2}
+\end{figure}
+
 Simulation 2:\\
 Plot error as function of iterations, for different \verb+bag.fractions+, and report time for the different baggigs.\\
 \\
+\begin{figure}[h!]
+  \centering
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{./figures/gradboostSpamStoch.pdf}
+    \caption{Different bootstrap fractions.}
+    \label{fig:gradboostSpamStoch}
+  \end{subfigure}%
+  \quad
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{./figures/gradboostSpamDepth.pdf}
+    \caption{Different tree depths.}
+    \label{fig:gradboostSpamDepth}
+  \end{subfigure}
+          %(or a blank line to force the subfigure onto a new line)
+  \vspace{1\baselineskip}
+  \caption{Stochastic gradient boosting on spam data. Give some parameter values here!!!}
+  \label{fig:StochasticGradBoost}
+\end{figure}
+\todo{parameters in Figure~\ref{fig:StochasticGradBoost}}
+
 Simulation 3:\\
 Use \verb+interaction.depth+ (nr of splits) to set depth of tree, and see how that affect error as function of nr of iteratoins/trees.\\
-\colorbox{yellow}{Maybe use carot to tune mode to see how good it is?}\\
-\url{http://topepo.github.io/caret/training.html}
-
-
-
+\\ \colorbox{yellow}{Comment that not additive model as many nodes is better than stumps. See modstat.}
+\\ \colorbox{yellow}{Maybe do Figure~\ref{fig:gradboostSpamDepth} with more than 10?}
 
 
 \subsection{Bagging and Random Forest}
 \label{sub:BaggandRFSim}
 Simulation 1: \\
-Do simulations for bagging with different bootstrap sizes.\\
+Do simulations for bagging with different bootstrap sizes. And the same for random forests\\
 \\
+\begin{figure}[h!]
+  \centering
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{./figures/baggingAndRFSpam.pdf}
+    \caption{Test error as function of bootstrap samples for bagging and RF.}
+    \label{fig:baggingAndRFSpam}
+  \end{subfigure}%
+  \quad
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{./figures/RFSpam.pdf}
+    \caption{Test error for RF as function of m, for different number of bootstrap samples.}
+    \label{fig:RFSpam}
+  \end{subfigure}
+          %(or a blank line to force the subfigure onto a new line)
+  \vspace{1\baselineskip}
+  \caption{Misclassification rate for bagging and random forests on spam data.}
+  \label{fig:baggAndRF}
+\end{figure}
+\todo{Comment on line in Figure~\ref{fig:RFSpam}}
+
 Simulation 2: \\
 \\
 Maybe together with bagging, do simulations for as function of $m$'s, for different bootstrap sizes? \\
-\colorbox{yellow}{Not sure what is best here.}
+\colorbox{yellow}{Not sure what is best here.}\\
+\\
+\colorbox{yellow}{Comment that Figure~\ref{fig:baggingAndRFSpam} shows how RF don't overfit. Is the same true for bagging?}
+
 
 
 

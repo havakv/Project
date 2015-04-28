@@ -19,8 +19,28 @@ library(foreach)
 
 X <- getSpam()
 
-mVec <- round(seq(5, 58, length.out = 20))
-B <- round(seq(100, 2000, length.out = 4))
+
+B <- round(seq(5, 2000, length.out = 25))
+err <- rep(NA,length(B))
+
+registerDoParallel(nCores)
+err <- foreach(i = 1:length(B), .combine = c) %dopar% {
+    cat("Starting", i, "of", length(B), "\n")
+    fit <- randomForest(spam ~ ., data = X$train, ntree = B[i])
+    pred <- predict(fit, X$test, type="response")
+    cat("Ending", i, "of", length(B), "\n")
+    sum(pred != X$test$spam)/X$nTest
+}
+errRF <- err
+BRF <- B
+
+
+
+
+#------------------------------------------
+mVec <- 1:10
+mVec <- c(mVec, round(seq(12, 25, length.out = 10)))
+B <- c(5, 10, 50, 500)
 Errors <- matrix(NA, length(B), length(mVec))
 
 registerDoParallel(nCores)
@@ -38,7 +58,7 @@ Errors <- foreach(i = 1:length(mVec), .combine = cbind) %dopar% {
 }
 
 
-save(Errors, mVec, B, file = "../dataset/spamResults/randomForestSpam.Rdata")
+save(errRF, BRF, Errors, mVec, B, file = "../dataset/spamResults/randomForestSpam.Rdata")
 quit()
 
 #---------------------------------------------------------------------------
