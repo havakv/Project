@@ -60,7 +60,7 @@ For more than two predictors it is no longer possible to visualize the splits on
 \end{figure}
 %
 \\
-By now the intuition behind CART should be clear. What is not clear yet is how to grow the tree and how large the tree should be grown. As it is too computationally extensive to create an optimal tree, greedy algorithms for splitting are used for local splitting. A split needs to to be based on a criterion and one of the more used is the \textit{Gini index}
+By now the intuition behind CART should be clear. What is not clear yet is how to grow the tree and how large the tree should be grown. As it is too computationally extensive to create an optimal tree, greedy algorithms for splitting are used for local splitting. A split needs to to be based on a criterion and one of the more common is the \textit{Gini index}
 \begin{align}
   Q_m(T) &= \sum^{K}_{k=1} \hat{p}_{mk} (1 - \hat{p}_{mk}),  \\ 
   \label{eq:pmk} 
@@ -80,7 +80,7 @@ Here $j$ and $s$ lies in $\hat{p}_{mk}$ in \eqref{eq:pmk}.
 There are other measure of node impurity, like \textit{deviance} and \textit{misclassification error} used by CART. \colorbox{yellow}{These will be visited later}.\\
 \colorbox{yellow}{Make sure that Gini is the original choice. If not, comment} \\
 \\
-It is now clear how to grow a tree, so the next step is to examine the tree size, to prevent over- or under fitting. The immediate idea one might get is to stop when the total Gini index change less than some threshold. This does not take into account that a seemingly worthless split might cause an excellent successive split. 
+It is now clear how to grow a tree, so the next step is to examine the tree size, to prevent over- or underfitting. The immediate idea one might get is to stop when the total Gini index change less than some threshold. This does not take into account that a seemingly worthless split might cause an excellent successive split. 
 What CART does instead is to grow a large tree, and then \textit{prune} it back to find a local optimum. To prune a tree, is to collapse any number of internal nodes. 
 
 Let $T_0$ denote the full tree and $T$ a subtree of $T_0$ that can be obtained by pruning. $|T|$ is the number of terminal nodes and $R_{\tau}$ is the region of of the terminal node $\tau$. The goal is to find the subtree $T_\alpha$ that minimizes some cost function $C_\alpha (T)$. It is usually the total terminal node impurity, but regularized by penalizing on the number of terminal nodes
