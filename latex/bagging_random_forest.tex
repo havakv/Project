@@ -27,7 +27,7 @@ The typical argument for why this bootstrapping works, is how it lowers the vari
 
 In \cite{Breiman1996} classification trees were fitted to a variety of dataset, and the bagged classifier showed a reduction in test set misclassification error ranging from $6\%$ to $77\%$. \todo{Should this be removed?} Trees are ideal to use because, if grown large, they can capture complex structures in the data, and have relatively low bias. A small change in the training set, can cause a tree to change completely, so their variance is high. Bagging manage to remove a lot of this variance. 
 
-\subsubsection{Why bagging works}
+\subsection{Why bagging works}
 \label{sub:Why bagging works}
 \todo{Change $c$ to $y$ in this subsection}
 This arguments is taken from \cite{Breiman1996}. Denote $y \in \left\{ 1, \ldots, K \right\}$ as the correct class for a given $\mathbf{x}$. Then the probability of correct classification for a classifier $C(\mathbf{x})$ given the predictor $\mathbf{x}$ is 
@@ -85,6 +85,9 @@ and $G(\mathbf{x})$ will have the same probability of correct classification as 
 This shows that if a classifier is good in the sense that it is order-correct for most inputs $\mathbf{x}$, then the $G(\mathbf{x})$ is very good, and so should its approximation $C_{agg}(\mathbf{x})$ be. On the other hand, if $C(\mathbf{x})$ is not a good classifier, aggregating it can actually make it worse.
 \\ \colorbox{yellow}{Mention that this only applies to the voting in \eqref{eq:aggClass}, not the averaging of probabilities \eqref{eq:aggClassP}. }
 
+In \cite{domingos1997Bagging} the sucsess of bagging is explained through a different approach. Empirical experiments are used to validate the hypotheis that  
+bagging reduces a classification learner's error rate because it changes the learner's model space and prior distribution to one that better fits the domain.
+
 \section{Random forests}
 \label{sec:Random forests}
 Hei \cite{randomforests}.
@@ -116,6 +119,9 @@ Intuitively, the correlation between the trees should decrease by reducing $m$, 
 \colorbox{yellow}{The url has nice derivation of bias/variance tradeoff for regression (p. 6)}\\
 \\
 In section \ref{sub:Why bagging works} an argument was made for why aggregating bootstrap samples can improved the prediction power of a classifier.This argument is still valid for the random forest algorithm, but in this section the effect of de-correlating the trees will be investigated.
+\\\colorbox{yellow}{Do regression example and say it is sort of applicable.}
+\\\colorbox{yellow}{I think it was something about this in modstat.}
+\\\colorbox{yellow}{Do the actual analysis from the original paper. }
 
 
 \subsection{Out-of-bag}

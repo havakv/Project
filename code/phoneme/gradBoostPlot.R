@@ -1,6 +1,7 @@
 #!/usr/bin/env Rscript
-# Plotting gradBoost on Spam data
+# Plotting gradBoost on Phoneme data
 NOPRINT = FALSE
+#NOPRINT = TRUE
 
 # Check if environment variables are fine.
 if(system("echo $OMP_NUM_THREADS", intern = TRUE) != 1)
@@ -18,40 +19,8 @@ require(parallel) # one of the core R packages
 require(doParallel)
 library(foreach)
 
-#set.seed(0) # Make sure this is the same seed!!!!!!!!!!!!
-#X <- getSpam() # Remove when run next time
 
-load("../dataset/spamResults/gradBoostSpam.Rdata")
-
-nit <- 40
-itVec <- round(seq(1, 1000, length.out=nit))
-nfit1 <- length(fit1)-1
-Errors <- matrix(NA, nit, nfit1)
-
-
-registerDoParallel(nCores)
-err <- rep(NA, nit)
-for (i in 1:nfit1) {
-    fit <- fit1[[i]]
-    err <- foreach(j = 1:nit, .combine = c) %dopar% {
-    #for (j in 1:nit) {
-        pred <- predict(fit, X$test, n.trees=itVec[j], type="response")
-        pred[pred>0.5] <- 1
-        pred[pred<0.5] <- 0
-        sum(pred != X$test$spam)/X$nTest
-    }
-    Errors[, i] <- err
-}
-
-printfig("gradboostSpamShrink1", NOPRINT)
-ylim <- c(min(Errors), max(Errors))
-plot(itVec, Errors[,1], type="l", xlab = "iterations", ylab = "error", ylim = ylim, col = 2)
-for (j in 2:nfit1) {
-    lines(itVec, Errors[, j], col = j+1)
-}
-legend(x = "topright", as.character(fit1$shrinkVec[1:nfit1]), lty = rep(1, nfit1), lwd = rep(1, nfit1), 
-       col = 1:nfit1+1, bg="white")
-off(NOPRINT)
+load("../../dataset/phonemeResults/gradBoostPhoneme.Rdata")
 
 #----------------------------------------------------------------------------------------
 nit1 <- 40
@@ -70,14 +39,14 @@ for (i in 1:nfit1) {
         pred <- predict(fit, X$test, n.trees=itVec[j], type="response")
         pred[pred>0.5] <- 1
         pred[pred<0.5] <- 0
-        sum(pred != X$test$spam)/X$nTest
+        sum(pred != X$test$class)/X$nTest
     }
     Errors[, i] <- err
 }
 
-printfig("gradboostSpamShrink2", NOPRINT)
+printfig("gradboostPhonemeShrink2", NOPRINT)
 ylim <- c(min(Errors), max(Errors))
-ylim <- c(min(Errors), 0.1)
+#ylim <- c(min(Errors), 0.1)
 plot(itVec, Errors[,1], type="l", xlab = "iterations", ylab = "error", ylim = ylim, col = 2)
 for (j in 2:nfit1) {
     lines(itVec, Errors[, j], col = j+1)
@@ -102,7 +71,7 @@ bestErr1
 # Fit 2 Stochastic gradient boosting: Different bag fractions
 
 nit <- 100
-itVec <- round(seq(1, 10000, length.out=nit))
+itVec <- round(seq(1, 40000, length.out=nit))
 nfit2 <- length(fit2)-1
 Errors <- matrix(NA, nit, nfit2)
 
@@ -115,14 +84,14 @@ for (i in 1:nfit2) {
         pred <- predict(fit, X$test, n.trees=itVec[j], type="response")
         pred[pred>0.5] <- 1
         pred[pred<0.5] <- 0
-        sum(pred != X$test$spam)/X$nTest
+        sum(pred != X$test$class)/X$nTest
     }
     Errors[, i] <- err
 }
 
-printfig("gradboostSpamStoch", NOPRINT)
+printfig("gradboostPhonemeStoch", NOPRINT)
 ylim <- c(min(Errors), max(Errors))
-ylim <- c(min(Errors), 0.07)
+ylim <- c(min(Errors), 0.2)
 plot(itVec, Errors[,1], type="l", xlab = "iterations", ylab = "error", ylim = ylim, col = 2)
 for (j in 2:nfit2) {
     lines(itVec, Errors[, j], col = j+1)
@@ -142,7 +111,7 @@ times
 
 nit <- 100
 itVec <- round(seq(1, 10000, length.out=nit))
-nit3 <- length(fit2)-1
+nit3 <- length(fit3)-1
 Errors <- matrix(NA, nit, nit3)
 
 
@@ -154,14 +123,14 @@ for (i in 1:nit3) {
         pred <- predict(fit, X$test, n.trees=itVec[j], type="response")
         pred[pred>0.5] <- 1
         pred[pred<0.5] <- 0
-        sum(pred != X$test$spam)/X$nTest
+        sum(pred != X$test$class)/X$nTest
     }
     Errors[, i] <- err
 }
 
-printfig("gradboostSpamDepth", NOPRINT)
+printfig("gradboostPhonemeDepth", NOPRINT)
 ylim <- c(min(Errors), max(Errors))
-ylim <- c(min(Errors), 0.08)
+#ylim <- c(min(Errors), 0.08)
 plot(itVec, Errors[,1], type="l", xlab = "iterations", ylab = "error", ylim = ylim, col = 2)
 for (j in 2:nit3) {
     lines(itVec, Errors[, j], col = j+1)

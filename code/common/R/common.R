@@ -4,7 +4,7 @@
 # Functions for printing to file
 printfig <- function(name, NOPRINT = FALSE, height = 6){
     if (!NOPRINT){
-        path <- paste('../latex/figures/', name, '.pdf', sep = '')
+        path <- paste('../../latex/figures/', name, '.pdf', sep = '')
         pdf(file = path, height = height)
         par(mai = c(0.6, 0.6, 0.1, 0.1)) # manipulate inner margins of subplots
         par(mgp = c(1.8, 0.7, 0)) # manipulate spacing of axis ticks, labels, text
@@ -116,12 +116,120 @@ plot.groups <- function(groups, ...){
 }
 
 
-getSpam <- function(path = "../dataset", testToTrainRatio = 1) {
+getSpam <- function(path = "../../dataset", testToTrainRatio = 1) {
     # Get dataset: Spam
-    #X <- read.table(paste(path, "/spambase.dat", sep = ''), skip = 62)
     X <- read.csv(paste(path, "/spambase.dat", sep = ''), skip = 62, header=FALSE)
     names(X)[58] <- "spam"
     X$spam <- as.factor(X$spam)
+
+    # Partition data in training and test set
+    nData  <- nrow(X)
+    nTrain <- round(nData/(testToTrainRatio+1))
+    nTest  <- nData - nTrain
+
+    shuffledIX <- sample(nData)
+
+    Xtrain <- X[shuffledIX[1:nTrain] ,]
+    Xtest  <- X[shuffledIX[(nTrain+1):nData] ,]
+
+    L <- list(train = Xtrain, test = Xtest, nTrain = nTrain, nTest = nTest)
+    return(L)
+}
+
+getPhoneme <- function(path = "../../dataset", testToTrainRatio = 1) {
+    X <- read.csv(paste(path, "/phoneme.dat", sep = ''), skip = 10, header=FALSE)
+    #X <- read.csv(paste(path, "/adult.dat", sep = ''), skip = 90, header=FALSE, colClasses=rep("factor", 86))
+    names(X)[6] <- "class"
+    X$class <- as.factor(X$class)
+
+    # Partition data in training and test set
+    nData  <- nrow(X)
+    nTrain <- round(nData/(testToTrainRatio+1))
+    nTest  <- nData - nTrain
+
+    shuffledIX <- sample(nData)
+
+    Xtrain <- X[shuffledIX[1:nTrain] ,]
+    Xtest  <- X[shuffledIX[(nTrain+1):nData] ,]
+
+    L <- list(train = Xtrain, test = Xtest, nTrain = nTrain, nTest = nTest)
+    return(L)
+}
+
+getAdult <- function(path = "../../dataset", testToTrainRatio = 1, tot.size = 5000) {
+    X <- read.csv(paste(path, "/adult.dat", sep = ''), skip = 19, header=FALSE)
+    #X <- read.csv(paste(path, "/adult.dat", sep = ''), skip = 90, header=FALSE, colClasses=rep("factor", 86))
+    names(X)[15] <- "class"
+
+    if (tot.size > nrow(X))
+        stop(paste("tot.size needs to be smaller than", nrow(X)))
+    X <- X[sample(nrow(X), tot.size),]
+
+    # Get 50/50 of class 0 and 1
+    #X0 <- filter(X, class == 0)
+    #X1 <- filter(X, class == 1)
+    #X0 <- X[sample(nrow(X0), nrow(X1)),]
+    #X  <- rbind(X0, X1)
+
+
+    # Partition data in training and test set
+    nData  <- nrow(X)
+    nTrain <- round(nData/(testToTrainRatio+1))
+    nTest  <- nData - nTrain
+
+    shuffledIX <- sample(nData)
+
+    Xtrain <- X[shuffledIX[1:nTrain] ,]
+    Xtest  <- X[shuffledIX[(nTrain+1):nData] ,]
+
+    L <- list(train = Xtrain, test = Xtest, nTrain = nTrain, nTest = nTest)
+    return(L)
+}
+
+getInsurance <- function(path = "../../dataset", testToTrainRatio = 0.5) {
+    X <- read.csv(paste(path, "/coil2000.dat", sep = ''), skip = 90, header=FALSE, colClasses=rep("factor", 86))
+    names(X)[86] <- "class"
+
+    # Get 50/50 of class 0 and 1
+    X0 <- filter(X, class == 0)
+    X1 <- filter(X, class == 1)
+    X0 <- X[sample(nrow(X0), nrow(X1)),]
+    X  <- rbind(X0, X1)
+
+
+    # Partition data in training and test set
+    nData  <- nrow(X)
+    nTrain <- round(nData/(testToTrainRatio+1))
+    nTest  <- nData - nTrain
+
+    shuffledIX <- sample(nData)
+
+    Xtrain <- X[shuffledIX[1:nTrain] ,]
+    Xtest  <- X[shuffledIX[(nTrain+1):nData] ,]
+
+    L <- list(train = Xtrain, test = Xtest, nTrain = nTrain, nTest = nTest)
+    return(L)
+}
+
+getTheoProve <- function(path = "../../dataset", testToTrainRatio = 1) {
+    # Get dataset on Theorem proving
+    X <- read.csv(paste(path, "/ml-prove/all-data-raw.csv", sep = ''), header=FALSE)
+
+    # Clean data to be able to predict. 
+    # 5 classes:
+    # 1-5 is best class 
+    test <- select(X, V54:V58)
+    test <- filter(test, V54 != -100 & V55 != -100 & V56 != -100 & V57 != -100 & V58 != -100)
+    minVals = apply(test, 1, min)
+    a = rep(NA, nrow(test))
+    for (i in 1:nrow(test)) {
+        a[i] = sum(minVals[i] == test[i,])
+    }
+    test <- test[a==1,]
+    test$class <- apply(test, 1, function(x){which(min(x) == x)})
+    ix <- as.numeric(rownames(test))
+    X <- cbind(X[ix,1:53], class = as.factor(test$class))
+    
 
     # Partition data in training and test set
     nData  <- nrow(X)

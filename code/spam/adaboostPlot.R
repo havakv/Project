@@ -5,7 +5,7 @@ NOPRINT=FALSE
 
 library(common)
 
-load("../dataset/spamResults/adaboostSpam.Rdata")
+load("../../dataset/spamResults/adaboostSpam.Rdata")
 
 # Different depths
 printfig("adaboostSpam", NOPRINT)

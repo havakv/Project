@@ -32,7 +32,7 @@
   Pages                    = {5–32},
   Volume                   = {45},
 
-  __markedentry            = {[havakv:6]},
+  __markedentry            = {[havakv:]},
   Doi                      = {10.1023/a:1010933404324},
   ISSN                     = {0885-6125},
   Owner                    = {havakv},
@@ -58,14 +58,20 @@
   Number                   = {2},
   Pages                    = {123–140},
   Volume                   = {24},
-
-  __markedentry            = {[havakv:]},
   Doi                      = {10.1007/bf00058655},
   ISSN                     = {1573-0565},
   Owner                    = {havakv},
   Publisher                = {Springer Science + Business Media},
   Timestamp                = {2015.04.15},
   Url                      = {http://dx.doi.org/10.1007/BF00058655}
+}
+
+@Article{breiman1996bias,
+  Title                    = {Bias, variance, and arcing classifiers},
+  Author                   = {Breiman, Leo},
+  Year                     = {1996},
+
+  Publisher                = {Tech. Rep. 460, Statistics Department, University of California, Berkeley, CA, USA}
 }
 
 @Book{breiman,
@@ -92,6 +98,22 @@
   Language                 = {English},
   Publisher                = {Wiley for the Royal Statistical Society},
   Url                      = {http://www.jstor.org/stable/2345402}
+}
+
+@InProceedings{domingos1997Bagging,
+  Title                    = {Why Does Bagging Work? A Bayesian Account and its Implications.},
+  Author                   = {Domingos, Pedro},
+  Booktitle                = {KDD},
+  Year                     = {1997},
+  Organization             = {Citeseer},
+  Pages                    = {155--158}
+}
+
+@Book{efron1994bootstrap,
+  Title                    = {An introduction to the bootstrap},
+  Author                   = {Efron, Bradley and Tibshirani, Robert J},
+  Publisher                = {CRC press},
+  Year                     = {1994}
 }
 
 @Article{adaboostM1,
@@ -132,6 +154,7 @@
   Number                   = {4},
   Pages                    = {367–378},
   Volume                   = {38},
+
   Doi                      = {10.1016/s0167-9473(01)00065-2},
   ISSN                     = {0167-9473},
   Owner                    = {havakv},
@@ -159,6 +182,24 @@
   Url                      = {http://dx.doi.org/10.1214/aos/1013203451}
 }
 
+@Article{Friedman1997bias,
+  Title                    = {On Bias, Variance, 0/1—Loss, and the Curse-of-Dimensionality},
+  Author                   = {Friedman, Jerome H.},
+  Journal                  = {Data Mining and Knowledge Discovery},
+  Year                     = {1997},
+  Number                   = {1},
+  Pages                    = {55–77},
+  Volume                   = {1},
+
+  __markedentry            = {[havakv:6]},
+  Doi                      = {10.1023/a:1009778005914},
+  ISSN                     = {1384-5810},
+  Owner                    = {havakv},
+  Publisher                = {Springer Science + Business Media},
+  Timestamp                = {2015.05.01},
+  Url                      = {http://dx.doi.org/10.1023/A:1009778005914}
+}
+
 @Book{modstat,
   Title                    = {The elements of statistical learning},
   Author                   = {Hastie, Trevor and Tibshirani, Robert and Friedman, Jerome},
@@ -166,6 +207,22 @@
   Year                     = {2009},
   Number                   = {1},
   Volume                   = {2}
+}
+
+@InProceedings{kohavi1996bias,
+  Title                    = {Bias plus variance decomposition for zero-one loss functions},
+  Author                   = {Kohavi, Ron and Wolpert, David H and others},
+  Booktitle                = {ICML},
+  Year                     = {1996},
+  Pages                    = {275--283}
+}
+
+@InProceedings{kong1995error,
+  Title                    = {Error-Correcting Output Coding Corrects Bias and Variance.},
+  Author                   = {Kong, Eun Bae and Dietterich, Thomas G},
+  Booktitle                = {ICML},
+  Year                     = {1995},
+  Pages                    = {313--321}
 }
 
 @Manual{stats,
@@ -199,5 +256,15 @@
   Note                     = {ISBN 0-387-95457-0},
 
   Url                      = {http://www.stats.ox.ac.uk/pub/MASS4}
+}
+
+@Article{zhu2009,
+  Title                    = {Multi-class adaboost},
+  Author                   = {Zhu, Ji and Zou, Hui and Rosset, Saharon and Hastie, Trevor},
+  Journal                  = {Statistics and its Interface},
+  Year                     = {2009},
+  Number                   = {3},
+  Pages                    = {349--360},
+  Volume                   = {2}
 }
 

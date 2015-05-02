@@ -10,7 +10,18 @@ First, classification trees will be discussed. When this framework is clear, ens
 The idea behind a classification tree is to make local decisions based on a subset of the predictors. This means that the data is split in subsets, that are again independently split in new subsets and so on. At the end the subsets are given a class label based on some vote-measure between the data points (usually the majority).
 \todo{Always majority?}
 This makes the method very general, both in terms of nonlinearity and in type of predictors. The method works with continuous, discrete ordered, and categorical predictors. The tree is also easy to interpret, as one can just follow the splits. For prediction one also just follow the tree down to the decision node, giving the predicted class. An example of such a tree can be found in Figure~\ref{fig:cartTree1}.
-There are several different algorithms using this framework. They differ in the methods used for splitting, and in how large to grow the tree. Obviously, growing a full tree, i.e. only one training point in each end node, will cause overfitting, while growing it too short will cause underfitting. This bias-variance tradeoff is important to consider, and there are different methods derived to optimize it. More on the bias-variance tradeoff in appendix~\ref{sub:EPE}. In this \colorbox{yellow}{paper?} only one of the classification tree algorithms will be covered. That is one of the most famous tree methods, proposed by \colorbox{yellow}{reference} \cite{breiman} in 1984, and it is called \textit{Classification And Regression Trees}, or \textit{CART}.
+
+There are several different algorithms using this framework. They differ in the methods used for splitting, and in how large to grow the tree. Obviously, growing a full tree, i.e. only one training point in each end node, will cause overfitting, while growing it too short will cause underfitting. 
+
+In the regression framework, \colorbox{yellow}{under squared error loss?}, it can be show that a small tree (e.g. two terminal nodes) has high bias and low variance, while a larger tree is highly unstable, but with less bias. In appendix~\ref{sub:EPE}, it is show how the expected prediction error is composed by the bias and variance. Therefore this \textit{bias-variance tradeoff} is important to consider when creating the prediction method. 
+
+For classification the same argument does not quite hold because of the non-additivity between them. Similar definitions for bias and variance has been proposed for $0/1$ loss in the literature. Among the most famous are \cite{kong1995error}, \cite{kohavi1996bias}, \cite{breiman1996bias} and \cite{Friedman1997bias}. While they have all provided useful insight to classification problems, non of them present a framework as simple and satisfactory as for regression. In this paper when referring to bias or variance for classifiers, it is more in a heuristic way. Loosely, bias measures the systematic error of a classifier, i.e. the average error over different training sets. Variance measures the additional error do to variations in the classifier between training sets. 
+\todo{Rewrite section and maybe split up?}
+
+This bias-variance tradeoff is important to consider, and there are different methods derived to optimize it. More on the bias-variance tradeoff in appendix~\ref{sub:EPE}. In this \colorbox{yellow}{paper?} only one of the classification tree algorithms will be covered. That is one of the most famous tree methods, proposed by \colorbox{yellow}{reference} \cite{breiman} in 1984, and it is called \textit{Classification And Regression Trees}, or \textit{CART}.
+\\ \colorbox{yellow}{Give references to other tree methods than CART.}
+\\ \colorbox{yellow}{Rewrite this and maybe put things elsewhere?} 
+\\ \colorbox{yellow}{Maybe something about how we later will look at ensemble methods for lowering either the bias or variance?}
 %
 \subsubsection{CART}
 \label{subsub:CART}

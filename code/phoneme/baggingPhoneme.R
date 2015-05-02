@@ -1,5 +1,5 @@
 #!/usr/bin/env Rscript
-# Bagging used on spam data
+# Bagging used on Phoneme data
 
 set.seed(0)
 # Check if environment variables are fine.
@@ -19,24 +19,24 @@ require(parallel) # one of the core R packages
 require(doParallel)
 library(foreach)
 
-X <- getSpam()
+X <- getPhoneme()
 
-#B <- round(seq(5, 2000, length.out = 25))
-B <- round(seq(5, 10, length.out = 2))
+B <- round(seq(5, 2000, length.out = 25))
+#B <- round(seq(5, 10, length.out = 2))
 err <- rep(NA,length(B))
 
 registerDoParallel(nCores)
 err <- foreach(i = 1:length(B), .combine = c) %dopar% {
     cat("Starting", i, "of", length(B), "\n")
-    fit <- bagging(spam ~ ., data = X$train, nbagg = B[i])
+    fit <- bagging(class ~ ., data = X$train, nbagg = B[i])
     pred <- predict(fit, X$test)
     cat("Ending", i, "of", length(B), "\n")
-    sum(pred != X$test$spam)/X$nTest
+    sum(pred != X$test$class)/X$nTest
 }
 
 errBag <- err
 BBag <- B
-save(errBag, BBag, file = "../dataset/spamResults/baggingSpam.Rdata")
+save(errBag, BBag, file = "../../dataset/phonemeResults/baggingPhoneme.Rdata")
 
 quit()
 
@@ -44,7 +44,7 @@ quit()
 
 
 #-----------------------------------------------------------------------------
-fit <- bagging(spam ~ ., data = X$train)
+fit <- bagging(class ~ ., data = X$train)
 pred <- predict(fit, X$test)
-err <- sum(pred != X$test$spam)/X$nTest
+err <- sum(pred != X$test$class)/X$nTest
 err

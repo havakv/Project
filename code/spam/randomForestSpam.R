@@ -58,7 +58,7 @@ Errors <- foreach(i = 1:length(mVec), .combine = cbind) %dopar% {
 }
 
 
-save(errRF, BRF, Errors, mVec, B, file = "../dataset/spamResults/randomForestSpam.Rdata")
+save(errRF, BRF, Errors, mVec, B, file = "../../dataset/spamResults/randomForestSpam.Rdata")
 quit()
 
 #---------------------------------------------------------------------------

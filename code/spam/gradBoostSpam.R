@@ -26,7 +26,7 @@ X$train$spam <- as.character(X$train$spam)
 X$test$spam <- as.character(X$test$spam)
 
 #-----------------------------------------------------------------------------
-# Get error as function of iteratoins for different shrinkages
+# Get error as function of interatoins for different shrinkages
 shrink <- c(1, 0.1, 0.01, 0.001)
 fit1 <- list()
 registerDoParallel(nCores)
@@ -61,16 +61,20 @@ cat("Done with sim 2 \n")
 
 #-----------------------------------------------------------------------------
 # Different tree depths
-shrink <- 0.01
-nTrees <- 10000
-bag    <- 0.5
-interaction <- c(1, 2, 3, 5, 10)
+shrink       <- 0.01
+nTrees       <- 10000
+bag          <- 0.5
+minObsInNode <- 1
+interaction  <- c(1, 2, 5, 20, 40)
 fit3 <- list()
 registerDoParallel(nCores)
 fit3 <- foreach(i = 1:length(interaction)) %dopar% {
+    cat("Starting", i, "of", length(interaction), "\n")
     obj <- gbm(spam ~ ., distribution = "bernoulli", data = X$train, 
                n.trees=nTrees, shrinkage=shrink, bag.fraction=bag, 
-               keep.data=FALSE, interaction.depth = interaction[i])
+               keep.data=FALSE, interaction.depth = interaction[i],
+               n.minobsinnode = minObsInNode)
+    cat("Ending", i, "of", length(interaction), "\n")
     obj
 }
 fit3$interactonVec <- interaction
@@ -78,7 +82,7 @@ cat("Done with sim 3 \n")
 
 #-----------------------------------------------------------------------------
 # Saving results
-save(fit1, fit2, fit3, X, file = "../dataset/spamResults/gradBoostSpam.Rdata")
+save(fit1, fit2, fit3, X, file = "../../dataset/spamResults/gradBoostSpam.Rdata")
 cat("Done!\n")
 quit()
 

@@ -12,6 +12,8 @@ echo Retreving datasets
 cd ./dataset
 ./getSpam.sh
 mkdir -p spamResults
+./getPhoneme.sh
+mkdir -p phonemeResults
 cd -
 
 # Setup latex folders

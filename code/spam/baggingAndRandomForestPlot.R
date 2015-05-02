@@ -5,8 +5,8 @@ NOPRINT=FALSE
 
 library(common)
 
-load("../dataset/spamResults/baggingSpam.Rdata")
-load("../dataset/spamResults/randomForestSpam.Rdata")
+load("../../dataset/spamResults/baggingSpam.Rdata")
+load("../../dataset/spamResults/randomForestSpam.Rdata")
 
 # Different depths
 printfig("baggingAndRFSpam", NOPRINT)

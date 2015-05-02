@@ -7,6 +7,13 @@ set_parent('./project.Rnw')
 \colorbox{yellow}{Need to write something about the data set. Description and so on.}\\
 \colorbox{yellow}{Look at what others have done.} \\
 \url{http://sci2s.ugr.es/keel/dataset.php?cod=109} Spam data.\\
+\\
+\colorbox{yellow}{If I use categorical variables, should I include section on how the algorithms handles them?}
+
+\section{CART}
+\label{sec:CARTsim}
+
+
 
 \section{Boosting}
 \label{sec:SimBoosting}
@@ -21,6 +28,7 @@ Chose, 4 or 5 different amount of depths of trees used. Plot test error as funct
 \\
 In Figure~\ref{fig:adaboostSpam}, it is clear that the results are better for deeper trees. This is quite surprising, as according to theory weak classifiers are needed. \\
 \colorbox{yellow}{Find some explanation!}\\
+\colorbox{yellow}{Not possible to fit more than 30 threes in adaboost from adabag.}
 \\
 \begin{figure}[h!]
 \begin{center}
@@ -78,15 +86,16 @@ Plot error as function of iterations, for different \verb+bag.fractions+, and re
   \label{fig:StochasticGradBoost}
 \end{figure}
 \todo{parameters in Figure~\ref{fig:StochasticGradBoost}}
+\colorbox{yellow}{Comment that there are unusually deep trees in Figure~\ref{fig:gradboostSpamDepth}}
 
 Simulation 3:\\
 Use \verb+interaction.depth+ (nr of splits) to set depth of tree, and see how that affect error as function of nr of iteratoins/trees.\\
 \\ \colorbox{yellow}{Comment that not additive model as many nodes is better than stumps. See modstat.}
-\\ \colorbox{yellow}{Maybe do Figure~\ref{fig:gradboostSpamDepth} with more than 10?}
+\\ \colorbox{yellow}{Figure~\ref{fig:gradboostSpamDepth}: see p.~13} \url{http://www.stat.cmu.edu/~ryantibs/datamining/lectures/25-boost.pdf}\\
 
 
-\subsection{Bagging and Random Forest}
-\label{sub:BaggandRFSim}
+\section{Bagging and Random Forest}
+\label{sec:BaggandRFSim}
 Simulation 1: \\
 Do simulations for bagging with different bootstrap sizes. And the same for random forests\\
 \\
@@ -115,7 +124,15 @@ Simulation 2: \\
 Maybe together with bagging, do simulations for as function of $m$'s, for different bootstrap sizes? \\
 \colorbox{yellow}{Not sure what is best here.}\\
 \\
-\colorbox{yellow}{Comment that Figure~\ref{fig:baggingAndRFSpam} shows how RF don't overfit. Is the same true for bagging?}
+\colorbox{yellow}{Comment that Figure~\ref{fig:baggingAndRFSpam} shows how RF don't overfit. Is the same true for bagging?}\\
+\\
+Simulation 3: \\
+Show an example of when bagging and RF fails? If the base classifier is bad, then the aggregated can be bad as well.\\
+\colorbox{yellow}{Should I do this?}\\
+\\
+\colorbox{yellow}{Do simulation to show diffenece between \eqref{eq:aggClass} and \eqref{eq:aggClassP}.}
+
+
 
 
 
@@ -130,3 +147,61 @@ Maybe together with bagging, do simulations for as function of $m$'s, for differ
 \label{sub:Robustness}
 
 \colorbox{yellow}{Add noise to previous test and see how stable the results are.}
+\section{Phoneme}
+\label{sec:Phoneme}
+\colorbox{yellow}{Should I do both at the same time? So do the plots side by side? Or in different sections like now?}
+
+\begin{figure}[h!]
+\begin{center}
+    \includegraphics[scale=0.5]{./figures/adaboostPhoneme.pdf}
+\end{center}
+\caption{AdaBoost on Phoneme data. For different tree depths.}
+\label{fig:adaboostPhoneme}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{center}
+    \includegraphics[scale=0.5]{./figures/gradboostPhonemeShrink2.pdf}
+\end{center}
+\caption{Gradient boosting on Phoneme data. The shrinkage of each line is specified in the legend.}
+\label{fig:gradboostPhonemeShrink2}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{./figures/gradboostPhonemeStoch.pdf}
+    \caption{Different bootstrap fractions.}
+    \label{fig:gradboostPhonemeStoch}
+  \end{subfigure}%
+  \quad
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{./figures/gradboostPhonemeDepth.pdf}
+    \caption{Different tree depths.}
+    \label{fig:gradboostPhonemeDepth}
+  \end{subfigure}
+          %(or a blank line to force the subfigure onto a new line)
+  \vspace{1\baselineskip}
+  \caption{Stochastic gradient boosting on Phoneme data. Give some parameter values here!!!}
+  \label{fig:StochasticGradBoostPhoneme}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{./figures/baggingAndRFPhoneme.pdf}
+    \caption{Test error as function of bootstrap samples for bagging and RF.}
+    \label{fig:baggingAndRFPhoneme}
+  \end{subfigure}%
+  \quad
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{./figures/RFPhoneme.pdf}
+    \caption{Test error for RF as function of m, for different number of bootstrap samples.}
+    \label{fig:RFPhoneme}
+  \end{subfigure}
+          %(or a blank line to force the subfigure onto a new line)
+  \vspace{1\baselineskip}
+  \caption{Misclassification rate for bagging and random forests on Phoneme data.}
+  \label{fig:baggAndRFPhoneme}
+\end{figure}
+
