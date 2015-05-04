@@ -1,6 +1,8 @@
 <<echo=FALSE, cache=FALSE>>=
 set_parent('./project.Rnw')
 @
+
+
 \section{Dataset}
 \label{sec:Dataset}
 \todo{New chapter here}
@@ -15,7 +17,31 @@ set_parent('./project.Rnw')
 Simulation 1: \\
 Plot pruned and unpruned tree. \\
 Plot test error for different \verb+cp+ parameters, or (same) different pruning. From full tree, back to a stump.\\
-Hope that \verb+cp+ in \verb+pruning.rpart+ is the same as $\alpha$ in cost complexity pruning???
+Hope that \verb+cp+ in \verb+pruning.rpart+ is the same as $\alpha$ in cost complexity pruning??? Hei
+
+\begin{figure}[h!]
+\begin{center}
+    \includegraphics[scale=0.5]{./figures/cartCPSpam.pdf}
+\end{center}
+\caption{CART on spam data. Test error as function of number of splits, where the number of splits depend on tuning parameter $\alpha$.}
+\label{fig:cartCPSpam}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{./figures/cartFullSpam.pdf}
+  \end{subfigure}%
+  \quad
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{./figures/cartOptSpam.pdf}
+  \end{subfigure}
+          %(or a blank line to force the subfigure onto a new line)
+  \vspace{1\baselineskip}
+  \caption{Cart on spam data.}
+  \label{fig:CartSpam}
+\end{figure}
+
 
 
 
@@ -154,6 +180,14 @@ Show an example of when bagging and RF fails? If the base classifier is bad, the
 \section{Phoneme}
 \label{sec:Phoneme}
 \colorbox{yellow}{Should I do both at the same time? So do the plots side by side? Or in different sections like now?}
+\begin{figure}[h!]
+\begin{center}
+    \includegraphics[scale=0.5]{./figures/cartCPPhoneme.pdf}
+\end{center}
+\caption{CART on Phoneme data.}
+\label{fig:cartCPPhoneme}
+\end{figure}
+
 
 \begin{figure}[h!]
 \begin{center}
@@ -209,3 +243,22 @@ Show an example of when bagging and RF fails? If the base classifier is bad, the
   \label{fig:baggAndRFPhoneme}
 \end{figure}
 
+
+\clearpage
+\section{Needs to be done}
+\label{sec:Needs to be done}
+Do RF with 5000 or 50000 as function of $m$. (Maybe). Should not be necessary as the other figure shows how RF don't overfitt.\\
+\\
+Do CART with both Ginie and Deviance (if possible). \\
+\\
+Do OOB vs CV vs Test error in a figure. \\
+\\
+Do bagging/RF with probs instead of vote. (The two different methods in Bagging section). Write something about how p should be faster for B around 0.5.\\
+\\
+Write about categorical variables after simulation study. \\
+\\
+Comment on how the timing is not particularly good. \\
+\\
+Comment on how a tree can be deep, but split on the same variable multiple times?\\
+\\
+Maybe repeat some of experiments with added noise?

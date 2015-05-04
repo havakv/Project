@@ -191,7 +191,9 @@ The framework for gradient boosting is now reviewed, and the final step is to su
 $f_0(\mathbf{x})$ is initialized to $\frac{1}{2} \log \frac{1+\bar{y}}{1-\bar{y}}$.  The ''pseudo-responce'' is
 \begin{align}
   \label{eq:ytildeGradboost} 
-  &\tilde{y}_i = -g_m(\mathbf{x}_i) = 2 y_i / (1 + \exp \left( 2 y_i f_{m-1}(\mathbf{x}_i) \right), \quad i = 1, \ldots, N.
+  &\tilde{y}_i = 
+  -\left[ \frac{\partial L(y_i, f(\mathbf{x}_i)) }{\partial f(\mathbf{x}_i)}  \right]_{f(\mathbf{x}) = f_{m-1}(\mathbf{x})}
+  = 2 y_i / (1 + \exp \left( 2 y_i f_{m-1}(\mathbf{x}_i) \right), \quad i = 1, \ldots, N.
 \end{align}
 A regression tree $T$ is fitted to $\tilde y_i$,
 \begin{align}
@@ -259,18 +261,24 @@ For binomial loss, at the $m$'th iteration, the problem at hand is to minimize
   \label{eq:influence} 
   \sum_{i = 1}^{N} \log \left( 1 + \exp[ -2 y_i f_{m-1}(\mathbf{x}_i)] \exp [-2 y_i \rho h(\mathbf{x}_i; \bm \gamma)] \right),
 \end{align}
-over $\rho$ and $\bm \gamma$.  For $y_i f_{m-1}(\mathbf{x}_i)$ large, the effect of of $\rho h(\mathbf{x}_i; \bm{\gamma})$ is very small, and the minimization of \eqref{eq:influence} is more or less independent of $\rho h(\mathbf{x}_i; \bm \gamma)$. This means that the data point $(\mathbf{x}_i, y_i)$ can be removed from the calculations, without any substantial effect on $\rho$ and $\bm \gamma$. Removing such points during training is called \textit{influence trimming}, and can speed up the calculations. Friedman therefore used 
+over $\rho$ and $\bm \gamma$.  For $y_i f_{m-1}(\mathbf{x}_i)$ large, the effect of of $\rho h(\mathbf{x}_i; \bm{\gamma})$ is very small, and the minimization of \eqref{eq:influence} is more or less independent of $\rho h(\mathbf{x}_i; \bm \gamma)$. This means that the data point $(\mathbf{x}_i, y_i)$ can be removed from the calculations, without any substantial effect on $\rho$ and $\bm \gamma$. Removing such points during training is called \textit{influence trimming}, and can speed up the calculations. Friedman therefore proposed 
 \begin{align}
   w_i = \exp (- 2 y_i f_{m-1}(\mathbf{x}_i)), 
 \end{align}
 as an measure for influence. 
 
-More generally, the influence can be measured \\
-\colorbox{yellow}{See generalization on p.10 in gradient boosting machine.}\\
-\colorbox{yellow}{Why does it make sense to study the second derivative?}\\
-\colorbox{yellow}{How does he get $|\tilde{y}_i|\: (2 - |\tilde{y}_i|)$ form this?}\\
+More generally, the influence can be measured, by the second derivative of the loss function
+\begin{align}
+  w_i = \left[ \frac{\partial^2 L(y_i, f(\mathbf{x}_i)) }{\partial f(\mathbf{x}_i)^2}  \right]_{f(\mathbf{x}) = f_{m-1}(\mathbf{x})}.
+\end{align}
+This is because the first derivatibe is close to zero optimal values for $\rho$ and $\bm \gamma$, so the second derivative gives a more stable measurment.  For the binomial loss, this becomes 
+\begin{align}
+  w_i = |\tilde y_i| \: (2 - |\tilde y_i|). 
+\end{align}
+\todo{Check that this is correct.}
+\colorbox{yellow}{Check that $|\tilde{y}_i|\: (2 - |\tilde{y}_i|)$ is correct.}\\
 \\
-Friedman generalize influence trimming to multiple classes in \cite{friedman}.
+Using this method Friedman suggest \cite{friedman} that this chould have an considerable impact on cumputing time, while leaving the estimates relatively untouched. 
 
 
 
