@@ -40,18 +40,26 @@
 \usepackage{lastpage} % To be able to add last page in footer.
 \usepackage{fancyhdr} % Custom headers and footers
 \pagestyle{fancy} % Use "fancyplain" for header in all pages
-%\renewcommand{\chaptermark}[1]{ \markboth{#1}{} } % Usefull for book?
+\renewcommand{\chaptermark}[1]{ \markboth{#1}{} } % Usefull for book?
 \renewcommand{\sectionmark}[1]{ \markright{\thesection\ #1}{} } % Remove formating and nr.
-%\fancyhead[LE, RO]{\footnotesize\leftmark}
-%\fancyhead[RO, LE]{\footnotesize\rightmark}
-\lhead[]{\AuthorName}
-\rhead[]{\rightmark}
-\fancyfoot[L]{} % Empty left footer
-\fancyfoot[C]{} % Empty center footer
-\fancyfoot[R]{Page\ \thepage\ of\ \protect\pageref*{LastPage}} % Page numbering for right footer
-\renewcommand{\headrulewidth}{0.5pt} % header underlines
-\renewcommand{\footrulewidth}{0.5pt} % footer underlines
+\fancyhead[RO,LE]{\thepage}
+\fancyhead[LO]{\leftmark}
+\fancyhead[RE]{\rightmark}
+%\lhead[]{\AuthorName}
+%\rhead[]{\rightmark}
+\fancyfoot{}
+%\fancyfoot[L]{} % Empty left footer
+%\fancyfoot[C]{} % Empty center footer
+%\fancyfoot[R]{Page\ \thepage\ of\ \protect\pageref*{LastPage}} % Page numbering for right footer
+%\renewcommand{\headrulewidth}{0.5pt} % header underlines
+\renewcommand{\headrulewidth}{0pt} % header underlines
+%\renewcommand{\footrulewidth}{0.5pt} % footer underlines
 \setlength{\headheight}{13.6pt} % Customize the height of the header
+
+% Remove page numbering from chapter pages
+\makeatletter
+\let\ps@plain\ps@empty
+\makeatother
 
 %-------------------------------------------------------------------------------
 % Suppose to make it easier for LaTeX to place figures and tables where I want.
