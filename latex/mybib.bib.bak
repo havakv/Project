@@ -58,6 +58,7 @@
   Number                   = {2},
   Pages                    = {123–140},
   Volume                   = {24},
+
   Doi                      = {10.1007/bf00058655},
   ISSN                     = {1573-0565},
   Owner                    = {havakv},
@@ -223,6 +224,16 @@
   Booktitle                = {ICML},
   Year                     = {1995},
   Pages                    = {313--321}
+}
+
+@Misc{Spamdata,
+  Title                    = {{UCI} Machine Learning Repository},
+
+  Author                   = {M. Lichman},
+  Year                     = {2013},
+
+  Institution              = {University of California, Irvine, School of Information and Computer Sciences},
+  Url                      = {http://archive.ics.uci.edu/ml}
 }
 
 @Manual{stats,

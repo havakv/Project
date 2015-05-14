@@ -1,0 +1,73 @@
+%\documentclass[11pt,a4paper]{article}
+\documentclass[11pt,a4paper]{book}
+\usepackage[utf8]{inputenc} % Norwegian letters
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{bm}
+\usepackage{float}  % Used for minipage and stuff.
+\usepackage{wrapfig} % Wrap text around figure wrapfig [tab]
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{enumerate} % Use e.g. \begin{enumerate}[a)]
+\usepackage[font={small, it}]{caption} % captions on figures and tables
+\usepackage[toc,page]{appendix} % Page make Appendices title, toc fix table of content 
+\usepackage{todonotes} % Notes. Use \todo{"text"}. Comment out \listoftodos
+\usepackage{microtype} % Improves spacing. Include AFTER fonts
+\usepackage{hyperref} % Use \autoref{} and \nameref{}
+\hypersetup{backref,
+  colorlinks=true,
+  breaklinks=true,
+  %hidelinks, %uncomment to make links black
+  linkcolor=blue,
+  urlcolor=blue,
+  citecolor=blue
+}
+\usepackage[all]{hypcap} % Makes hyperref jup to top of pictures and tables
+%
+%-------------------------------------------------------------------------------
+% Page layout
+%\usepackage{showframe} % Uncomment if you want the margin frames
+\usepackage{fullpage}
+\topmargin=-0.25in
+%\evensidemargin=-0.3in
+%\oddsidemargin=-0.3in
+%\textwidth=6.9in
+%\textheight=9.5in
+\headsep=0.25in
+\footskip=0.50in
+
+%-------------------------------------------------------------------------------
+% Header and footer
+\usepackage{lastpage} % To be able to add last page in footer.
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{fancy} % Use "fancyplain" for header in all pages
+%\renewcommand{\chaptermark}[1]{ \markboth{#1}{} } % Usefull for book?
+\renewcommand{\sectionmark}[1]{ \markright{\thesection\ #1}{} } % Remove formating and nr.
+%\fancyhead[LE, RO]{\footnotesize\leftmark}
+%\fancyhead[RO, LE]{\footnotesize\rightmark}
+\lhead[]{\AuthorName}
+\rhead[]{\rightmark}
+\fancyfoot[L]{} % Empty left footer
+\fancyfoot[C]{} % Empty center footer
+\fancyfoot[R]{Page\ \thepage\ of\ \protect\pageref*{LastPage}} % Page numbering for right footer
+\renewcommand{\headrulewidth}{0.5pt} % header underlines
+\renewcommand{\footrulewidth}{0.5pt} % footer underlines
+\setlength{\headheight}{13.6pt} % Customize the height of the header
+
+%-------------------------------------------------------------------------------
+% Suppose to make it easier for LaTeX to place figures and tables where I want.
+\setlength{\abovecaptionskip}{0pt plus 1pt minus 2pt} % Makes caption come closer to figure.
+%\setcounter{totalnumber}{5}
+%\renewcommand{\textfraction}{0.05}
+%\renewcommand{\topfraction}{0.95}
+%\renewcommand{\bottomfraction}{0.95}
+%\renewcommand{\floatpagefraction}{0.35}
+%
+% Math short cuts for expectation, variance and covariance
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+% Commands for argmin and argmax
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\newcommand*{\medcap}{\mathbin{\scalebox{1.5}{\ensuremath{\cap}}}}% And symbol for statistics
