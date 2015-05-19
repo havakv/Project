@@ -19,7 +19,9 @@
   %hidelinks, %uncomment to make links black
   linkcolor=blue,
   urlcolor=blue,
-  citecolor=blue
+  citecolor=blue,
+  %linktoc=all,
+  linktocpage=true
 }
 \usepackage[all]{hypcap} % Makes hyperref jup to top of pictures and tables
 %
@@ -27,7 +29,8 @@
 % Page layout
 %\usepackage{showframe} % Uncomment if you want the margin frames
 \usepackage{fullpage}
-\topmargin=-0.25in
+\setlength{\marginparwidth}{2cm} % Needed when using todos and book toughether.
+%\topmargin=-0.25in
 %\evensidemargin=-0.3in
 %\oddsidemargin=-0.3in
 %\textwidth=6.9in
@@ -39,12 +42,16 @@
 % Header and footer
 \usepackage{lastpage} % To be able to add last page in footer.
 \usepackage{fancyhdr} % Custom headers and footers
-\pagestyle{fancy} % Use "fancyplain" for header in all pages
-\renewcommand{\chaptermark}[1]{ \markboth{#1}{} } % Usefull for book?
+%\pagestyle{fancy} % Use "fancyplain" for header in all pages
+\pagestyle{fancyplain}
+\renewcommand{\chaptermark}[1]{ \markboth{\thechapter.\ \ #1}{} } % Usefull for book?
 \renewcommand{\sectionmark}[1]{ \markright{\thesection\ #1}{} } % Remove formating and nr.
-\fancyhead[RO,LE]{\thepage}
-\fancyhead[LO]{\leftmark}
-\fancyhead[RE]{\rightmark}
+%\fancyhead[RO,LE]{\thepage \quad \rightmark}
+\fancyhead[LE]{\thepage \quad \quad \leftmark}
+\fancyhead[RO]{\rightmark \quad \quad \thepage}
+\fancyhead[LO]{}
+\fancyhead[RE]{}
+
 %\lhead[]{\AuthorName}
 %\rhead[]{\rightmark}
 \fancyfoot{}
