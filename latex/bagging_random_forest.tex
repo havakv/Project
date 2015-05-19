@@ -11,7 +11,7 @@ Consider a scenario where a learning set $\left\{ \mathbf{x}_i, y_i \right\}_{i=
 \end{align}
 In 1996 Leo Breiman found that this process could be imitated on a single learning set by drawing \textit{bootstrap} samples \todo{referance here?}from the data. He called this method \textit{bagging}, or bootstrap aggregating \cite{Breiman1996}. 
 
-The way it works is to draw $N$ samples (with replacement) from the data set $\left\{ \mathbf{x}_i, y_i \right\}_{i=1}^{N}$, and train a classifier $C_b(\mathbf{x})$ on the samples. Repeat this $B$ times and get the aggregated classifier in  \eqref{eq:aggClass}. The use of bootstrap samples makes the computations for each individual classifier independent. This mean that the training is easy to parallelize for faster computation. However, if the underlying method is interpretable, this will be lost in bagging.
+The way it works is to draw $N$ samples (with replacement) from the data set $\left\{ (\mathbf{x}_i, y_i) \right\}_{i=1}^{N}$, and train a classifier $C_b(\mathbf{x})$ on the samples. Repeat this $B$ times and get the aggregated classifier in  \eqref{eq:aggClass}. The use of bootstrap samples makes the computations for each individual classifier independent. This mean that the training is easy to parallelize for faster computation. However, if the underlying method is interpretable, this will be lost in bagging.
 \colorbox{yellow}{Background on bootstrapping? Se Efron and Tibshirani 1993.} \\
 It is important to note that even though the votes gives proportions of sets predicting class $k$, these proportions should not be used at estimates for the class probabilities. Consider a two class experiment where the probability of class 1 is $0.75$. It is not unlikely that all the bagged classifiers predict class $1$, which gives a good aggregated classifier, but a horrible estimate of the class probability. However, often the underlying method used for each single classifier has a probability estimate (eg. trees). An alternative method to \eqref{eq:aggClass} is to average theses probabilities instead.
 \begin{align}
@@ -88,8 +88,32 @@ This shows that if a classifier is good in the sense that it is order-correct fo
 In \cite{domingos1997Bagging} the sucsess of bagging is explained through a different approach. Empirical experiments are used to validate the hypotheis that  
 bagging reduces a classification learner's error rate because it changes the learner's model space and prior distribution to one that better fits the domain.
 
+
+\subsection{Out-of-bag}
+\label{sub:Out-of-bag}
+\colorbox{yellow}{Maybe move this to bagging?}
+When construction a bootstrap sample $B^* = \left\{ (\mathbf{x}_1^*, y_1^*), \ldots, (\mathbf{x}_n^*, y_n^*) \right\}$ the probability that $(\mathbf{x}_i^*, y_i^*) \neq (\mathbf{x}_j, y_j)$ is $\frac{n-1}{n}$. Thus the joint probability of $B^*$ not containing $(\mathbf{x}_j, y_j)$ is 
+\begin{align}
+  P\left(  (\mathbf{x}_j, y_j) \notin B^*\right) = \left( \frac{n-1}{n}  \right)^n 
+  \xrightarrow{n \rightarrow \infty} e^{-1} \approx 0.37. 
+\end{align}
+Thus for large $n$ the point $(\mathbf{x}_j, y_j)$ will not be used to train $37 \%$ of the trees. Breiman suggested in 1996 \cite{outOfBag} that these points could be used to create an approximation of the misclassification error, with little extra cost. This is done the following way: For eache $(\mathbf{x}_i, y_i)$ construct a prediction $C(\mathbf{x}_i)$ of $y_i$ based only on the trees not trained on $(\mathbf{x}_i, y_i)$. Breiman called this the \textit{Out-of-bag} estimate or \textit{OOB}. 
+
+Test has shown that OOB gives an good approximations of the cross validated error \cite{outOfBag}, but without the large training cost. 
+Hence, sequential classifiers based on bootstrap sampling can report the OOB for each iteration and terminate when the error stabilize. It can also be used instead of cross validation for tuining parameters.
+
+
+
+
+
+
+
+
 \section{Random forests}
 \label{sec:Random forests}
+\todo{forests of forest?}
+\todo{overfitt or overfit?}
+%%fakesubsection Random forests
 Hei \cite{randomforests}.
 \\ \colorbox{yellow}{Boosting seems to outperform RF, but more tuning and takes longer to run?} \\
 \colorbox{yellow}{RF and overfitting in modstat}\\
@@ -123,13 +147,23 @@ In section \ref{sub:Why bagging works} an argument was made for why aggregating 
 \\\colorbox{yellow}{I think it was something about this in modstat.}
 \\\colorbox{yellow}{Do the actual analysis from the original paper. }
 
+\subsection{Overfitting}
+\label{sub:Overfitting}
+\colorbox{yellow}{Write this section when done with ''Why random forrests work''}
+\\\colorbox{yellow}{The same counts for bagging, but the proof is from RF paper.}
+\\\colorbox{yellow}{See p. 596 in modstat on how tree depth can overfitt.}
 
-\subsection{Out-of-bag}
-\label{sub:Out-of-bag}
+
 
 \subsection{Tuning}
 \label{sub:Tuning}
-Something about tuning, and how this is easier to do than for boosting.
+\colorbox{yellow}{Something about tuning, and how this is easier to do than for boosting.}\\
+One of the reasons why random forest is popular is that it is relatively easy to tune. As discussed above, it does not overfit as the number of bootstrap samples $B$ increase. So $B$ can either just be set high, or one can use the OOB error as a stopping criterion on number of iterations (see Section~\ref{sub:Out-of-bag}). It was suggested that the tree depth could be tuned, but in \cite{modstat}'s experience fully grown trees is usually good and results in one less tuning parameter. 
+
+The number of splitting variables $m$ is however an important tuning parameter. As mentioned earlier, $m = \lfloor \sqrt{p} \rfloor$, is a good default value and the optimal $m$ is often close to this value. 
+
+So tuning random forest can often just be on one variable, $m$, that has a good default value. Comparing this to for instance gradient boosting, from Section~\ref{sec:Boosting}, the random forest algorithm might be the preferred out-of-the-box classifier. 
+
 
 \subsection{Robustness and overfitting}
 \label{sub:Robustness and overfitting}

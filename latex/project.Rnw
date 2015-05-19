@@ -21,8 +21,8 @@
 
 \date{\normalsize\today} % Today's date or a custom date
 \begin{document}
-\maketitle
 \frontmatter
+\maketitle
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \listoftodos{}
 \tableofcontents

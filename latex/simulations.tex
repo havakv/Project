@@ -1,9 +1,8 @@
 <<echo=FALSE, cache=FALSE>>=
 set_parent('./project.Rnw')
 @
-
-\todo{New chapter here}
-To measure the performance and explore the applicability of the theory in pracsise, different datasets was used. 
+%
+To measure the performance and explore the how well theory and practice coincide, the methods discussed will be trained and tested on different datasets in this chapter. Some extensions will also briefly be discussed at the end.
 
 \section{Spam dataset}
 \label{sec:Spam dataset}
@@ -11,8 +10,25 @@ To measure the performance and explore the applicability of the theory in pracsi
 \colorbox{yellow}{Look at what others have done.} \\
 \url{http://sci2s.ugr.es/keel/dataset.php?cod=109} Spam data.\\
 \\
-\colorbox{yellow}{If I use categorical variables, should I include section on how the algorithms handles them?}
- \cite{Spamdata}
+\colorbox{yellow}{If I use categorical variables, should I include section on how the algorithms handles them?}\\
+ The first dataset explored is a pretty common dataset in the machine learning world. 
+ Each datapoint in the dataset corresponds to an email, with the binary response telling if an email is spam or not. There are a total of 4601 data points and 57 predictors:
+ \begin{itemize}
+   \item 48 continuous real $[0, 100]$ corresponding to words. Each giving the percentage of words in the email matching that word. 
+   \item 6 continuous real $[0, 100]$ corresponding to characters. Each giving the percentage of characters in the email matching that characters.
+   \item 1 continuous real $[1, \ldots]$ giving average length of uninterrupted sequences of capital letters. 
+   \item 1 continuous integer $[1, \ldots]$ giving length of longest uninterrupted sequence of capital letters.
+   \item 1 continuous integer $[1, \ldots]$ giving total number of capital letters in the email.
+ \end{itemize}
+ For more information on the dataset see \cite{Spamdata}.
+
+ In the tests that follows the spam data was split into a training and test set of same size. The algorithms are first trained on the training set, and the test error in form of $0/1$ misclassification error rate is plotted, i.e.
+ \begin{align}
+   \label{eq:missClassErr} 
+   error =  \frac{1}{n_{test}} \sum_{i = 1}^{n_{test}} I\{C(\mathbf{x}_i) \neq y_i\},
+ \end{align}
+ where $C(\mathbf{x}_i)$ is the prediction based on $\mathbf{x}_i$, and $n_{test}$ is the number of test points. If the goal had been to actually make a spam filter, the error measure would not weight misclassification of spam and non-spam the same. Different costs for misclassification has not been the focus of this project, but for the purpose of testing the behavior of different methods \eqref{eq:missClassErr} works well.
+ 
 
 \section{CART}
 \label{sec:CARTsim}
@@ -181,7 +197,6 @@ Show an example of when bagging and RF fails? If the base classifier is bad, the
 \colorbox{yellow}{Add noise to previous test and see how stable the results are.}
 \section{Phoneme}
 \label{sec:Phoneme}
-\colorbox{yellow}{Should I do both at the same time? So do the plots side by side? Or in different sections like now?}
 \begin{figure}[h!]
 \begin{center}
     \includegraphics[scale=0.5]{./figures/cartCPPhoneme.pdf}
