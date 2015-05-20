@@ -38,6 +38,7 @@
 <<Linear_Classifiers, child='./Linear_Classifiers.tex', cache=TRUE>>=
 @
 %
+\let\cleardoublepage\clearpage
 \chapter{Tree-based methods}
 % Section on Tree-based methods should be and Rnw file.
 <<Tree-based_metods, child='./Tree-based_methods.tex', cache=TRUE>>=
@@ -49,6 +50,7 @@
 <<bagging_random_forest, child='./bagging_random_forest.tex', cache=TRUE>>=
 @
 %
+\let\cleardoublepage\clearpage
 \chapter{Simulations?}
 <<simulations, child='./simulations.tex', cache=TRUE>>=
 @

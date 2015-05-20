@@ -1,28 +1,64 @@
-\section{Metods for validation}
-\label{sec:Metods for validation}
+\chapter{Metods for validation}
+\label{chap:Metods for validation}
 \todo{Find better name}
-\subsection{EPE}
-\label{sub:EPE}
-The engine in prediction problems is to minimize the expected prediction error $\mathrm{EPE}$, under some loss functoin $L$
+\section{EPE}
+\label{sec:EPE}
+The engine in prediction problems is to minimize the expected prediction error $\mathrm{EPE}$ of some function $\hat f$, under some loss function $L$
 \begin{align}
-  \mathrm{EPE}(f) = \E[L(Y-f(X))] = \E_X [\E_Y (L(Y-f(X))|X)].
+  \mathrm{EPE}(\hat f) = \E_{X Y}[L(Y- \hat f(X))] = \E_X [\E_Y (L(Y- \hat f(X))|X)].
 \end{align}
 Thus 
 \begin{align}
-  f^* = \argmin_f \mathrm{EPE}(f) = \argmin_f \E_Y [L(Y-f(X)) | X ].
+  f = \argmin_{\hat f} \mathrm{EPE}(\hat f) = \argmin_{\hat f} \E_Y [L(Y- \hat f(X)) | X ].
 \end{align}
-Under squared error loss, $L(Y-f(X)) = (Y-f(X)^2)$, the solution is 
-$f^*(x) = \E[Y | X=x]$. And under $0/1$ loss $f^*(x)$ is the \textit{Bayes classifier} 
+Under squared error loss, $L(Y-\hat f(X)) = (Y- \hat f(X)^2)$, the solution is 
+$ f(x) = \E[Y | X=x]$. And under $0/1$ loss $ f(x)$ is the \textit{Bayes classifier} 
 \begin{align}
-  f^*(x) = \E[Y | X=x].
+  f(x) = \E[Y | X=x].
 \end{align}
-\\
-\\Bias-varance tradeoff \url{http://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff} \\
-This is also important for classificatoin (see article).
+
+\subsection{Bias-variance tradeoff}
+\label{sub:Bias-variance tradeoff}
+In the regression framework the relation,
+\begin{align}
+  Y = f(X) + \varepsilon,  
+\end{align}
+is assumed, where $\varepsilon$ has zero mean and variance $\sigma^2$.
+Under this assumption $\mathrm{EPE}$ can be decomposed into
+\begin{align}
+  \mathrm{EPE}(\hat f) &=  \E_Y[Y^2] + \E_X[X^2] - \E_{X Y}[2 y \hat f(X)] \notag \\
+                       &= \Var[Y] + \E_Y[Y]^2 + \Var[X] + \E_X[X]^2 - 2 f\: \E_X[\hat f(X)] \notag \\
+                       &= \Var[Y] + \Var[\hat f(X)] + (f - \E_X[\hat f(X)])^2 \notag \\
+                       &= \sigma^2 + \Var[\hat f(X)] + \mathrm{Bias}[\hat f(X)]^2.
+\end{align}
+So to minimize $\mathrm{EPE}(\hat f)$ it is necessary to minimize the variance and bias of $\hat f$. This equation is often referred to as the bias-variance tradeoff as usually when one is decreased the other increase. 
+
+As discussed in \ref{sub:Classification trees}, there is no equally satisfactory decomposition of $\mathrm{EPE}$ under $0/1$-loss, but it is still common to talk about the bias-variance tradeoff in classification as well.
+
+\subsection{Variance for random forest regression}
+\label{sub:Variance for random forest regression}
+Let $T_i(\mathbf{x})$ denote a trained tree. The random forest prediction for $\mathbf{x}$ is 
+\begin{align}
+  \hat f(\mathbf{x}) = \frac{1}{B} \sum_{i = 1}^{B} T_i(\mathbf{x}).
+\end{align}
+It is a somewhat reasonable simplification to assume the threes has the same variance, and that the covariance between trees are the same for all trees,
+\begin{align}
+  \Cov[T_i(\mathbf{x}, T_j(\mathbf{x}))] = \rho \sigma^2, \quad \quad i \neq j,
+\end{align}
+where $\sigma^2$ is the variance of a tree and $\rho$ is the correlation between trees.  
+The variance of $\hat f(\mathbf{x})$ is thus
+\begin{align}
+\Var\left[ \frac{1}{B} \sum_{i = 1}^{B} T_i(\mathbf{x}) \right] 
+&= \frac{1}{B^2} \sum_{i =1}^B \sum_{j= 1}^B \Cov[T_i(\mathbf{x}), T_j(\mathbf{x})] \notag \\
+&= \frac{1}{B^2} \sum_{i =1}^B \left(\sum_{j \neq i} \Cov[T_i(\mathbf{x}), T_j(\mathbf{x})] + \Var[T_i(\mathbf{x})]  \right)\notag \\
+&= \frac{1}{B^2} \sum_{i =1}^B \left( (B-1) \sigma^2 \rho + \sigma^2  \right)\notag \\
+&= \rho \sigma^2 + \sigma^2 \frac{1-\rho}{B}.
+\end{align}
+
 
 \subsection{Cross-validation}
-\label{sub:Cross-validation}
+\label{sec:Cross-validation}
 
 \subsection{Bootstrapping}
-\label{sub:Bootstrapping}
+\label{sec:Bootstrapping}
 For an introduction to Bootstrapping, see \cite{efron1994bootstrap}.

@@ -97,10 +97,10 @@ When construction a bootstrap sample $B^* = \left\{ (\mathbf{x}_1^*, y_1^*), \ld
   P\left(  (\mathbf{x}_j, y_j) \notin B^*\right) = \left( \frac{n-1}{n}  \right)^n 
   \xrightarrow{n \rightarrow \infty} e^{-1} \approx 0.37. 
 \end{align}
-Thus for large $n$ the point $(\mathbf{x}_j, y_j)$ will not be used to train $37 \%$ of the trees. Breiman suggested in 1996 \cite{outOfBag} that these points could be used to create an approximation of the misclassification error, with little extra cost. This is done the following way: For eache $(\mathbf{x}_i, y_i)$ construct a prediction $C(\mathbf{x}_i)$ of $y_i$ based only on the trees not trained on $(\mathbf{x}_i, y_i)$. Breiman called this the \textit{Out-of-bag} estimate or \textit{OOB}. 
+Thus for large $n$ the point $(\mathbf{x}_j, y_j)$ will not be used to train $37 \%$ of the trees. Breiman suggested in 1996 \cite{outOfBag} that these points could be used to create an approximation of the misclassification error, with little extra cost. This is done the following way: For eache $(\mathbf{x}_i, y_i)$ construct a prediction $C(\mathbf{x}_i)$ of $y_i$ based only on the trees not trained on $(\mathbf{x}_i, y_i)$. Breiman called this the \textit{Out-of-bag} estimate or OOB. 
 
 Test has shown that OOB gives an good approximations of the cross validated error \cite{outOfBag}, but without the large training cost. 
-Hence, sequential classifiers based on bootstrap sampling can report the OOB for each iteration and terminate when the error stabilize. It can also be used instead of cross validation for tuining parameters.
+Hence, sequential classifiers based on bootstrap sampling, like bagging, stochastic gradient boosting \ref{sub:Stochastic gradient boosting} and random forest \ref{sec:Random forests}, can report the OOB for each iteration and terminate when the error stabilize. It can also be used instead of cross validation for tuining parameters.
 
 
 
@@ -111,7 +111,7 @@ Hence, sequential classifiers based on bootstrap sampling can report the OOB for
 
 \section{Random forests}
 \label{sec:Random forests}
-\todo{forests of forest?}
+\todo{forests or forest?}
 \todo{overfitt or overfit?}
 %%fakesubsection Random forests
 Hei \cite{randomforests}.
@@ -142,9 +142,76 @@ Intuitively, the correlation between the trees should decrease by reducing $m$, 
 \url{https://stat.ethz.ch/education/semesters/ss2012/ams/slides/v10.2.pdf} \\
 \colorbox{yellow}{The url has nice derivation of bias/variance tradeoff for regression (p. 6)}\\
 \\
-In section \ref{sub:Why bagging works} an argument was made for why aggregating bootstrap samples can improved the prediction power of a classifier.This argument is still valid for the random forest algorithm, but in this section the effect of de-correlating the trees will be investigated.
-\\\colorbox{yellow}{Do regression example and say it is sort of applicable.}
-\\\colorbox{yellow}{I think it was something about this in modstat.}
+In section \ref{sub:Why bagging works} an argument was made for why aggregating bootstrap samples can improved the prediction power of a classifier. This argument is still valid for the random forest algorithm, but in this section the effect of de-correlating the trees will be investigated. As discussed earlier \ref{sub:Classification trees}, the bias-variance tradeoff from regression \ref{sub:Bias-variance tradeoff} is sort of applicable to classification as well. It is easier to study the effect of de-correlating  the trees in the regression framework, so this will be presented first.
+
+\subsubsection{Regression}
+\label{sub:Regression}
+
+Let $T_i(\mathbf{x})$ denote a trained tree. The random forest prediction for $\mathbf{x}$ is the average prediction over all the $B$ trees,
+\begin{align}
+  \hat f(\mathbf{x}) = \frac{1}{B} \sum_{i = 1}^{B} T_i(\mathbf{x}).
+\end{align}
+Let $\sigma$ denote the variance of a tree, and $\rho$ the correlation between trees. In this argument, both parameters are assumed to be the same for all trees. In Appendix~\ref{sub:Variance for random forest regression} it is shown that the variance of the prediction is, 
+\begin{align}
+\label{eq:RFVarReg} 
+  \Var[\hat f(\mathbf{x})] = \rho \sigma^2 + \sigma^2 \frac{1-\rho}{B}.
+\end{align}
+As discussed earlier, large trees are considered relatively unbiased, but with high variance. As the bias is a linear operator, the bias of the ensemble $\hat f(\mathbf{x})$ is the same as for an individual tree $T_i(\mathbf{x})$. From Eq.~\eqref{eq:RFVarReg} it is clear that the second term vanish as $B$ grows, thus bagging and random forest manage to reduce the variance of a method without increasing the bias. To further reduce the variance the first term in in Eq.~\eqref{eq:RFVarReg} must be reduced, which can be accomplished by reducing the correlation $\rho$ between the trees. 
+
+\subsubsection{Classification}
+\label{sub:Classification}
+In he's paper about random forest \cite{randomforests}, Breiman shows that for $0/1$ loss classification, the generalization error for random forests is composed by the strength of the individual classifiers, and the correlation between classifiers in terms of raw margin functions. The following will in principle be a slightly rewritten version of his argument.
+
+A margin function for an ensemble of trees is given by
+\begin{align}
+  mg(\mathbf{x}, y) = \mathrm{ave}_k I\left\{ T_k(\mathbf{x}, \theta) = y \right\} - 
+  \max_{j \neq y} \mathrm{ave}_k I\left\{ T_k(\mathbf{x}, \theta) = j \right\}.
+\end{align}
+Here $T_k(\mathbf{x}, \theta)$ is a single tree in the forest, and $\theta$ represents its parameters. 
+The margin function thus measure the extent to which the vote for the right class exceeds any other class, and is a useful measure for performance of a classifier given point $(\mathbf{x}, y)$.  
+In \ref{sub:Overfitting} it is shown that the margin function for a random forest is a good approximation of
+\begin{align}
+  mr(\mathbf{x}, y) = P_{\theta} (T(\mathbf{x}, \theta) = y) - \max_{j \neq y} P_{\theta}(T(\mathbf{x}, \theta) = j), 
+\end{align}
+for a large forest. The generalization error is given by
+\begin{align}
+  PE^* = P_{\mathbf{x}, y}(mr(\mathbf{x}, y) < 0),
+\end{align}
+and gives a performance measure over the probabilities for $\mathbf{x}$ and $y$. It can be read as the probability for misclassification, and is gives the same value as the expected prediction error $\mathrm{EPE}$ for $0/1$-loss discussed earlier. 
+The strength of a set of classifiers $\left\{ T(\mathbf{x}, \theta) \right\}$ is defined as
+\begin{align}
+  s = \E_{\mathbf{x}, y} [mr(\mathbf{x}, y)]. 
+\end{align}
+Assume that for the rest of this section that $s \geq 0$. 
+
+According to Chebyshev's inequality 
+\begin{align}
+  P_{\mathbf{x}, y} ([mr(\mathbf{x}, y)-s]^2 \geq s^2) \leq 
+  \frac{\E_{\mathbf{x},y}[(mr(\mathbf{x}, y) - s)^2)]}{s^2} =
+  \frac{\Var[mr(\mathbf{x}, y)]}{s^2}.
+\end{align}
+\begin{align}
+  P_{\mathbf{x}, y} ([mr(\mathbf{x}, y)-s]^2 \geq s^2)
+  &= P_{\mathbf{x}, y} (mr(\mathbf{x}, y)^2 \geq mr(\mathbf{x}, y)\: s) \notag \\
+  &= P_{\mathbf{x}, y} (mr(\mathbf{x}, y) \geq s  \cup mr(\mathbf{x}, y) \leq 0) \notag \\
+  & \geq P_{\mathbf{x}, y} (mr(\mathbf{x}, y) < 0)
+\end{align}
+This mean a connection between the generalization error and the variance of the method is
+\begin{align}
+  PE^* \leq  \frac{\Var[mr(\mathbf{x}, y)]}{s^2}.
+\end{align}
+
+Now let us simplify notation by defining
+\begin{align}
+  \hat j(\mathbf{x}, y) 
+\end{align}
+<++>
+
+
+
+
+
+\colorbox{yellow}{I think it was something about this in modstat.}
 \\\colorbox{yellow}{Do the actual analysis from the original paper. }
 
 \subsection{Overfitting}
