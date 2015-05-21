@@ -48,17 +48,22 @@ Hope that \verb+cp+ in \verb+pruning.rpart+ is the same as $\alpha$ in cost comp
 \begin{figure}[h!]
   \centering
   \begin{subfigure}[b]{0.48\textwidth}
-    \includegraphics[width=\textwidth]{./figures/cartFullSpam.pdf}
+    \includegraphics[width=\textwidth]{./figures/cartSmallSpam.pdf}
   \end{subfigure}%
   \quad
   \begin{subfigure}[b]{0.48\textwidth}
     \includegraphics[width=\textwidth]{./figures/cartOptSpam.pdf}
   \end{subfigure}
+  \quad
+  \begin{subfigure}[b]{0.48\textwidth}
+    \includegraphics[width=\textwidth]{./figures/cartOptDevianceSpam.pdf}
+  \end{subfigure}
           %(or a blank line to force the subfigure onto a new line)
   \vspace{1\baselineskip}
-  \caption{Cart on spam data.}
+  \caption{CART on spam data. Trees from \ref{fig:cartCPSpam} are displayed. The green tree has the minimal test error using ''Ginie'' splitting, while the red have a much simpler structure with almost the same test error. The purple tree is the best performing using ''Deviance'' splitting.}
   \label{fig:CartSpam}
 \end{figure}
+\colorbox{yellow}{Write something about how the red tree is the same as the green tree only with more nodes collapsed.}\\
 
 
 
@@ -166,6 +171,9 @@ Do simulations for bagging with different bootstrap sizes. And the same for rand
   \label{fig:baggAndRF}
 \end{figure}
 \todo{Comment on line in Figure~\ref{fig:RFSpam}}
+\colorbox{yellow}{Comment how Figure~\ref{fig:baggingAndRFSpam} is many runs and not different iterations for one run.}
+\\\colorbox{yellow}{That is why it is not smooth.}
+
 
 Simulation 2: \\
 \\
@@ -264,9 +272,7 @@ Show an example of when bagging and RF fails? If the base classifier is bad, the
 \clearpage
 \section{Needs to be done}
 \label{sec:Needs to be done}
-Do RF with 5000 or 50000 as function of $m$. (Maybe). Should not be necessary as the other figure shows how RF don't overfitt.\\
-\\
-Do CART with both Ginie and Deviance (if possible). \\
+Write about deviance splitting in CART\\
 \\
 Do OOB vs CV vs Test error in a figure. \\
 \\

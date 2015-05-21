@@ -1,11 +1,7 @@
-\section{Tree-based methods}
-\label{sec:Tree-based methods}
-\todo{Is boosting a tree method?}
-\colorbox{yellow}{Change name of section if boosting is not a tree-based method}\\
 In Section~\ref{sec:Linear Classifiers}, only very basic linear methods for classification were discussed. The log odds were modeled in a linear fashion and a decision boundary was drawn based on this. In this section the framework is completely different. The linearity assumptions are removed and the multi class case is considered immediately. 
 First, classification trees will be discussed. When this framework is clear, ensemble methods, that try to improve the trees performance, will be presented and compared. This will be done in the following order: Boosting, Bagging and Random forest. 
 %
-\subsection{Classification trees}
+\section{Classification trees}
 \label{sub:Classification trees}
 The idea behind a classification tree is to make local decisions based on a subset of the predictors. This means that the data is split in subsets, that are again independently split in new subsets and so on. At the end the subsets are given a class label based on some vote-measure between the data points (usually the majority).
 \todo{Always majority?}
@@ -23,7 +19,7 @@ This bias-variance tradeoff is important to consider, and there are different me
 \\ \colorbox{yellow}{Rewrite this and maybe put things elsewhere?} 
 \\ \colorbox{yellow}{Maybe something about how we later will look at ensemble methods for lowering either the bias or variance?}
 %
-\subsubsection{CART}
+\subsection{CART}
 \label{subsub:CART}
 <<cartSim, echo=FALSE>>=
 # Simple simulation to get nice areas and tree

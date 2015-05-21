@@ -41,9 +41,9 @@ Let $T_i(\mathbf{x})$ denote a trained tree. The random forest prediction for $\
 \begin{align}
   \hat f(\mathbf{x}) = \frac{1}{B} \sum_{i = 1}^{B} T_i(\mathbf{x}).
 \end{align}
-It is a somewhat reasonable simplification to assume the threes has the same variance, and that the covariance between trees are the same for all trees,
+The trees are created by drawing from the same distributions, so they should be identically distributed. \todo{Is this correct?}
 \begin{align}
-  \Cov[T_i(\mathbf{x}, T_j(\mathbf{x}))] = \rho \sigma^2, \quad \quad i \neq j,
+  \Cov[T_i(\mathbf{x}), T_j(\mathbf{x}))] = \rho \sigma^2, \quad \quad i \neq j,
 \end{align}
 where $\sigma^2$ is the variance of a tree and $\rho$ is the correlation between trees.  
 The variance of $\hat f(\mathbf{x})$ is thus

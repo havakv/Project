@@ -138,7 +138,7 @@ Intuitively, the correlation between the trees should decrease by reducing $m$, 
 \\\colorbox{yellow}{Something about how few tuning parameters RF has compared to boosting}\\
 
 \subsection{Why random forests works}
-\label{sub:Why random forests works}
+\label{sub:Why random forests work}
 \url{https://stat.ethz.ch/education/semesters/ss2012/ams/slides/v10.2.pdf} \\
 \colorbox{yellow}{The url has nice derivation of bias/variance tradeoff for regression (p. 6)}\\
 \\
@@ -151,7 +151,7 @@ Let $T_i(\mathbf{x})$ denote a trained tree. The random forest prediction for $\
 \begin{align}
   \hat f(\mathbf{x}) = \frac{1}{B} \sum_{i = 1}^{B} T_i(\mathbf{x}).
 \end{align}
-Let $\sigma$ denote the variance of a tree, and $\rho$ the correlation between trees. In this argument, both parameters are assumed to be the same for all trees. In Appendix~\ref{sub:Variance for random forest regression} it is shown that the variance of the prediction is, 
+As the trees are created from the same distribution, the are identically distributed \todo{Is this correct?}. Let $\sigma^2$ denote the variance of a tree, and $\rho$ the correlation between trees. In Appendix~\ref{sub:Variance for random forest regression} it is shown that the variance of the prediction is, 
 \begin{align}
 \label{eq:RFVarReg} 
   \Var[\hat f(\mathbf{x})] = \rho \sigma^2 + \sigma^2 \frac{1-\rho}{B}.
@@ -160,71 +160,158 @@ As discussed earlier, large trees are considered relatively unbiased, but with h
 
 \subsubsection{Classification}
 \label{sub:Classification}
-In he's paper about random forest \cite{randomforests}, Breiman shows that for $0/1$ loss classification, the generalization error for random forests is composed by the strength of the individual classifiers, and the correlation between classifiers in terms of raw margin functions. The following will in principle be a slightly rewritten version of his argument.
+For classification there are no equivalent measures to variance of the individual classifiers. One approach is therefore to construct a function based on the classifier and use the variance of the function as a substitute for the variance of the classifier. 
+In he's paper about random forest \cite{randomforests}, Breiman had a similar approach. He showed that for classification, the generalization error (or $\mathrm{EPE}$) for random forests is composed by the strength of the individual classifiers, and the correlation between classifiers in terms of raw margin functions. 
+The following derivation will be a slightly rewritten version of his argument.
 
 A margin function for an ensemble of trees is given by
 \begin{align}
-  mg(\mathbf{x}, y) = \mathrm{ave}_k I\left\{ T_k(\mathbf{x}, \theta) = y \right\} - 
-  \max_{j \neq y} \mathrm{ave}_k I\left\{ T_k(\mathbf{x}, \theta) = j \right\}.
+  mg(\mathbf{x}, y) = \mathrm{ave}_k I\left\{ T_k(\mathbf{x}) = y \right\} - 
+  \max_{j \neq y} \mathrm{ave}_k I\left\{ T_k(\mathbf{x}) = j \right\}.
 \end{align}
-Here $T_k(\mathbf{x}, \theta)$ is a single tree in the forest, and $\theta$ represents its parameters. 
+Here $T_k(\mathbf{x})$ is a single tree in the forest, and $\bm \theta$ represents its parameters. 
 The margin function thus measure the extent to which the vote for the right class exceeds any other class, and is a useful measure for performance of a classifier given point $(\mathbf{x}, y)$.  
 In \ref{sub:Overfitting} it is shown that the margin function for a random forest is a good approximation of
 \begin{align}
-  mr(\mathbf{x}, y) = P_{\theta} (T(\mathbf{x}, \theta) = y) - \max_{j \neq y} P_{\theta}(T(\mathbf{x}, \theta) = j), 
+  mr(\mathbf{x}, y) = P_{\bm \theta} (T(\mathbf{x}, \bm \theta) = y) - \max_{j \neq y} P_{\bm \theta}(T(\mathbf{x}, \bm \theta) = j), 
 \end{align}
 for a large forest. The generalization error is given by
 \begin{align}
   PE^* = P_{\mathbf{x}, y}(mr(\mathbf{x}, y) < 0),
 \end{align}
 and gives a performance measure over the probabilities for $\mathbf{x}$ and $y$. It can be read as the probability for misclassification, and is gives the same value as the expected prediction error $\mathrm{EPE}$ for $0/1$-loss discussed earlier. 
-The strength of a set of classifiers $\left\{ T(\mathbf{x}, \theta) \right\}$ is defined as
+The strength of a set of classifiers $\left\{ T(\mathbf{x}, \bm \theta) \right\}$ is defined as
 \begin{align}
   s = \E_{\mathbf{x}, y} [mr(\mathbf{x}, y)]. 
 \end{align}
-Assume that for the rest of this section that $s \geq 0$. 
-
-According to Chebyshev's inequality 
+Assume that for the rest of this section that $s \geq 0$.  
+According to Chebyshev's inequality,
 \begin{align}
   P_{\mathbf{x}, y} ([mr(\mathbf{x}, y)-s]^2 \geq s^2) \leq 
   \frac{\E_{\mathbf{x},y}[(mr(\mathbf{x}, y) - s)^2)]}{s^2} =
   \frac{\Var[mr(\mathbf{x}, y)]}{s^2}.
 \end{align}
+where
 \begin{align}
   P_{\mathbf{x}, y} ([mr(\mathbf{x}, y)-s]^2 \geq s^2)
   &= P_{\mathbf{x}, y} (mr(\mathbf{x}, y)^2 \geq mr(\mathbf{x}, y)\: s) \notag \\
   &= P_{\mathbf{x}, y} (mr(\mathbf{x}, y) \geq s  \cup mr(\mathbf{x}, y) \leq 0) \notag \\
-  & \geq P_{\mathbf{x}, y} (mr(\mathbf{x}, y) < 0)
+  & \geq P_{\mathbf{x}, y} (mr(\mathbf{x}, y) < 0).
 \end{align}
 This mean a connection between the generalization error and the variance of the method is
 \begin{align}
+  \label{eq:PEVar} 
   PE^* \leq  \frac{\Var[mr(\mathbf{x}, y)]}{s^2}.
 \end{align}
-
-Now let us simplify notation by defining
+It it thus clear that for higher strength of individual trees and lower variance of the ensemble, the methods performance will improve. This should not be a surprise. Further, the variance is investigated to explicitly find a connection to the correlation between the margin functions.  
+First, let us simplify notation by defining
 \begin{align}
-  \hat j(\mathbf{x}, y) 
+  \hat j(\mathbf{x}, y) = \argmax_{j \neq y} P_{\bm \theta}(T(\mathbf{x}, \bm \theta) = j).
 \end{align}
-<++>
+The margin function can now be written as,
+\begin{align}
+  mr(\mathbf{x},y) 
+  &= P_{\bm \theta}(T(\mathbf{x},\bm \theta) = y) - P_{\bm \theta} (T(\mathbf{x}, \bm \theta) = \hat j (\mathbf{x}, y)) \notag \\
+  &= \E_{\bm \theta}[I\{T(\mathbf{x},\bm \theta) = y\} - I\{T(\mathbf{x}, \bm \theta) = \hat j (\mathbf{x}, y)\}],
+\end{align}
+where
+\begin{align}
+  rmg(\bm \theta, \mathbf{x}, y) = I\{T(\mathbf{x},\bm \theta) = y\} - I\{T(\mathbf{x}, \bm \theta) = \hat j (\mathbf{x}, y)\},
+\end{align}
+is called the \textit{raw margin function}.
+
+Let $\bm \theta$ and $\bm \theta'$ be independent identically distributed, and let $f$ be an arbitrary function. Then
+\begin{align}
+  \E_{\bm \theta}[f(\bm \theta)]^2 = \E_{\bm \theta, \bm \theta'}[f(\bm \theta) f(\bm \theta')]. 
+\end{align}
+Using this gives that 
+\begin{align}
+  mr(\mathbf{x}, y)^2  = \E_{\bm \theta, \bm \theta'}[rmg(\bm \theta, \mathbf{x}, y) \: rmg(\bm \theta', \mathbf{x}, y)]. 
+\end{align}
+The variance in Eq.~\eqref{eq:PEVar} can be rewritten the following way.
+\begin{align}
+  \Var(mr(\mathbf{x}, y)) 
+  &= \E_{\mathbf{x}, y}[mr(\mathbf{x}, y)^2] - s^2 \notag \\
+  &= \E_{\mathbf{x}, y}[ \E_{\bm \theta, \bm \theta'}[rmg(\bm \theta, \mathbf{x}, y) \: rmg(\bm \theta', \mathbf{x}, y)]] - s^2.
+\end{align}
+The covariance of the raw margin functions can be expressed as,
+\begin{align}
+  \Cov_{\mathbf{x}, y} [rmg(\bm \theta, \mathbf{x}, y), rmg(\bm \theta', \mathbf{x}, y)] &= \notag \\
+  \E_{\mathbf{x}, y} [rmg(\bm \theta, \mathbf{x}, y) \: rmg(\bm \theta', \mathbf{x}, y)] &-
+  \E_{\mathbf{x}, y} [rmg(\bm \theta, \mathbf{x}, y)]\: \E_{\mathbf{x}, y} [rmg(\bm \theta', \mathbf{x}, y)].
+\end{align}
+Now, assuming the order of expectations are interchangeable, the variance becomes,
+\begin{align}
+  \Var(mr(\mathbf{x}, y)) 
+  = &\E_{\bm \theta, \bm \theta'}[\E_{\mathbf{x}, y}[ rmg(\bm \theta, \mathbf{x}, y) \: rmg(\bm \theta', \mathbf{x}, y)]] - s^2 \notag \\
+  = &\E_{\bm \theta, \bm \theta'}[\Cov_{\mathbf{x}, y} [rmg(\bm \theta, \mathbf{x}, y), rmg(\bm \theta', \mathbf{x}, y)]] \: +\notag \\
+    &\E_{\bm \theta, \bm \theta'} [\E_{\mathbf{x}, y} [rmg(\bm \theta, \mathbf{x}, y)]\: \E_{\mathbf{x}, y} [rmg(\bm \theta', \mathbf{x}, y)]]
+  - s^2 \notag \\
+  \label{eq:VarCovRF} 
+  = &\E_{\bm \theta, \bm \theta'}[\Cov_{\mathbf{x}, y} [rmg(\bm \theta, \mathbf{x}, y), rmg(\bm \theta', \mathbf{x}, y)]].
+\end{align}
+The last equations comes from the fact that $\bm \theta$ and $\bm \theta'$ are independent identically distributed,
+\begin{align}
+  \E_{\bm \theta, \bm \theta'} [\E_{\mathbf{x}, y} [rmg(\bm \theta, \mathbf{x}, y)]\: \E_{\mathbf{x}, y} [rmg(\bm \theta', \mathbf{x}, y)]] 
+  &= \E_{\mathbf{x}, y} [\E_{\bm \theta} [rmg(\bm \theta, \mathbf{x}, y)] \: \E_{\bm \theta'}[rmg(\bm \theta', \mathbf{x}, y)]] \notag \\
+  &= \E_{\mathbf{x}, y} [\E_{\bm \theta} [rmg(\bm \theta, \mathbf{x}, y)]^2]  \notag \\
+  &= s^2.
+\end{align}
+Introducing $\rho(\bm \theta, \bm \theta')$ as the correlation between $rmg(\bm \theta, \mathbf{x}, y)$ and $rmg(\bm \theta', \mathbf{x}, y)$, holding $\bm \theta$, $\bm \theta'$ fixed, and let $sd(\bm \theta)$ be the standard deviation of $rmg(\bm \theta, \mathbf{x}, y)$ holding $\bm \theta$ fixed. \eqref{eq:VarCovRF} can now be expressed as 
+\begin{align}
+  \Var[mr(\mathbf{x}, y)] 
+  &= \E_{\bm \theta, \bm \theta'}[\rho(\bm \theta, \bm \theta') \: sd(\bm \theta) \: sd(\bm \theta')] \notag \\
+  &= \bar \rho \: \E_{\bm \theta}[sd(\bm \theta)]^2 \notag \\
+  \label{eq:RFVarMr} 
+  &\overset{\text{Jensen}}{\leq}  \bar \rho \: \E_{\bm \theta}[\Var_{\mathbf{x}, y}[rmg(\bm \theta, \mathbf{x}, y)]],
+\end{align}
+where $\bar \rho$ is the mean of the correlation, defined by
+\begin{align}
+  \bar \rho = 
+  \frac{\E_{\bm \theta, \bm \theta'}[\rho(\bm \theta, \bm \theta') \: sd(\bm \theta) \: sd(\bm \theta')]}
+  {\E_{\bm \theta, \bm \theta'}[sd(\bm \theta) \: sd(\bm \theta')]}.
+\end{align}
+Further the expectation of variance of the raw margin function, has the following relationship with the strength $s$,
+\begin{align}
+  \E_{\bm \theta}[\Var_{\mathbf{x}, y}[rmg(\bm \theta, \mathbf{x}, y)]] 
+  &= \E_{\bm \theta}[\E_{\mathbf{x}, y}[rmg(\bm \theta, \mathbf{x}, y)^2]] - \E_{\bm \theta}[\E_{\mathbf{x}, y}[rmg(\bm \theta, \mathbf{x}, y)]^2] \notag \\
+  &\overset{\text{Jensen}}{\leq}
+  \E_{\bm \theta}[\E_{\mathbf{x}, y}[rmg(\bm \theta, \mathbf{x}, y)^2]] - \E_{\mathbf{x}, y}[\E_{\bm \theta}[rmg(\bm \theta, \mathbf{x}, y)]]^2 \notag \\
+  &= \E_{\bm \theta}[\E_{\mathbf{x}, y}[rmg(\bm \theta, \mathbf{x}, y)^2]] - s^2 \notag \\
+  \label{eq:RF1mins2} 
+  &\leq 1 - s^2,
+\end{align}
+as $rmg(\bm \theta, \mathbf{x}, y) \in \left\{ -1, 1 \right\}$. Now combining \eqref{eq:RF1mins2}, \eqref{eq:RFVarMr} and \eqref{eq:VarCovRF} yields the bound,
+\begin{align}
+  PE^* \leq \bar \rho  \frac{1 - s^2}{s^2} .
+\end{align}
+So Breiman managed to create a bound for the generalization error only based on the strength $s$ of the individual classifiers, and the correlation between them $\bar \rho$ in terms of raw margin functions. 
+
+For the two class case with $y \in \left\{ -1, 1 \right\}$ the expression simplifies. The raw margin function become $2 I\left\{ T(\mathbf{x}, \bm \theta) = y \right\} - 1$, and $\bar \rho$ becomes the correlation between the trees,
+\begin{align}
+  \bar \rho = \E_{\bm \theta, \bm \theta'}[\rho(T(\mathbf{x}, \bm \theta), T(\mathbf{x}, \bm \theta'))]. 
+\end{align}
 
 
-
-
-
-\colorbox{yellow}{I think it was something about this in modstat.}
-\\\colorbox{yellow}{Do the actual analysis from the original paper. }
 
 \subsection{Overfitting}
 \label{sub:Overfitting}
-\colorbox{yellow}{Write this section when done with ''Why random forrests work''}
-\\\colorbox{yellow}{The same counts for bagging, but the proof is from RF paper.}
-\\\colorbox{yellow}{See p. 596 in modstat on how tree depth can overfitt.}
+Following the reasoning in \ref{sub:Why random forests work}, the margin function for an ensemble of trees is
+\begin{align}
+  mg(\mathbf{x}, y) = \mathrm{ave}_k I\left\{ T_k(\mathbf{x}) = y \right\} - 
+  \max_{j \neq y} \mathrm{ave}_k I\left\{ T_k(\mathbf{x}) = j \right\}.
+\end{align}
+As the trees in random forests are identically distributed \todo{Is this correct?}, $T_k(\mathbf{x})$ is a function of a set of parameters $\bm \theta$, so $T_k(\mathbf{x}) = T(\mathbf{x}, \bm \theta)$. In \cite{randomforests}, Breiman proves that as the number of trees increase, for almost surely all sequences $\bm \theta_1, \bm \theta_2, \ldots$, $PE^*$ converges to 
+\begin{align}
+  P_{\mathbf{x}, y} (P_{\bm \theta} (T(\mathbf{x}, \bm \theta) = y) - \max_{j \neq y} P_{\bm \theta}(T(\mathbf{x}, \bm \theta) = j) < 0).
+\end{align}
+This shows that random forests do not overfitt by increasing the number of trees. The same argument of course counts for bagging. This is a desirable property that for instance boosting does not have. 
 
+From \ref{sub:Why random forests work} it is clear that the strength of the individual trees plays a major part in the performance of the ensemble. The individual trees, however, can be overfitted. Segal showed this in \cite{segal2004},  by controlling the depth of the individual trees in random forest regression, and experiencing small gains. 
 
 
 \subsection{Tuning}
 \label{sub:Tuning}
-\colorbox{yellow}{Something about tuning, and how this is easier to do than for boosting.}\\
 One of the reasons why random forest is popular is that it is relatively easy to tune. As discussed above, it does not overfit as the number of bootstrap samples $B$ increase. So $B$ can either just be set high, or one can use the OOB error as a stopping criterion on number of iterations (see Section~\ref{sub:Out-of-bag}). It was suggested that the tree depth could be tuned, but in \cite{modstat}'s experience fully grown trees is usually good and results in one less tuning parameter. 
 
 The number of splitting variables $m$ is however an important tuning parameter. As mentioned earlier, $m = \lfloor \sqrt{p} \rfloor$, is a good default value and the optimal $m$ is often close to this value. 
@@ -232,10 +319,9 @@ The number of splitting variables $m$ is however an important tuning parameter. 
 So tuning random forest can often just be on one variable, $m$, that has a good default value. Comparing this to for instance gradient boosting, from Section~\ref{sec:Boosting}, the random forest algorithm might be the preferred out-of-the-box classifier. 
 
 
-\subsection{Robustness and overfitting}
-\label{sub:Robustness and overfitting}
+\subsection{Robustness}
+\label{sub:Robustness}
 \colorbox{yellow}{Say something about how adding noise compares to adding noise in boosting?}
-\\ \colorbox{yellow}{Maybe overfitting is covered enough in the Why random forests work?}
 
 \subsection{Variable importance}
 \label{sub:Variable importance}
