@@ -4,6 +4,13 @@
 This project is an introduction to classification in statistics. The goal was get an overview of methods used in classification and further use this knowledge in a master thesis. \\
 \\
 The idea in classification is to find to which of a set of categories a new observation belongs. This is done by creating a classifier on a training set of observed data $(\mathbf{x}_i, y_i)$, for $i = 1, \ldots, N$, where $\mathbf{x}_i$ is a vector of features, and $y_i$ is to which class it belongs. Over time, there are a variety of approaches, no one methods that can claim the title of the best. This is because different assumptions fits different datasets, and the size of the training data is also important to consider. \\
+\\
+In this project it will be assumed that the cost of misclassifying a point is $1$ for all points, and $0$ for correct classification. This is often referred to as the $0/1$ loss function, 
+\begin{align}
+  L(\hat y, y) = I\left\{ \hat y \neq y \right\},
+\end{align}
+where $\hat y$ is the prediction.
+
 \colorbox{yellow}{Write something about how bad methods with larger training sets do better than good algorithms with smaller sets}\\
 \colorbox{yellow}{Should do some simulations on this.}\\
 \colorbox{yellow}{Say something about unordered classes.}

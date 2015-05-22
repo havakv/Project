@@ -14,7 +14,7 @@ Adaboost.M1 \url{http://cseweb.ucsd.edu/~yfreund/papers/IntroToBoosting.pdf} Thi
 \colorbox{yellow}{Some say it is sensitive to noisy data and outliers}\\
 \colorbox{yellow}{Something about how boosting decrease bias. By tuning tree size, you can control the bias variance tradeoff.}\\
 \\
-Adaboost.M1 was created in (1997) and \colorbox{yellow}{some history}. Hastie et al. (2006) \cite{modstat} described it as the ''the most popular boosting algorithm'', and Breiman (1996) \cite{Breiman1996} as ''the best of-the-shelf classifier in the world'' . Only the two class case will be discussed here, but it generalizes easily. The method requires, both for two class and multi class, that the weak classifiers has prediction error less than $1/2$.
+Adaboost.M1 was created in (1997) and \colorbox{yellow}{some history}. Hastie et al. (2006) \cite{modstat} described it as the ''the most popular boosting algorithm'', and Breiman (1996) \cite{Breiman1996} as ''the best of-the-shelf classifier in the world'' . Only the two class case will be discussed here, but it generalizes easily. The method requires, both for two class and multiclass, that the weak classifiers has prediction error less than $1/2$.
 
 Consider output variable coded as $Y \in \{-1, 1\}$. A weak classifier $C(X)$ is chosen to do the ground work. This can for instance be a shallow tree, or some other algorithm that does not perform much better than random guessing. All the data points $\mathbf{x}_i$, $i = 1, 2, \ldots, N$, are initialized with weights $w_i = 1/N$. Then, for $m = 1$, $C_m(\mathbf{x}_i)$ is trained using the weights. $err_m$ is used as a performance measure for $C_m(\mathbf{x}_i)$.
 \begin{align}
@@ -80,7 +80,7 @@ From the figure it is clear that exponential and misclassification loss decrease
 \end{align}
 This locks very similar to the exponential loss, but might be the preferred choice. The main difference is that for increasingly negative margins the exponential loss penalize exponentially, while the binomial deviance penalize linearly. Therefore the binomial deviance is not as vulnerable in noisy settings. The binomial deviance is a very common choice and will be the main focus for the rest of Section~\ref{sec:Boosting}. 
 
-For multi class cases, the binomial deviance generalizes to the \textit{multinomial deviance}
+For multiclass cases, the binomial deviance generalizes to the \textit{multinomial deviance}
 \begin{align}
   \label{eq:multinomialDeviance} 
   &L(y, \mathbf{f}( \mathbf{x })) = - \sum^{K}_{k=1} I\{y = k\} \log p_k(\mathbf{x}), \\
