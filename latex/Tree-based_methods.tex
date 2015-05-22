@@ -81,6 +81,7 @@ What CART does instead is to grow a large tree, and then \textit{prune} it back 
 
 Let $T_0$ denote the full tree and $T$ a subtree of $T_0$ that can be obtained by pruning. $|T|$ is the number of terminal nodes and $R_{\tau}$ is the region of of the terminal node $\tau$. The goal is to find the subtree $T_\alpha$ that minimizes some cost function $C_\alpha (T)$. It is usually the total terminal node impurity, but regularized by penalizing on the number of terminal nodes
 \begin{align}
+  \label{eq:CostPruning} 
   C_\alpha (T) = \sum_{\tau = 1}^{|T|} Q_\tau (T) + \alpha |T|. 
 \end{align}
 This method is referred to as \textit{const-complexity pruning}.

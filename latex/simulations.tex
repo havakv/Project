@@ -41,7 +41,7 @@ Hope that \verb+cp+ in \verb+pruning.rpart+ is the same as $\alpha$ in cost comp
 \begin{center}
     \includegraphics[scale=0.5]{./figures/cartCPSpam.pdf}
 \end{center}
-\caption{CART on spam data. Test error as function of number of splits, where the number of splits depend on tuning parameter $\alpha$.}
+\caption{CART on spam data. Test error as function of number of splits. The two lines represent trees grown with ''Geni'' and ''Deviance'' splitting criteria. A large tree is grown and the different points are test error of pruned trees depending on the tuning parameter $\alpha$ in \eqref{eq:CostPruning}. The green and magenta line marks the minima for the two lines. }
 \label{fig:cartCPSpam}
 \end{figure}
 
@@ -60,7 +60,7 @@ Hope that \verb+cp+ in \verb+pruning.rpart+ is the same as $\alpha$ in cost comp
   \end{subfigure}
           %(or a blank line to force the subfigure onto a new line)
   \vspace{1\baselineskip}
-  \caption{CART on spam data. Trees from \ref{fig:cartCPSpam} are displayed. The green tree has the minimal test error using ''Ginie'' splitting, while the red have a much simpler structure with almost the same test error. The purple tree is the best performing using ''Deviance'' splitting.}
+  \caption{CART on spam data. Trees from \ref{fig:cartCPSpam} are displayed. The green tree has the minimal test error using ''Ginie'' splitting, while the red have a much simpler structure with almost the same test error. The magenta tree is the best performing using ''Deviance'' splitting.}
   \label{fig:CartSpam}
 \end{figure}
 \colorbox{yellow}{Write something about how the red tree is the same as the green tree only with more nodes collapsed.}\\
@@ -162,7 +162,7 @@ Do simulations for bagging with different bootstrap sizes. And the same for rand
   \quad
   \begin{subfigure}[b]{0.48\textwidth}
     \includegraphics[width=\textwidth]{./figures/RFSpam.pdf}
-    \caption{Test error for RF as function of m, for different number of bootstrap samples.}
+    \caption{RF as func. of m, for different number of bootstrap samples. Vertical line marks $\sqrt{p}$.}
     \label{fig:RFSpam}
   \end{subfigure}
           %(or a blank line to force the subfigure onto a new line)
@@ -172,7 +172,7 @@ Do simulations for bagging with different bootstrap sizes. And the same for rand
 \end{figure}
 \todo{Comment on line in Figure~\ref{fig:RFSpam}}
 \colorbox{yellow}{Comment how Figure~\ref{fig:baggingAndRFSpam} is many runs and not different iterations for one run.}
-\\\colorbox{yellow}{That is why it is not smooth.}
+\\\colorbox{yellow}{That is why it is not smooth compared to Figure~\ref{fig:OOBvsTestvsCV}.}
 
 
 Simulation 2: \\
@@ -189,6 +189,24 @@ Show an example of when bagging and RF fails? If the base classifier is bad, the
 \colorbox{yellow}{Do simulation to show diffenece between \eqref{eq:aggClass} and \eqref{eq:aggClassP}.}
 
 
+\begin{figure}[h!]
+\begin{center}
+    \includegraphics[scale=0.5]{./figures/RFTreeDepth.pdf}
+\end{center}
+\caption{Random forest on spam data, with different tree depths. The numbers in the legend indicates the minimum number of nodes in a terminal node.}
+\label{fig:RFTreeDepth}
+\end{figure}
+\colorbox{yellow}{Benefits of not growing full sized trees is that it is faster, and some regularization.}
+
+
+\begin{figure}[h!]
+\begin{center}
+    \includegraphics[scale=0.5]{./figures/OOBvsTestvsCV.pdf}
+\end{center}
+\caption{Out-of-bag, 10-fold cross-validation and test error for random forest on spam data.}
+\label{fig:OOBvsTestvsCV}
+\end{figure}
+\colorbox{yellow}{Comment how they are very random, so Figure~\ref{fig:OOBvsTestvsCV} varies a lot.}\\
 
 
 
@@ -259,7 +277,7 @@ Show an example of when bagging and RF fails? If the base classifier is bad, the
   \quad
   \begin{subfigure}[b]{0.48\textwidth}
     \includegraphics[width=\textwidth]{./figures/RFPhoneme.pdf}
-    \caption{Test error for RF as function of m, for different number of bootstrap samples.}
+    \caption{Test error for RF as function of m, for different number of bootstrap samples. Vertical line marks $\sqrt{p}$.}
     \label{fig:RFPhoneme}
   \end{subfigure}
           %(or a blank line to force the subfigure onto a new line)
@@ -273,8 +291,6 @@ Show an example of when bagging and RF fails? If the base classifier is bad, the
 \section{Needs to be done}
 \label{sec:Needs to be done}
 Write about deviance splitting in CART\\
-\\
-Do OOB vs CV vs Test error in a figure. \\
 \\
 Do bagging/RF with probs instead of vote. (The two different methods in Bagging section). Write something about how p should be faster for B around 0.5.\\
 \\

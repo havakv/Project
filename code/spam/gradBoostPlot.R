@@ -49,6 +49,7 @@ plot(itVec, Errors[,1], type="l", xlab = "iterations", ylab = "error", ylim = yl
 for (j in 2:nfit1) {
     lines(itVec, Errors[, j], col = j+1)
 }
+grid()
 legend(x = "topright", as.character(fit1$shrinkVec[1:nfit1]), lty = rep(1, nfit1), lwd = rep(1, nfit1), 
        col = 1:nfit1+1, bg="white")
 off(NOPRINT)
@@ -82,6 +83,7 @@ plot(itVec, Errors[,1], type="l", xlab = "iterations", ylab = "error", ylim = yl
 for (j in 2:nfit1) {
     lines(itVec, Errors[, j], col = j+1)
 }
+grid()
 legend(x = "topright", as.character(fit1$shrinkVec[1:nfit1]), lty = rep(1, nfit1), lwd = rep(1, nfit1), 
        col = 1:nfit1+1, bg="white")
 off(NOPRINT)
@@ -127,6 +129,7 @@ plot(itVec, Errors[,1], type="l", xlab = "iterations", ylab = "error", ylim = yl
 for (j in 2:nfit2) {
     lines(itVec, Errors[, j], col = j+1)
 }
+grid()
 legend(x = "topright", as.character(fit2$bagVec[1:nfit2]), lty = rep(1, nfit2), lwd = rep(1, nfit2), 
        col = 2:(nfit2+1), bg="white")
 off(NOPRINT)
@@ -166,6 +169,7 @@ plot(itVec, Errors[,1], type="l", xlab = "iterations", ylab = "error", ylim = yl
 for (j in 2:nit3) {
     lines(itVec, Errors[, j], col = j+1)
 }
+grid()
 legend(x = "topright", as.character(fit3$interactonVec[1:nit3]), lty = rep(1, nit3), lwd = rep(1, nit3), 
        col = 1:nit3+1, bg="white")
 off(NOPRINT)
