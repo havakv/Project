@@ -1,19 +1,30 @@
-%\documentclass[11pt,a4paper]{article}
-\documentclass[11pt,a4paper]{book}
-\usepackage[utf8]{inputenc} % Norwegian letters
-\usepackage{amsmath,amsfonts,amssymb}
-\usepackage{natbib} % Need to use bibiliography other than plain.
-\usepackage{bm}
-\usepackage{float}  % Used for minipage and stuff.
-\usepackage{wrapfig} % Wrap text around figure wrapfig [tab]
-\usepackage{graphicx}
-\usepackage{subcaption}
-\usepackage{enumerate} % Use e.g. \begin{enumerate}[a)]
-\usepackage[font={small, it}]{caption} % captions on figures and tables
-\usepackage[toc,page]{appendix} % Page make Appendices title, toc fix table of content 
-\usepackage{todonotes} % Notes. Use \todo{"text"}. Comment out \listoftodos
-\usepackage{microtype} % Improves spacing. Include AFTER fonts
-\usepackage{hyperref} % Use \autoref{} and \nameref{}
+% -------------------------------------------------------------------
+%  @LaTeX-class-file{
+%     filename        = "project-class.cls",
+%     version         = "0",
+%     date            = "23 May 2015",
+%     codetable       = "ISO/ASCII",
+%     docstring       = "A thesis class for project at NTNU."
+% --------------------------------------------------------------------
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesClass{myclass}[2014/05/23 My custom project class]
+\LoadClass[11pt, a4paper]{book}
+
+\RequirePackage[utf8]{inputenc} % Norwegian letters
+\RequirePackage{amsmath,amsfonts,amssymb}
+\RequirePackage{natbib} % Need to use bibiliography other than plain.
+\RequirePackage{bm}
+\RequirePackage{float}  % Used for minipage and stuff.
+\RequirePackage{wrapfig} % Wrap text around figure wrapfig [tab]
+\RequirePackage{graphicx}
+\RequirePackage{subcaption}
+\RequirePackage{enumerate} % Use e.g. \begin{enumerate}[a)]
+\RequirePackage[font={small, it}]{caption} % captions on figures and tables
+\RequirePackage[toc,page]{appendix} % Page make Appendices title, toc fix table of content 
+\RequirePackage{todonotes} % Notes. Use \todo{"text"}. Comment out \listoftodos
+\RequirePackage{microtype} % Improves spacing. Include AFTER fonts
+\RequirePackage{hyperref} % Use \autoref{} and \nameref{}
 \hypersetup{backref,
   colorlinks=true,
   breaklinks=true,
@@ -24,12 +35,12 @@
   %linktoc=all,
   linktocpage=true
 }
-\usepackage[all]{hypcap} % Makes hyperref jup to top of pictures and tables
+\RequirePackage[all]{hypcap} % Makes hyperref jup to top of pictures and tables
 %
 %-------------------------------------------------------------------------------
 % Page layout
-%\usepackage{showframe} % Uncomment if you want the margin frames
-\usepackage{fullpage}
+%\RequirePackage{showframe} % Uncomment if you want the margin frames
+\RequirePackage{fullpage}
 \setlength{\marginparwidth}{2cm} % Needed when using todos and book toughether.
 %\topmargin=-0.25in
 %\evensidemargin=-0.3in
@@ -41,8 +52,8 @@
 
 %-------------------------------------------------------------------------------
 % Header and footer
-\usepackage{lastpage} % To be able to add last page in footer.
-\usepackage{fancyhdr} % Custom headers and footers
+\RequirePackage{lastpage} % To be able to add last page in footer.
+\RequirePackage{fancyhdr} % Custom headers and footers
 %\pagestyle{fancy} % Use "fancyplain" for header in all pages
 \pagestyle{fancyplain}
 \renewcommand{\chaptermark}[1]{ \markboth{\thechapter.\ \ #1}{} } % Usefull for book?

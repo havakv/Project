@@ -48,7 +48,7 @@ mceLog <- sum(predLog != Ytest)/Ntest
 #cat("Logistic MCE:\t", mceLog, "\n")
 
 # Plot
-printfig("ldaVsLogistic", NOPRINT)
+printfig2("ldaVsLogistic", NOPRINT)
 xlim <- c(min(c(x1[,1], x2[,1])), max(c(x1[,1], x2[,1])))
 ylim <- c(min(c(x1[,2], x2[,2])), max(c(x1[,2], x2[,2])))
 plot(x1, col = 'blue', pch = 1, xlim = xlim, ylim = ylim,

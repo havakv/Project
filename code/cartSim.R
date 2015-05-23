@@ -24,13 +24,13 @@ X <- getX(sim1)
 fit <- rpart(Y~., data = X)
 
 # plot tree
-printfig("cartTree1", NOPRINT)
+printfig2("cartTree1", NOPRINT)
 plot(fit)
 text(fit, use.n = FALSE)
 off(NOPRINT)
 
 # plot areas. NOT GENERAL!!!!!
-printfig("cartAreas1", NOPRINT)
+printfig2("cartAreas1", NOPRINT)
 plot(sim1, xlab = "X1", ylab = "X2")
 sp <- fit$split
 abline(h = sp[1,4])

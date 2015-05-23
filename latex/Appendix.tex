@@ -4,6 +4,7 @@
 \section{EPE}
 \label{sec:EPE}
 The engine in prediction problems is to minimize the expected prediction error $\mathrm{EPE}$ of some function $\hat f$, under some loss function $L$
+\\\colorbox{yellow}{Loss function should be $L(Y, f)$ not $L(Y-f)$}
 \begin{align}
   \mathrm{EPE}(\hat f) = \E_{X Y}[L(Y- \hat f(X))] = \E_X [\E_Y (L(Y- \hat f(X))|X)].
 \end{align}

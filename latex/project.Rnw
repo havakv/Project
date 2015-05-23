@@ -1,7 +1,6 @@
 % Created: Tue Feb 17 15:26:53 CET 2015
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\documentclass{ecsproject}      % Use the Thesis Style
-\input{ecsproject.tex}
+\documentclass{project-class} % Use style of project-class based on book.
 %-----------------------------------------------------------------------------
 %	TITLE SECTION
 %-----------------------------------------------------------------------------
