@@ -31,8 +31,6 @@
   Number                   = {1},
   Pages                    = {5–32},
   Volume                   = {45},
-
-  __markedentry            = {[havakv:]},
   Doi                      = {10.1023/a:1010933404324},
   ISSN                     = {0885-6125},
   Owner                    = {havakv},
@@ -198,8 +196,6 @@
   Number                   = {1},
   Pages                    = {55–77},
   Volume                   = {1},
-
-  __markedentry            = {[havakv:6]},
   Doi                      = {10.1023/a:1009778005914},
   ISSN                     = {1384-5810},
   Owner                    = {havakv},
@@ -215,6 +211,24 @@
   Year                     = {2009},
   Number                   = {1},
   Volume                   = {2}
+}
+
+@Article{CHAID,
+  Title                    = {An Exploratory Technique for Investigating Large Quantities of Categorical Data},
+  Author                   = {Kass, G. V.},
+  Journal                  = {Applied Statistics},
+  Year                     = {1980},
+  Number                   = {2},
+  Pages                    = {119},
+  Volume                   = {29},
+
+  __markedentry            = {[havakv:6]},
+  Doi                      = {10.2307/2986296},
+  ISSN                     = {0035-9254},
+  Owner                    = {havakv},
+  Publisher                = {JSTOR},
+  Timestamp                = {2015.05.23},
+  Url                      = {http://dx.doi.org/10.2307/2986296}
 }
 
 @InProceedings{kohavi1996bias,
@@ -243,6 +257,31 @@
   Url                      = {http://archive.ics.uci.edu/ml}
 }
 
+@Article{ID3,
+  Title                    = {Induction of Decision Trees},
+  Author                   = {Quinlan, J.R.},
+  Journal                  = {Machine Learning},
+  Year                     = {1986},
+  Number                   = {1},
+  Pages                    = {81–106},
+  Volume                   = {1},
+
+  __markedentry            = {[havakv:]},
+  Doi                      = {10.1023/a:1022643204877},
+  ISSN                     = {0885-6125},
+  Owner                    = {havakv},
+  Publisher                = {Springer Science + Business Media},
+  Timestamp                = {2015.05.23},
+  Url                      = {http://dx.doi.org/10.1023/A:1022643204877}
+}
+
+@Book{C4.5,
+  Title                    = {C4.5: Programs for Machine Learning},
+  Author                   = {Quinlan, J Ross},
+  Publisher                = {Morgan Kaufmann Publishers},
+  Year                     = {1993}
+}
+
 @Manual{stats,
   Title                    = {R: A Language and Environment for Statistical Computing},
 
@@ -252,6 +291,13 @@
   Year                     = {2014},
 
   Url                      = {http://www.R-project.org/}
+}
+
+@Article{segal2004,
+  Title                    = {Machine learning benchmarks and random forest regression},
+  Author                   = {Segal, Mark R},
+  Journal                  = {Center for Bioinformatics \& Molecular Biostatistics},
+  Year                     = {2004}
 }
 
 @Manual{rpart,
