@@ -1,12 +1,10 @@
-\section{Linear Classifiers}
-\label{sec:Linear Classifiers}
 It is reasonable to start with two of the most intuitive and famous methods for classification, LDA and Logistic Regression. The point of the following chapters is to give a general introduction to some methods for classification, and therefore only two classes will be considered. Later this framework will be expanded to include multiple classes.
 %
-\subsection{LDA and Fisher's linear discriminant}
-\label{sub:LDA and Fisher's linear discriminant}
+\section{LDA and Fisher's linear discriminant}
+\label{sec:LDA and Fisher's linear discriminant}
 This section should be considered a summary from \cite[ch.~4.1.4]{bishop} and \cite[ch.~4.3]{modstat}, and no further references to these books will be made. 
 
-\subsubsection{Fisher's linear discriminant}
+\subsection{Fisher's linear discriminant}
 \label{sub:Fisher's linear discriminant}
 The idea in Fisher's linear discriminant is to find a discriminant hyperplane in the features $\mathbf{x}\in \mathbb{R}^D$. This is done by finding a vector $\mathbf{w}$, that the features are projected on and thus reducing the problem to one dimension in 
 \begin{align}
@@ -40,7 +38,7 @@ From \eqref{eq:SB}, it follows that that $(\bm{\mu}_2 - \bm{\mu}_1)$ is proporti
 \end{align}
 Note that even the terms \textit{variance} and \textit{covariance} are used, the expressions are not averaged. This is just to simplify notation. \\
 \\
-\subsubsection{LDA}
+\subsection{LDA}
 \label{sub:LDA}
 Before LDA is introduced it is useful to make the goal of classification more explicit. One way is through defining the \textit{expected prediction error} or $\mathrm{EPE}$.
 \todo{$X$, $\mathbf{x}$, $Y$, $y$} 
@@ -98,8 +96,8 @@ When using LDA, the parameters are not know, so they are usually estimated from 
 \end{align}
 It now becomes clear that both LDA and Fisher's linear discriminant do the same projection. The only difference between the methods is that because of the Gaussian assumptions LDA can give a suggested threshold.
 %
-\subsection{Logistic Regression}
-\label{sub:Logistic Regression}
+\section{Logistic Regression}
+\label{sec:Logistic Regression}
 The goal of logistic regression is to model the posterior class-probabilities and create a classifier based on them. As the probabilities should sum to one, it is obvious that they can not be linear in $\mathbf{x}$. The approach is therefore to assume the log-odds are linear in $\mathbf{x}$. 
 \begin{align}
   \label{eq:logclass} 
@@ -131,8 +129,9 @@ So the likelihood and log-likelihood are
 There is no analytical solution that maximizes the likelihood, so one has to use a numerical optimization algorithm to find the MLE.  
 After $\bm \beta$ is found, one can create a classifier the same way as for logistic regression, i.e. classify to $\mathcal{C}_2$ if \eqref{eq:logclass} is positive and to $\mathcal{C}_1$ if not. However, this assumes the logit link gives accurate probabilities. Often the choice of logit link is based on lack of a better choice so there is little suggesting the probabilities are particularly accurate. It might therefore be better to classify based on a threshold found by e.g. cross-validation. 
 \\\colorbox{yellow}{Have hear a lot that logit is used because: "Why not".}
+\colorbox{yellow}{Write something about how it is a probabilistic classifier.}
 %
-\subsection{LDA and Logistic Regression}
+\section{Comparing LDA and Logistic Regression}
 \label{sub:LDA and Logistic Regre}
 <<ldaVsLogistic, echo = FALSE>>=
 source("../code/ldaVsLogistic.R")

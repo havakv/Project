@@ -23,6 +23,15 @@
 \frontmatter
 \maketitle
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{Preface}
+\addcontentsline{toc}{chapter}{Preface}
+Something about the project and thanks to Håvard Rue.
+
+\clearpage
+\begin{abstract}
+Write something interesting here!!!!! And make the margins larger (text more narrow).
+\end{abstract}
+
 \listoftodos{}
 \tableofcontents
 
@@ -33,6 +42,8 @@
 <<introduction, child='./introduction.tex', chache=TRUE>>=
 @
 %
+\let\cleardoublepage\clearpage
+\chapter{Linear classifiers}
 % Section on Linear classifiers should really be an Rnw file. Just use .tex because of my editor...
 <<Linear_Classifiers, child='./Linear_Classifiers.tex', cache=TRUE>>=
 @
@@ -40,7 +51,7 @@
 \let\cleardoublepage\clearpage
 \chapter{Tree-based methods}
 % Section on Tree-based methods should be and Rnw file.
-<<Tree-based_metods, child='./Tree-based_methods.tex', cache=TRUE>>=
+<<Classification_trees, child='./Classification_trees.tex', cache=TRUE>>=
 @
 %
 <<boosting, child='./boosting.tex', cache=TRUE>>=
@@ -51,25 +62,17 @@
 %
 \let\cleardoublepage\clearpage
 \chapter{Simulations?}
+\colorbox{yellow}{Numerical experiments?}\\
 <<simulations, child='./simulations.tex', cache=TRUE>>=
 @
 
-
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\clearpage
-\begin{appendices}
-  %% Use \section
-  %% Can use \phantomsection in text to get back
-  \input{./Appendix.tex}
-\end{appendices}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
 %\bibliographystyle{plain}
 %\bibliographystyle{apa}
 \bibliographystyle{authordate1}
-%\bibliography{referances}
 \bibliography{mybib}
+\addcontentsline{toc}{chapter}{Bibliography}
 %\begin{thebibliography}{99} % At most 99 references.
     %\bibitem{bishop}
   %Christopher M. Bishop,
@@ -85,5 +88,14 @@
     %Jerome H. Friedman. \url{http://statweb.stanford.edu/~jhf/ftp/trebst.pdf}
 %% Use "bibit" to generate bibitem
 %\end{thebibliography}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\clearpage
+\appendix
+\begin{appendices}
+  %% Use \section
+  %% Can use \phantomsection in text to get back
+  \input{./Appendix.tex}
+\end{appendices}
 %
 \end{document}

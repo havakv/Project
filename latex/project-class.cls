@@ -21,7 +21,7 @@
 \RequirePackage{subcaption}
 \RequirePackage{enumerate} % Use e.g. \begin{enumerate}[a)]
 \RequirePackage[font={small, it}]{caption} % captions on figures and tables
-\RequirePackage[toc,page]{appendix} % Page make Appendices title, toc fix table of content 
+\RequirePackage[toc]{appendix} % Page make Appendices title, toc fix table of content 
 \RequirePackage{todonotes} % Notes. Use \todo{"text"}. Comment out \listoftodos
 \RequirePackage{microtype} % Improves spacing. Include AFTER fonts
 \RequirePackage{hyperref} % Use \autoref{} and \nameref{}
@@ -58,14 +58,11 @@
 \pagestyle{fancyplain}
 \renewcommand{\chaptermark}[1]{ \markboth{\thechapter.\ \ #1}{} } % Usefull for book?
 \renewcommand{\sectionmark}[1]{ \markright{\thesection\ #1}{} } % Remove formating and nr.
-%\fancyhead[RO,LE]{\thepage \quad \rightmark}
-\fancyhead[LE]{\thepage \quad \quad \leftmark}
-\fancyhead[RO]{\rightmark \quad \quad \thepage}
+\fancyhead[LE]{\thepage \quad \quad \nouppercase{\leftmark}}
+\fancyhead[RO]{\rightmark \quad \quad \nouppercase{\thepage}}
 \fancyhead[LO]{}
 \fancyhead[RE]{}
 
-%\lhead[]{\AuthorName}
-%\rhead[]{\rightmark}
 \fancyfoot{}
 %\fancyfoot[L]{} % Empty left footer
 %\fancyfoot[C]{} % Empty center footer
@@ -89,7 +86,26 @@
 %\renewcommand{\bottomfraction}{0.95}
 %\renewcommand{\floatpagefraction}{0.35}
 %
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Abstract
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newenvironment{abstract}
+{
+  \thispagestyle{empty}
+  \null\null\null\null
+  \null\null\null\null
+  \begin{center}
+    \setlength{\parskip}{0pt}
+    {\underline{ABSTRACT} \par}
+    \bigskip
+  \end{center}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Math short cuts for expectation, variance and covariance
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\E}{\mathrm{E}}
 \newcommand{\Var}{\mathrm{Var}}
 \newcommand{\Cov}{\mathrm{Cov}}
@@ -97,4 +113,7 @@
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
 
-\newcommand*{\medcap}{\mathbin{\scalebox{1.5}{\ensuremath{\cap}}}}% And symbol for statistics
+\newcommand*{\medcap}{\mathbin{\scalebox{1.5}{\ensuremath{\cap}}}}% And symbol, U (uppside down), for statistics
+
+
+
