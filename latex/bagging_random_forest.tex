@@ -312,7 +312,7 @@ From \ref{sub:Why random forests work} it is clear that the strength of the indi
 
 \subsection{Tuning}
 \label{sub:Tuning}
-One of the reasons why random forest is popular is that it is relatively easy to tune. As discussed above, it does not overfit as the number of bootstrap samples $B$ increase. So $B$ can either just be set high, or one can use the OOB error as a stopping criterion on number of iterations (see Section~\ref{sub:Out-of-bag}). It was suggested that the tree depth could be tuned, but in \cite{modstat}'s experience fully grown trees is usually good and results in one less tuning parameter. 
+One of the reasons why random forest is popular is that it is relatively easy to tune. As discussed above, it does not overfit as the number of bootstrap samples $B$ increase. So $B$ can either just be set high, or one can use the OOB error as a stopping criterion on number of iterations (see Section~\ref{sub:Out-of-bag}). It was suggested that the tree depth could be tuned, but in \cite{modstat}'s experience, fully grown trees usually works just fine and results in one less tuning parameter. 
 
 The number of splitting variables $m$ is however an important tuning parameter. As mentioned earlier, $m = \lfloor \sqrt{p} \rfloor$, is a good default value and the optimal $m$ is often close to this value. 
 
