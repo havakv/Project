@@ -28,24 +28,32 @@ To measure the performance and explore the how well theory and practice coincide
    error =  \frac{1}{n_{test}} \sum_{i = 1}^{n_{test}} I\{C(\mathbf{x}_i) \neq y_i\},
  \end{align}
  where $C(\mathbf{x}_i)$ is the prediction based on $\mathbf{x}_i$, and $n_{test}$ is the number of test points. If the goal had been to actually make a spam filter, the error measure would not weight misclassification of spam and non-spam the same. Different costs for misclassification has not been the focus of this project, but for the purpose of testing the behavior of different methods \eqref{eq:missClassErr} works well.
- 
+\\ 
+\\
+In all the following experiments, the methods are trained on half the data and tested on the other half. All methods are trained using the same datapoints. 
 
 \section{CART}
 \label{sec:CARTsim}
 Simulation 1: \\
-Plot pruned and unpruned tree. \\
 Plot test error for different \verb+cp+ parameters, or (same) different pruning. From full tree, back to a stump.\\
-Hope that \verb+cp+ in \verb+pruning.rpart+ is the same as $\alpha$ in cost complexity pruning??? Hei
-
-\begin{figure}[h!]
+\\
+First classification trees were fitted to the data using \verb+rpart+ \cite{rpart}. Large trees was grown using both the Gini index and deviance. They were then pruned back to a single node and the test errors for the different trees were plotted as function of the tree size in Figure~\ref{fig:cartCPSpam}. 
+%
+\begin{figure}[h!tp]
 \begin{center}
     \includegraphics[scale=0.5]{./figures/cartCPSpam.pdf}
 \end{center}
-\caption{CART on spam data. Test error as function of number of splits. The two lines represent trees grown with ''Geni'' and ''Deviance'' splitting criteria. A large tree is grown and the different points are test error of pruned trees depending on the tuning parameter $\alpha$ in \eqref{eq:CostPruning}. The green and magenta line marks the minima for the two lines. }
+\caption{CART on spam data. Test error as function of number of splits. The two lines represent trees grown with Gini index and deviance splitting criterion. A large tree is grown and the different points are test error of pruned trees depending on the tuning parameter $\alpha$ in \eqref{eq:CostPruning}. The green and magenta line marks the minima for the two lines. }
 \label{fig:cartCPSpam}
 \end{figure}
+%
+Both methods show how small trees are underfitted while large trees are overfitted, and somewhere in the middle, the optimal tree can be found. 
 
-\begin{figure}[h!]
+The green line marks the minimum test error using the Gini index. This graph is very flat around the minimum, so in terms of interpretability, a smaller tree can be chosen without sacrificing much of the predicting power. In Figure~\ref{fig:CartSpam}, the optimal tree (green) is displayed along the tree from the red line. Their performance is almost identical, but the red tree give a nicer view of the data. Usually the trees are plotted with the splits like in Figure~\ref{fig:cart}. Here, they are left out because they serve no purpose in the context of the experiment. If the goal was to find which factors were most important in terms of classifying spam, they would be investigated more closely.
+
+The magenta figure in Figure~\ref{fig:CartSpam}, is the tree grown using deviance in Figure~\ref{fig:cartCPSpam} corresponding to the magenta line.In this experiment, it outperforms all the Gini trees, though only barely. 
+
+\begin{figure}[h!tp]
   \centering
   \begin{subfigure}[b]{0.48\textwidth}
     \includegraphics[width=\textwidth]{./figures/cartSmallSpam.pdf}
@@ -60,7 +68,7 @@ Hope that \verb+cp+ in \verb+pruning.rpart+ is the same as $\alpha$ in cost comp
   \end{subfigure}
           %(or a blank line to force the subfigure onto a new line)
   \vspace{1\baselineskip}
-  \caption{CART on spam data. Trees from \ref{fig:cartCPSpam} are displayed. The green tree has the minimal test error using ''Ginie'' splitting, while the red have a much simpler structure with almost the same test error. The magenta tree is the best performing using ''Deviance'' splitting.}
+  \caption{CART on spam data. Trees from \ref{fig:cartCPSpam} are displayed. The green tree has the minimal test error using the Ginie index, while the red have a much simpler structure with almost the same test error. The magenta tree is the best performing using the deviance splitting criterion.}
   \label{fig:CartSpam}
 \end{figure}
 \colorbox{yellow}{Write something about how the red tree is the same as the green tree only with more nodes collapsed.}\\
@@ -290,8 +298,6 @@ Show an example of when bagging and RF fails? If the base classifier is bad, the
 \clearpage
 \section{Needs to be done}
 \label{sec:Needs to be done}
-Write about deviance splitting in CART\\
-\\
 Do bagging/RF with probs instead of vote. (The two different methods in Bagging section). Write something about how p should be faster for B around 0.5.\\
 \\
 Write about categorical variables after simulation study. In modstat 9.2.4. discussion for CART\\
@@ -305,35 +311,39 @@ Maybe repeat some of experiments with added noise?\\
 Find convention on capitalization. Logistic regression, logistic regression, Logistic Regression. \\
 Both in text and in section names.\\
 \\
+Clean up code so everything after quit is removed\\
+\\
+Check that equations are correct\\
+\\
 
 
 \section{Questions}
 \label{sec:Questions}
-Should the bias-variance tradeoff be descussed before CART (as now), or inside the CART section?\\
+How much should be explained in the simulation part? Give all inputparameters?\\
 \\
-Past or present tense in the introduction?\\
+How does linear classifier fit into this project?\\
+\\
+Should the bias-variance tradeoff be descussed before CART (as now), or inside the CART section?\\
 \\
 Should I call it Simulations, or Numerical experiments, or somehting else? (Just experiments?)\\
 \\
 Should I have Preface, abstract (also in norwegian), Project overview?\\
 \\
-Shoud I include something about the practical use of classification, in the introduction?\\
+Should Linear classifiers be a seperate chapter? \\
 \\
-Should Linera classifiers be a seperate chapter? \\
+Should all methods Boosting, Bagging, RF get their own chapter?\\
 \\
 Should the derivations of "Why random forest work" be put in the appendex, and only the idea and results discussed in that section?\\
 \\
-Should i remove the equation number on equations note referred to?\\
+Should I remove the equation number on equations note referred to?\\
 \\
 Preface and abstract.\\
 \\
-Where should notation be? \\
+Where should the notation section be? \\
 \\
 Should I remove section about computation time in the introduction? \\
 \\
 Ordered classes in introduction.\\
 \\
 Should i mention for Logistic regression that by regularizing it it pretty powerfull? And that QDA and RDA exist aswell?\\
-\\
-How does linear classifier fit into this project?\\
 \\

@@ -1,18 +1,18 @@
-\chapter{Metods for validation}
+\chapter{Methods for validation}
 \label{chap:Metods for validation}
 \todo{Find better name}
 \section{EPE}
 \label{sec:EPE}
 The engine in prediction problems is to minimize the expected prediction error $\mathrm{EPE}$ of some function $\hat f$, under some loss function $L$
-\\\colorbox{yellow}{Loss function should be $L(Y, f)$ not $L(Y-f)$}
+\\\colorbox{yellow}{Find good notation $\hat f$ when comparing with sections.}
 \begin{align}
-  \mathrm{EPE}(\hat f) = \E_{X Y}[L(Y- \hat f(X))] = \E_X [\E_Y (L(Y- \hat f(X))|X)].
+  \mathrm{EPE}(\hat f) = \E_{X Y}[L(Y, \hat f(X))] = \E_X [\E_Y (L(Y, \hat f(X))|X)].
 \end{align}
 Thus 
 \begin{align}
-  f = \argmin_{\hat f} \mathrm{EPE}(\hat f) = \argmin_{\hat f} \E_Y [L(Y- \hat f(X)) | X ].
+  f = \argmin_{\hat f} \mathrm{EPE}(\hat f) = \argmin_{\hat f} \E_Y [L(Y, \hat f(X)) | X ].
 \end{align}
-Under squared error loss, $L(Y-\hat f(X)) = (Y- \hat f(X)^2)$, the solution is 
+Under squared error loss, $L(Y, \hat f(X)) = (Y- \hat f(X)^2)$, the solution is 
 $ f(x) = \E[Y | X=x]$. And under $0/1$ loss $ f(x)$ is the \textit{Bayes classifier} 
 \begin{align}
   f(x) = \E[Y | X=x].
