@@ -1,13 +1,13 @@
 \section{Remove this!!!!!!!!}
 \label{sec:Remove this!!!!!!!!}
 
-This project is an intro level literary study of statistical classification. The goal is get an overview of methods used in classification and further use this knowledge in a master thesis. This project will start by introducing the concepts of classification through some historically well known linear classifiers. They will only be discussed briefly. The main focus will be on tree-based methods, hereunder CART, boosting, bagging and random forest. Lastly a \colorbox{yellow}{simulation study} is performed to investigate the methods performance. 
+This project is an intro level literary study of statistical classification. The goal is get an overview of methods used in classification and further use this knowledge in a master thesis. This project will start by introducing the concepts of classification through some historically important linear classifiers. They will only be discussed briefly. The main focus will be on tree-based methods, and hereunder CART, boosting, bagging and random forest. Lastly a \colorbox{yellow}{simulation study} is performed to further investigate the method's performance. 
 \\
 \\
-In statistics and machine learning classification is the problem of finding to which category, out of a set of categories, a new observation belongs. This is done by creating a classifier on a training set of observed data, $(\mathbf{x}_i, y_i)$, for $i = 1, \ldots, N$, where $\mathbf{x}_i$ is a vector of features (covariates, predictors, etc.), and $y_i$ is the class label of the observation. 
+In statistics and machine learning, classification is the problem of finding to which category, out of a set of categories, a new observation belongs. This is done by creating a classifier on a training set of observed data, $(\mathbf{x}_i, y_i)$, for $i = 1, \ldots, N$, where $\mathbf{x}_i$ is a vector of features (covariates, predictors, etc.), and $y_i$ is the class label of the observation. 
 
-These sort of problems arise in applications like picture and speech recognition, computer vision, spam filters, document classification, medical imaging and many other.
-Over time, a variety of approaches have been suggested. Some might give a highly interpretable method, while others are better at the prediction task. Their performance might differ in different applications as well. There is still not a method that outperforms all other, so knowledge about a variety of algorithms is beneficial. 
+These sort of problems arise in applications like picture and speech recognition, computer vision, spam filters, document classification and medical imaging.
+Over time, a variety of approaches have been suggested. Some might give a highly interpretable method, while others have more accurate predictions. Their performance might differ in different applications as well. There is still not found a single method that outperforms all other, so knowledge about a variety of algorithms is beneficial. 
 \\
 \\
 In this project it is assumed that the cost of misclassifying a point is $1$ for all points, and $0$ for correct classification. This is often referred to as $0/1$ classification, or the $0/1$ loss function, 
@@ -16,21 +16,19 @@ In this project it is assumed that the cost of misclassifying a point is $1$ for
 \end{align}
 Here $\hat y$ is the prediction given by the classifier. 
 
-The alternative would be to assign weights to different misclassifications. For example, a lending institution might consider it five times worse that a customer defaults on his/hers, than not giving a loan to a customer that is able meet all payments. Usually \todo{is this true?}, it is not hard to generalize algorithms to meet such requirements, but this still not of interest for this project.
+The alternative would be to assign weights to different misclassifications. For example, a lending institution might consider it five times worse that a customer defaults, than not giving a loan to a customer that is able meet all payments. Usually \todo{is this true?}, it is not hard to generalize algorithms to meet such requirements, but it is still considered outside the scope of this project.
 
-It is also assumed the classes are unordered. That means the response has no ordering, like colors or pictures. An example of ordered classes are tax rates, or feelings (bad, fine, great). Ordered classes require special techniques and are considered outside the scope of this project. 
+It is also assumed the classes are unordered. That means the response has no ordering, like colors or pictures. An example of ordered classes are tax rates, or feelings (bad, fine, great). Ordered classes require special techniques and will therefore not be considered here. 
 \\
 \\
 A common subclass for classification is \textit{probabilistic classificaton}. These algorithms does not just output the predicted class, but give a probability distribution over all the classes. I.e. they give the probability of the instance to be a member of each of the possible classes. This is very useful in fields like data mining. 
+Some of the algorithms covered in this project are probabilistic, but the focus will be on their ability to predict the right class, not on the accuracy of their suggested probability distribution.
+\\
+\\
+Another important aspect of a classifier is the time it use to complete its computations. Often a weaker algorithm can outperform a stronger algorithm if the weaker has more data. Some application have huge amounts of data, so standard methods for classification are not able to do the computations, and other methods need to be proposed. The popular term ''Big data'' relates to these problems. In this project computation time will generally not be addressed. \colorbox{yellow}{Should I say why???}
+\\
 
-Some of the algorithms covered in this project are probabilistic, but the focus will be on their ability to predict the right class, not on the accuracy of the suggested probability distribution.
-\\
-\\
-An important aspect of a classifier is the time it use to complete its computation. Often a weaker algorithm can outperform a stronger algorithm, if it has more data. Some application have huge amounts of data, so standard methods for classification are not able to do the computations, and other methods has to be proposed. The popular term ''Big data'' relates to these problems. In this project computation time will generally not be addressed. \colorbox{yellow}{Should I say why???}
-\\
-
-\colorbox{yellow}{Write something about how bad methods with larger training sets do better than good algorithms with smaller sets?}\\
-\colorbox{yellow}{Should do some simulations on this.}\\
+\colorbox{yellow}{Should do some simulations on difference in dataset size?.}\\
 \colorbox{yellow}{Say something about unordered classes.}
 
 

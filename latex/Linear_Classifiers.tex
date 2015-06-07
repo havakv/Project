@@ -1,16 +1,20 @@
-It is reasonable to start with two of the most intuitive and famous methods for classification, LDA and Logistic Regression. The point of the following chapters is to give a general introduction to some methods for classification, and therefore only two classes will be considered. Later this framework will be expanded to include multiple classes.
+\section{Deletesec}
+\label{sec:Deletesec}
+It is reasonable to start with two of the most intuitive and famous methods for classification, LDA and logistic regression. 
+The point of this chapter is to give an introduction to classification through the use of these methods. They will only be considered in their most general form, and only with two classes. The term linear classifier refers to the fact that the decision boundary is linear in the features $\mathbf{x}$.
 %
 \section{LDA and Fisher's linear discriminant}
 \label{sec:LDA and Fisher's linear discriminant}
-This section should be considered a summary from \cite[ch.~4.1.4]{bishop} and \cite[ch.~4.3]{modstat}, and no further references to these books will be made. 
+LDA and Fisher's linear discriminant are in principle the same method, but they differ in the whay they are derived. Both will be showed in this section. The arguments are largely based on \cite{bishop} and \cite{modstat}, so no further references to these books will be made. 
 
 \subsection{Fisher's linear discriminant}
 \label{sub:Fisher's linear discriminant}
-The idea in Fisher's linear discriminant is to find a discriminant hyperplane in the features $\mathbf{x}\in \mathbb{R}^D$. This is done by finding a vector $\mathbf{w}$, that the features are projected on and thus reducing the problem to one dimension in 
+The idea of Fisher's linear discriminant is to find a discriminant hyperplane in the features $\mathbf{x}\in \mathbb{R}^D$. This is done by finding a vector $\mathbf{w}$, that the features are projected on and thus reducing the problem to one dimension,
 \begin{align}
   z = \mathbf{w}'\mathbf{x}.
 \end{align}
-If $\mathbf{w}$ is chosen well, one can find a threshold $t$, and classify to class $\mathcal{C}_1$ if $z > t$ and to class $\mathcal{C}_2$ if not. The problem is therefore, how to find the vector $\mathbf{w}$ that gives the best class separation. One approach is to let $\mathbf{w}$ be proportional to the vector between the class means, i.e. $\mathbf{w} \propto (\bm{\mu}_2 - \bm{\mu}_1)$, where $\bm{\mu}_k = \sum_{i \in \mathcal{C}_k} \mathbf{x}_i/N_k$, and $N_k$ is the number of training points in $\mathcal{C}_k$. However, this does not take into account the orientation of the points around the mean. This causes problems if the variance is high in some direction perpendicular to $(\bm{\mu}_2 - \bm{\mu}_1)$. Fisher's approach is to also take this within-class variance into account, by minimize it on the projected line. So he want the $\mathbf{w}$ that maximize the between-class variance $(\mu_2 - \mu_1)^2$ and minimize the within-class variance $s_1^2 + s_2^2$. 
+If $\mathbf{w}$ is chosen well, one can find a threshold $t$, and classify to class $\mathcal{C}_1$ if $z > t$ and to class $\mathcal{C}_2$ if $z \leq t $. The problem is really therefore to find the vector $\mathbf{w}$ that gives the best class separation. One approach is to let $\mathbf{w}$ be proportional to the vector between the class means, i.e. $\mathbf{w} \propto (\bm{\mu}_2 - \bm{\mu}_1)$, where $\bm{\mu}_k = \sum_{i \in \mathcal{C}_k} \mathbf{x}_i/N_k$, and $N_k$ is the number of training points in $\mathcal{C}_k$. 
+However, this does not take into account the orientation of the points around the mean, and is therefore often a bad choice. Fisher's approach was to also take the \textit{within-class} variance into account, by minimize it on the projected line. So he want the $\mathbf{w}$ that maximize the between-class variance $(\mu_2 - \mu_1)^2$ and minimize the within-class variance $s_1^2 + s_2^2$. 
 \begin{align}
   \label{eq:fisherMax} 
   \mathbf{w} &= \argmax_{\mathbf{v}} \frac{(\mu_2 - \mu_1)^2}{s_1^2 + s_2^2} \\
@@ -44,7 +48,7 @@ Before LDA is introduced it is useful to make the goal of classification more ex
 \todo{$X$, $\mathbf{x}$, $Y$, $y$} 
 Let $\hat C(\mathbf{x})$ be a classifier, and $L$ the loss function the method tries to minimize. As mentioned in the introduction, only $0/1$ loss will be considered here, and $L$ takes the form,
 \begin{align}
-  L(\hat C(\mathbf{x}, y)) = I\{ \hat C(\mathbf{x}) \neq y \}. 
+  L(\hat C(\mathbf{x}), y) = I\{ \hat C(\mathbf{x}) \neq y \}. 
 \end{align}
 The expected prediction error is then defined as,
 \begin{align}
