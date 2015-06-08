@@ -12,7 +12,7 @@ To measure the performance and explore the how well theory and practice coincide
 \\
 \colorbox{yellow}{If I use categorical variables, should I include section on how the algorithms handles them?}\\
  The first dataset explored is a pretty common dataset in the machine learning world. 
- Each datapoint in the dataset corresponds to an email, with the binary response telling if an email is spam or not. There are a total of 4601 data points and 57 predictors:
+ Each data point in the dataset corresponds to an email, with the binary response telling if an email is spam or not. There are a total of 4601 data points and 57 predictors:
  \begin{itemize}
    \item 48 continuous real $[0, 100]$ corresponding to words. Each giving the percentage of words in the email matching that word. 
    \item 6 continuous real $[0, 100]$ corresponding to characters. Each giving the percentage of characters in the email matching that characters.
@@ -30,14 +30,14 @@ To measure the performance and explore the how well theory and practice coincide
  where $C(\mathbf{x}_i)$ is the prediction based on $\mathbf{x}_i$, and $n_{test}$ is the number of test points. If the goal had been to actually make a spam filter, the error measure would not weight misclassification of spam and non-spam the same. Different costs for misclassification has not been the focus of this project, but for the purpose of testing the behavior of different methods \eqref{eq:missClassErr} works well.
 \\ 
 \\
-In all the following experiments, the methods are trained on half the data and tested on the other half. All methods are trained using the same datapoints. 
+In all the following experiments, the methods are trained on half the data and tested on the other half. All methods are trained using the same data points. 
 
 \section{CART}
 \label{sec:CARTsim}
 Simulation 1: \\
 Plot test error for different \verb+cp+ parameters, or (same) different pruning. From full tree, back to a stump.\\
 \\
-First classification trees were fitted to the data using \verb+rpart+ \cite{rpart}. Large trees was grown using both the Gini index and deviance. They were then pruned back to a single node and the test errors for the different trees were plotted as function of the tree size in Figure~\ref{fig:cartCPSpam}. 
+First classification trees were fitted to the data using \verb+rpart+ by \cite{rpart}. Large trees was grown using both the Gini index and deviance. They were then pruned back to a single node and the test errors for the different trees were plotted as function of the tree size in Figure~\ref{fig:cartCPSpam}. 
 %
 \begin{figure}[h!tp]
 \begin{center}
@@ -76,64 +76,30 @@ The magenta figure in Figure~\ref{fig:CartSpam}, is the tree grown using devianc
 
 
 
-\section{Boosting}
-\label{sec:SimBoosting}
-Need to to simulations of boosting.
-\subsection{AdaBoost}
-\label{sub:SimAdaBoost}
-\colorbox{yellow}{Need to look into the use of bootstrap samples, as they do better in the simulations.} 
-\\ \colorbox{yellow}{Show difference between using weak and strong classifiers.}\\
-\\
-Simulation 1: \\
-Chose, 4 or 5 different amount of depths of trees used. Plot test error as function of boosting iterations.\\
-\\
-In Figure~\ref{fig:adaboostSpam}, it is clear that the results are better for deeper trees. This is quite surprising, as according to theory weak classifiers are needed. \\
-\colorbox{yellow}{Find some explanation!}\\
-\colorbox{yellow}{Not possible to fit more than 30 threes in adaboost from adabag.}
-\\
-\begin{figure}[h!]
+\section{Adaboost}
+\label{sec:SimAdaBoost}
+Adaboost was fitted to the spam data using the package \verb+adabag+ by \cite{adabag}. It use the \verb+rpart+ implementation of CART in Section~\ref{sec:CARTsim} as base classifiers. The main tuning parameters in Adaboost is the number of iterations, and the tree depth. In Figure~\ref{fig:adaboostSpam}, the test error is plotted as function of iterations, for different tree depths. It is clear that the algorithm does pretty well after few iterations, and outperforms CART easily. Only a maximum of 300 iterations were done, but by the look of it, Adaboost seems quite robust to overfitting. 
+
+Surprisingly, Adaboost does better for deeper trees. It is expected to overfit for larger trees, but it does not. One possible explanation could be that there is higher order interactions between the features in the dataset. It is not possible to fit trees deeper than $30$ in the \verb+adabag+ package, but it would have been interesting to see how the performance developed for even deeper trees.
+%
+\begin{figure}[h!tp]
 \begin{center}
     \includegraphics[scale=0.5]{./figures/adaboostSpam.pdf}
 \end{center}
-\caption{AdaBoost on spam data. For different tree depths.}
+\caption{Adaboost on spam data. Each line represent a tree depth.}
 \label{fig:adaboostSpam}
 \end{figure}
+%
+\section{Gradient boosting}
+\label{sec:SimGradBoost}
+Gradient boosting is a very powerful method, but requires a lot of tuning. The goal here was not to find the optimal tuning parameters for the spam dataset, but rather to investigate the effect of changing different parameters. The package \verb+gbm+ by \cite{gbm} was used to fit the gradient boosting with deviance loss.
 
-Simulation 2: \\
-With and without bootstraping. Maybe include this in Simulation 1.
-
-\subsection{Gradient boosting}
-\label{sub:SimGradBoost}
-\colorbox{yellow}{Both gradient and stochastic.}\\
-\colorbox{yellow}{Problems with gbm. See tutorial}
-\url{https://vimeo.com/71992876} \\
-\url{http://www.datarobot.com/blog/r-getting-started-with-data-science/}
-\\ \colorbox{yellow}{Should I include offset in the model?}
-\\ \colorbox{yellow}{Make adaboost with gbm as good as with adabag}
-\\ \colorbox{yellow}{Use gbm.fit, as it should be faster for ''power users''} \\
-\url{http://www.saedsayad.com/docs/gbm2.pdf} \colorbox{yellow}{Guide to gbm package}\\
-\\
-Simulation 1:\\
-Plot error as function of iterations. This should be done for different shrinkage parameters.\\
-Consider plotting training error as well.\\
-\\
-\begin{figure}[h!]
-\begin{center}
-    \includegraphics[scale=0.5]{./figures/gradboostSpamShrink2.pdf}
-\end{center}
-\caption{Gradient boosting on spam data. The shrinkage of each line is specified in the legend.}
-\label{fig:gradboostSpamShrink2}
-\end{figure}
-
-Simulation 2:\\
-Plot error as function of iterations, for different \verb+bag.fractions+, and report time for the different baggigs.\\
-\\
-\begin{figure}[h!]
+\begin{figure}[htbp]
   \centering
   \begin{subfigure}[b]{0.48\textwidth}
-    \includegraphics[width=\textwidth]{./figures/gradboostSpamStoch.pdf}
-    \caption{Different bootstrap fractions.}
-    \label{fig:gradboostSpamStoch}
+    \includegraphics[width=\textwidth]{./figures/gradboostSpamShrink2.pdf}
+    \caption{Different shrinkages $\nu$.}
+    \label{fig:gradboostSpamShrink2}
   \end{subfigure}%
   \quad
   \begin{subfigure}[b]{0.48\textwidth}
@@ -143,17 +109,28 @@ Plot error as function of iterations, for different \verb+bag.fractions+, and re
   \end{subfigure}
           %(or a blank line to force the subfigure onto a new line)
   \vspace{1\baselineskip}
-  \caption{Stochastic gradient boosting on spam data. Give some parameter values here!!!}
-  \label{fig:StochasticGradBoost}
+  \caption{Gradient boosting on spam data.}
+  \label{fig:GradBoostSpam}
 \end{figure}
-\todo{parameters in Figure~\ref{fig:StochasticGradBoost}}
-\colorbox{yellow}{Comment that there are unusually deep trees in Figure~\ref{fig:gradboostSpamDepth}}
 
-Simulation 3:\\
-Use \verb+interaction.depth+ (nr of splits) to set depth of tree, and see how that affect error as function of nr of iteratoins/trees.\\
-\\ \colorbox{yellow}{Comment that not additive model as many nodes is better than stumps. See modstat.}
-\\ \colorbox{yellow}{Figure~\ref{fig:gradboostSpamDepth}: see p.~13} \url{http://www.stat.cmu.edu/~ryantibs/datamining/lectures/25-boost.pdf}\\
+The optimal number of iterations is highly dependent on the shrinkage parameter (see Section~\ref{sub:Shrinkage}). In Figure~\ref{fig:gradboostSpamShrink2} the test error is plotted against number of boosting iterations. Each line represent a different shrinkage. It is clear from the plot that for lower shrinkage, the number of iteration needed increase. This mean shrinkage comes as a cost in terms of computations. However, the worst performing line is that without shrinkage ($\nu = 1$), although not a very large difference. In this case it seems like the is no point with $\nu < 0.1$ as there is no gain in test error.
 
+It is also clear form the plot that gradient boosting can overfit, but note that many iterations are needed, so there is no evidence that it is less robust than Adaboost.
+
+As with Adaboost, the depth of the trees plays an important role. In Figure~\ref{fig:gradboostSpamDepth} test error for different tree depths are displayed. \verb+gbm+ does not take depth as a parameter, but a parameter called \verb+interaction.depth+, which represent the interactions in Section~\ref{sub:Tree size}. $1$ is an additive model, $2$ is a model with up to second order interactions. In principle \verb+interaction.depth+$+1$ gives the maximum number of terminal nodes.
+
+The figure show the same trend as Adaboost did. Deeper trees give better results, although the difference is much smaller for gradient boosting.
+\\
+%
+\begin{figure}[htbp]
+\begin{center}
+    \includegraphics[scale=0.5]{./figures/gradboostSpamStoch.pdf}
+\end{center}
+\caption{Stochastic gradient boosting on spam data. The bootstrap fractions are specified in the legend.}
+\label{fig:StochasticGradBoost}
+\end{figure}
+\\
+Stochastic gradient boosting was mentioned as a small modification of gradient boosting in Section~\ref{sub:Stochastic gradient boosting}. The only difference is that a subset of the training data is drawn (without replacement) at each iteration. \verb+gbm+ refers to this parameter as the \verb+bag.fraction+. In Figure~\ref{fig:StochasticGradBoost}, the test error is plotted for different bootstrap fractions. From the figure is looks like there is little gain in error from introducing randomness. However, for bootstrap fractions down to $0.5$ the performance is not worse. As a smaller dataset requires less computations, there is still some gain in doing stochastic gradient boosting here.
 
 \section{Bagging and Random Forest}
 \label{sec:BaggandRFSim}
@@ -244,7 +221,7 @@ Show an example of when bagging and RF fails? If the base classifier is bad, the
 \begin{center}
     \includegraphics[scale=0.5]{./figures/adaboostPhoneme.pdf}
 \end{center}
-\caption{AdaBoost on Phoneme data. For different tree depths.}
+\caption{Adaboost on Phoneme data. For different tree depths.}
 \label{fig:adaboostPhoneme}
 \end{figure}
 
@@ -315,10 +292,17 @@ Clean up code so everything after quit is removed\\
 \\
 Check that equations are correct\\
 \\
+Random forests or Random forest? \\
+\\
+Find first reference to cross-validation, and write section in appendix.\\
+\\
+
 
 
 \section{Questions}
 \label{sec:Questions}
+Need to borrow book again. \\
+\\
 How much should be explained in the simulation part? Give all inputparameters?\\
 \\
 How does linear classifier fit into this project?\\
@@ -350,4 +334,14 @@ Should i mention for Logistic regression that by regularizing it it pretty power
 Do simulations on importance of training set size? \\
 \\
 Need book to do the Fisher's linear discriminant sectino\\
+\\
+Should I look into randomized Adaboost? \cite{freund1996}. I think it's called boosting by resampling. In \verb+adabag+ I think they call it bootstrapping.\\
+\\
+In boosting experiments, should I specify input parameters in the different plots? \\
+\\
+Is argument for why votes does not give probailities good? In Bagging.\\
+\\
+Conclusion and Suggestions for further work?\\
+\\
+Discussion?\\
 \\

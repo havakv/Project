@@ -63,7 +63,8 @@ cat("Done with sim 2 \n")
 # Different tree depths
 shrink       <- 0.01
 nTrees       <- 10000
-bag          <- 0.5
+#bag          <- 0.5
+bag          <- 1
 minObsInNode <- 1
 interaction  <- c(1, 2, 5, 20, 40)
 fit3 <- list()

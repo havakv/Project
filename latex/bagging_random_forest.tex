@@ -4,47 +4,53 @@ set_parent('./project.Rnw')
 \todo{Write something about how all these methods can be used for regression as well}
 \section{Bagging}
 \label{sec:Bagging}
-Consider a scenario where a learning set $\left\{ \mathbf{x}_i, y_i \right\}_{i=1}^{N}$, is given, and a classifier $C(\mathbf{x})$ is created from this learning set. If a sequence of such sets are given, all drawn form the same distribution, one could get a more stable prediction by aggregating the classifiers. A typical way to do this is through the majority vote,
+Consider a scenario where a learning set $\left\{ \mathbf{x}_i, y_i \right\}_{i=1}^{N}$, is given, and a classifier $C(\mathbf{x})$ is created from the set. If a sequence of such sets are given, all drawn form the same distribution, one could get a more stable prediction by aggregating the classifiers. A typical way to do this is through the majority vote,
 \begin{align}
   \label{eq:aggClass} 
   C_{agg}(\mathbf{x}) = \mathrm{majority} \left\{ C_b(\mathbf{x}) \right\}_{b=1}^{B}.
 \end{align}
-In 1996 Leo Breiman found that this process could be imitated on a single learning set by drawing \textit{bootstrap} samples \todo{referance here?}from the data. He called this method \textit{bagging}, or bootstrap aggregating \cite{Breiman1996}. 
+\cite{Breiman1996} found that this process could be imitated on a single learning set by drawing bootstrap samples from the data (see Appendix~\ref{sec:Bootstrapping}). He called this method \textit{Bagging}, or bootstrap aggregating. 
 
-The way it works is to draw $N$ samples (with replacement) from the data set $\left\{ (\mathbf{x}_i, y_i) \right\}_{i=1}^{N}$, and train a classifier $C_b(\mathbf{x})$ on the samples. Repeat this $B$ times and get the aggregated classifier in  \eqref{eq:aggClass}. The use of bootstrap samples makes the computations for each individual classifier independent. This mean that the training is easy to parallelize for faster computation. However, if the underlying method is interpretable, this will be lost in bagging.
-\colorbox{yellow}{Background on bootstrapping? Se Efron and Tibshirani 1993.} \\
-It is important to note that even though the votes gives proportions of sets predicting class $k$, these proportions should not be used at estimates for the class probabilities. Consider a two class experiment where the probability of class 1 is $0.75$. It is not unlikely that all the bagged classifiers predict class $1$, which gives a good aggregated classifier, but a horrible estimate of the class probability. However, often the underlying method used for each single classifier has a probability estimate (eg. trees). An alternative method to \eqref{eq:aggClass} is to average theses probabilities instead.
+The way it works is to draw $N$ samples (with replacement) from the data set $\left\{ \mathbf{x}_i, y_i \right\}_{i=1}^{N}$, and train a classifier $C_b(\mathbf{x})$ on the samples. Repeat this $B$ times and get the aggregated classifier in  \eqref{eq:aggClass}. The use of bootstrap samples makes the computations for each individual classifier independent. This mean that the training is easy to parallelize for faster computation. However, if the underlying method is interpretable, this will be lost in bagging.
+For a background on bootstrapping see \cite{efron1994bootstrap}.
+\\
+\\
+It is important to note that even though the votes gives proportions of sets predicting class $k$, these proportions should not be used at estimates for the class probabilities. This can be shown through an easy example. Consider a two class experiment where the probability of class 1 is $p = 0.75$, and the features are just noise. The prediction of $C_b(\mathbf{x})$ thus only depends on how many points there is from each class. As the bootstrap draws are done with replacement, the density of number of class 1 is binomial. And the probability that $C_b(\mathbf{x})$ gives class 2 is,
+\begin{align}
+  P(C_b(\mathbf{x})=2) = P\left(\#1 <  \frac{N}{2} \right) = \sum_{i = 0}^{N/2 - 1} \mathrm{binom}\left(\frac{N}{2}-1,\: N,\: p  \right).
+\end{align}
+This probability will converge to 0 as $N$ increase, for all probabilities $p > 0.5$. Thus the proportion of $C_b(\mathbf{x})$ that votes for class 1 is a horrible estimator of $p$.
+
+However, often the underlying method used for each single classifier has a probability estimate (eg. trees). An alternative method to \eqref{eq:aggClass} is to average theses probabilities instead.
 \begin{align}
   p_{agg, k}(\mathbf{x}) &=  \mathrm{ave}\left\{ p_{b, k}(\mathbf{x}) \right\}_{b = 1}^{B}, \quad k = 1, \ldots, K, \\
   \label{eq:aggClassP} 
   C_{agg}(\mathbf{x}) &= \argmax_k p_{agg, k}(\mathbf{x}).
 \end{align}
-This method is more descriptive than \eqref{eq:aggClass}, and has also been shown to often produce classifiers with lower variance, especially for small B's.\\
-\colorbox{yellow}{Show example or refer to \cite[8.7]{modstat}.}
-\\
-\\
-The typical argument for why this bootstrapping works, is how it lowers the variance of the predictor. This is easy to prove for regression \cite{modstat}, but the argument does not quite hold for classification, because of the non-additivity of bias and variance. The instability of the classifiers still plays an important role in the performance of bagging. For very stable methods it is clear that the classifiers for each bootstrap set will be very similar, so the gain of averaging or voting, will be minimal. However, for unstable methods bagging has be shown to perform very well. Among methods Breiman showed were unstable are neural networks, classification and regression trees, and subset selection in linear regression.
-
-In \cite{Breiman1996} classification trees were fitted to a variety of dataset, and the bagged classifier showed a reduction in test set misclassification error ranging from $6\%$ to $77\%$. \todo{Should this be removed?} Trees are ideal to use because, if grown large, they can capture complex structures in the data, and have relatively low bias. A small change in the training set, can cause a tree to change completely, so their variance is high. Bagging manage to remove a lot of this variance. 
+This method is more descriptive than \eqref{eq:aggClass}, and has also, according to \cite{modstat}, been shown to often produce classifiers with lower variance, especially for small B's.
 
 \subsection{Why bagging works}
 \label{sub:Why bagging works}
 \todo{Change $c$ to $y$ in this subsection}
-This arguments is taken from \cite{Breiman1996}. Denote $y \in \left\{ 1, \ldots, K \right\}$ as the correct class for a given $\mathbf{x}$. Then the probability of correct classification for a classifier $C(\mathbf{x})$ given the predictor $\mathbf{x}$ is 
+The typical argument for the success of Bagging is that it lowers the variance of the predictor. This can be shown for regression (see Appendix~\ref{sec:Variance for random forest regression}), but the argument does not quite hold for classification, because of the non-additivity of bias and variance. The instability of the classifiers still plays an important role in the performance of bagging. For very stable methods it is clear that the classifiers for each bootstrap set will be very similar, so the gain of averaging or voting, will be minimal. However, for unstable methods bagging has be shown to perform very well. Breiman showed that neural networks, classification and regression trees, and subset selection in linear regression are relatively unstable.
+Trees are ideal to use because, if grown large, they can capture complex structures in the data, and have relatively low bias. A small change in the training set, can cause a tree to change completely, so their variance is high. Bagging manage to remove a lot of this variance. Because of the success of using trees, Bagging is considered a tree based algorithm.
+\\
+\\
+A more thorough argument for bagging as a classifier was made by \cite{Breiman1996}. Denote $y \in \left\{ 1, \ldots, K \right\}$ as the correct class for a given $\mathbf{x}$. Then the probability of correct classification for a classifier $C(\mathbf{x})$ given the predictor $\mathbf{x}$ is,
 \begin{align}
   P(C(\mathbf{x}) = y \mid \mathbf{x})  &= \sum^{K}_{k=1} P(C(\mathbf{x})=y \medcap y = k \mid \mathbf{x}) \notag \\
   &= \sum^{K}_{k=1} P(C(\mathbf{x}) = y \mid y = k, \mathbf{x}) \cdot P(y=k \mid \mathbf{x}) \notag \\
-  &= \sum^{K}_{k=1} P(C(\mathbf{x}) = k \mid \mathbf{x}) \cdot P(y=k \mid \mathbf{x}) 
+  &= \sum^{K}_{k=1} P(C(\mathbf{x}) = k \mid \mathbf{x}) \cdot P(y=k \mid \mathbf{x}), 
 \end{align}
-where $P(C(\mathbf{x})=y \mid \mathbf{x})$ is the probability of $C$ predicting class $k$ for a certain $\mathbf{x}$, and $P(y=k \mid \mathbf{x})$ is the probability of class $k$ being the correct class for a certain $\mathbf{x}$. Thus the total probability of correct classification is 
+where $P(C(\mathbf{x})=y \mid \mathbf{x})$ is the probability of $C$ predicting class $k$ for a certain $\mathbf{x}$, and $P(y=k \mid \mathbf{x})$ is the probability of class $k$ being the correct class for a certain $\mathbf{x}$. Thus the total probability of correct classification is,
 \begin{align}
   P(C(\mathbf{x}) = y) = \int_{\mathbf{x}} \left(\sum^{K}_{k=1} P(C(\mathbf{x}) = k \mid \mathbf{x}) \cdot P(y=k \mid \mathbf{x})   \right) p(\mathbf{x}) d\mathbf{x},
 \end{align}
-where $p(\mathbf{x})$ is the probability distribution of $\mathbf{x}$. Observe that 
+where $p(\mathbf{x})$ is the probability distribution of $\mathbf{x}$. Observe that, 
 \begin{align}
   \sum^{K}_{k=1} P(C(\mathbf{x}) = k \mid \mathbf{x}) \cdot P(y=k \mid \mathbf{x}) \leq \max_k P(y = k \mid \mathbf{x}),
 \end{align}
-with equality if and only if 
+with equality if and only if,
 \begin{align}
   P(C(\mathbf{x}) = k \mid \mathbf{x}) = \left\{ 
   \begin{array}{l l}
@@ -52,61 +58,51 @@ with equality if and only if
     0 & \quad \text{else}
   \end{array} \right. .
 \end{align}
-The Bayes classifier, $C_{Bayes}(\mathbf{x}) = \argmax_k P(y = k \mid \mathbf{x})$, discussed earlier gives the expression above, and gives thus the lowes obtainable misclassification rate
+The Bayes classifier $C_{Bayes}(\mathbf{x}) = \argmax_k P(y = k \mid \mathbf{x})$, discussed earlier, gives the expression above, and gives thus the lowers obtainable misclassification rate,
 \begin{align}
   \label{eq:bayesBagg} 
   P(C_{Bayes}(\mathbf{x}) = y) = \int_{\mathbf{x}} \max_k P(y=k \mid \mathbf{x})  p(\mathbf{x}) d\mathbf{x}.
 \end{align}
-$C(\mathbf{x})$ is called \textit{order-correct} if it follows the following criterion
+$C(\mathbf{x})$ is called \textit{order-correct} if it follows the following criterion,
 \begin{align}
   \argmax_k P(C(\mathbf{x}) = k \mid \mathbf{x}) = \argmax_k  P(y = k \mid \mathbf{x}).
 \end{align}
 This means that if $\mathbf{x}$ gives class $k$ more than any other class, $C(\mathbf{x})$ predicts class $k$ more than any other class. This does not make $C(\mathbf{x})$ accurate as the probabilities $P(C(\mathbf{x}) = k \mid \mathbf{x}) $ and $P(y = k \mid \mathbf{x})$ can still be very different. For example consider the two class case where $P(y = 1 \mid \mathbf{x})  = 0.99$, while $P(C(\mathbf{x}) = 1\mid \mathbf{x}) = 0.51$, $C(\mathbf{x})$ is order correct, but not much better than pure guessing.
 
-The aggregated predictors $C_{agg}$ in \eqref{eq:aggClass} and \eqref{eq:aggClassP} are approximations of  
-\todo{Is this correct? NOT \eqref{eq:aggClassP}}
+The aggregated predictor $C_{agg}$ in \eqref{eq:aggClass} is an approximation of, 
 \begin{align}
   G(\mathbf{x}) = \argmax_k P(C(\mathbf{x})=k \mid \mathbf{x}).
 \end{align}
-Given $\mathbf{x}$, the probability for correct classification is 
+Given $\mathbf{x}$, the probability for correct classification is,
 \begin{align}
   P(G(\mathbf{x}) = y \mid \mathbf{x})  
   = \sum^{K}_{k=1} I\{ \argmax_j P(C(\mathbf{x}) = j \mid \mathbf{x}) = k \} P(y=k \mid \mathbf{x}).
 \end{align}
-If $C(\mathbf{x})$ is order-correct this becomes
+If $C(\mathbf{x})$ is order-correct this becomes,
 \begin{align}
   P(G(\mathbf{x}) = y \mid \mathbf{x})  = \max_k P(y = k \mid \mathbf{x}),
 \end{align}
-and $G(\mathbf{x})$ will have the same probability of correct classification as the Bayes classifier in  \eqref{eq:bayesBagg}. Now let $H$ be the set of all inputs $\mathbf{x}$ for which $C(\mathbf{x})$ is order-correct, and $H^C$ be its compliment in terms of $C(\mathbf{x})$ not being order-correct. The probability of correct classification is now
+and $G(\mathbf{x})$ will have the same probability of correct classification as the Bayes classifier in  \eqref{eq:bayesBagg}. Now let $H$ be the set of all inputs $\mathbf{x}$ for which $C(\mathbf{x})$ is order-correct, and $H^C$ be its compliment in terms of $C(\mathbf{x})$ not being order-correct. The probability of correct classification is now,
 \begin{align}
   P(G(\mathbf{x}) = y) = &\int_{\mathbf{x} \in H} \max_k P(y=k \mid \mathbf{x})  p(\mathbf{x}) d\mathbf{x} \quad + \\
   &\int_{\mathbf{x} \in H^C} \left(\sum^{K}_{k=1} I\{ G(\mathbf{x}) = k \} P(y=k \mid \mathbf{x})   \right) p(\mathbf{x}) d\mathbf{x}.
 \end{align}
-This shows that if a classifier is good in the sense that it is order-correct for most inputs $\mathbf{x}$, then the $G(\mathbf{x})$ is very good, and so should its approximation $C_{agg}(\mathbf{x})$ be. On the other hand, if $C(\mathbf{x})$ is not a good classifier, aggregating it can actually make it worse.
-\\ \colorbox{yellow}{Mention that this only applies to the voting in \eqref{eq:aggClass}, not the averaging of probabilities \eqref{eq:aggClassP}. }
+This shows that if a classifier is good in the sense that it is order-correct for most inputs $\mathbf{x}$, then $G(\mathbf{x})$ is very good, and so should its approximation $C_{agg}(\mathbf{x})$ be. On the other hand, if $C(\mathbf{x})$ is not a good classifier, aggregating it can actually make it worse.
 
-In \cite{domingos1997Bagging} the sucsess of bagging is explained through a different approach. Empirical experiments are used to validate the hypotheis that  
-bagging reduces a classification learner's error rate because it changes the learner's model space and prior distribution to one that better fits the domain.
+In \cite{domingos1997Bagging} the another attempt on explaining bagging's success is made. Empirical experiments are used to validate the hypothesis that bagging reduces a classification learner's error rate because it changes the learner's model space and prior distribution to one that better fits the domain. 
 
 
 \subsection{Out-of-bag}
 \label{sub:Out-of-bag}
-\colorbox{yellow}{Maybe move this to bagging?}
-When construction a bootstrap sample $B^* = \left\{ (\mathbf{x}_1^*, y_1^*), \ldots, (\mathbf{x}_n^*, y_n^*) \right\}$ the probability that $(\mathbf{x}_i^*, y_i^*) \neq (\mathbf{x}_j, y_j)$ is $\frac{n-1}{n}$. Thus the joint probability of $B^*$ not containing $(\mathbf{x}_j, y_j)$ is 
+When constructing a bootstrap sample $B^* = \left\{ (\mathbf{x}_1^*, y_1^*), \ldots, (\mathbf{x}_N^*, y_N^*) \right\}$ the probability that $(\mathbf{x}_i^*, y_i^*) \neq (\mathbf{x}_j, y_j)$ is $\frac{N-1}{N}$. Thus the joint probability of $B^*$ not containing $(\mathbf{x}_j, y_j)$ is 
 \begin{align}
-  P\left(  (\mathbf{x}_j, y_j) \notin B^*\right) = \left( \frac{n-1}{n}  \right)^n 
-  \xrightarrow{n \rightarrow \infty} e^{-1} \approx 0.37. 
+  P\left(  (\mathbf{x}_j, y_j) \notin B^*\right) = \left( \frac{N-1}{N}  \right)^N
+  \xrightarrow{N \rightarrow \infty} e^{-1} \approx 0.37. 
 \end{align}
-Thus for large $n$ the point $(\mathbf{x}_j, y_j)$ will not be used to train $37 \%$ of the trees. Breiman suggested in 1996 \cite{outOfBag} that these points could be used to create an approximation of the misclassification error, with little extra cost. This is done the following way: For eache $(\mathbf{x}_i, y_i)$ construct a prediction $C(\mathbf{x}_i)$ of $y_i$ based only on the trees not trained on $(\mathbf{x}_i, y_i)$. Breiman called this the \textit{Out-of-bag} estimate or OOB. 
+Thus for large $N$ the point $(\mathbf{x}_j, y_j)$ will not be used to train $37 \%$ of the trees. Breiman suggested in 1996 \cite{outOfBag} that these points could be used to create an approximation of the misclassification error. This is done the following way: For each $(\mathbf{x}_i, y_i)$ construct a prediction $C(\mathbf{x}_i)$ of $y_i$ based only on the trees not trained on $(\mathbf{x}_i, y_i)$. Breiman called this the \textit{Out-of-bag} estimate or OOB. 
 
-Test has shown that OOB gives an good approximations of the cross validated error \cite{outOfBag}, but without the large training cost. 
-Hence, sequential classifiers based on bootstrap sampling, like bagging, stochastic gradient boosting \ref{sub:Stochastic gradient boosting} and random forest \ref{sec:Random forests}, can report the OOB for each iteration and terminate when the error stabilize. It can also be used instead of cross validation for tuining parameters.
-
-
-
-
-
-
+Test has shown that OOB gives an good approximations of the cross-validated error \cite{outOfBag}, but without the large training cost. 
+Hence, sequential classifiers based on bootstrap sampling, like bagging, stochastic gradient boosting \ref{sub:Stochastic gradient boosting} and random forest \ref{sec:Random forests}, can report the OOB for each iteration and terminate when the error stabilize. It can also be used instead of cross-validation for tuning parameters.
 
 
 \section{Random forests}
@@ -114,15 +110,14 @@ Hence, sequential classifiers based on bootstrap sampling, like bagging, stochas
 \todo{forests or forest?}
 \todo{overfitt or overfit?}
 %%fakesubsection Random forests
-Hei \cite{randomforests}.
-\\ \colorbox{yellow}{Boosting seems to outperform RF, but more tuning and takes longer to run?} \\
+\colorbox{yellow}{Boosting seems to outperform RF, but more tuning and takes longer to run?} \\
 \colorbox{yellow}{RF and overfitting in modstat}\\
 \url{http://www.montefiore.ulg.ac.be/~glouppe/pdf/phd-thesis.pdf} \\
 \colorbox{yellow}{referance to random variable selection at each node. See phd. above p. 72} \\
-\colorbox{yellow}{Write something about how boosting focus on reducing bias, while RF reduce variance?} \\
 \\
-In this section the method \textit{Random forests} proposed by Breiman \cite{randomforests} in 2001, will be investigated. The term \textit{random forests} is often used as a collection of methods building an ensemble of decision trees, grown in a randomized way, but only Breiman's method will be investigated here. 
-\\\colorbox{yellow}{Other methods include ... see phd thesis p. 72}
+\cite{randomforests} made an extension of his Bagging algorithm called Random forests. The term \textit{random forests} is often used as a collection of methods building an ensemble of decision trees grown in a randomized way. Some other methods include \cite{dietterich1995}, \cite{Amit1997}, \cite{ho1998random}, \cite{cutler2001pert}, \cite{Geurts2006} and \cite{Rodriguez2006}. 
+\todo{Give actual names?}
+However, as Breiman's Random forests is the most famous, only it will be considered in this project.  
 
 The idea behind bagging was to reduce the instability of a classifier through aggregation of bootstrap samples. From a regression point of view, the success is is explained through variance reduction. Trees are very well suited for bagging, as they are  high variance and low bias. In 2001, Breiman suggested an improvement of this method, by reducing the variance further through de-correlating the trees in the method. He called this method \textit{Random forests} \cite{randomforests}.
 
@@ -138,7 +133,7 @@ Intuitively, the correlation between the trees should decrease by reducing $m$, 
 \\\colorbox{yellow}{Something about how few tuning parameters RF has compared to boosting}\\
 
 \subsection{Why random forests works}
-\label{sub:Why random forests work}
+\label{sub:Why random forests works}
 \url{https://stat.ethz.ch/education/semesters/ss2012/ams/slides/v10.2.pdf} \\
 \colorbox{yellow}{The url has nice derivation of bias/variance tradeoff for regression (p. 6)}\\
 \\

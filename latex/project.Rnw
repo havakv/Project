@@ -61,7 +61,7 @@ Write something interesting here!!!!! And make the margins larger (text more nar
 @
 %
 \let\cleardoublepage\clearpage
-\chapter{Simulations?}
+\chapter{Empirical experiments}
 \colorbox{yellow}{Numerical experiments?}\\
 <<simulations, child='./simulations.tex', cache=TRUE>>=
 @

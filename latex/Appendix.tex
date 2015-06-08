@@ -36,8 +36,19 @@ So to minimize $\mathrm{EPE}(\hat f)$ it is necessary to minimize the variance a
 
 As discussed in \ref{sub:Classification trees}, there is no equally satisfactory decomposition of $\mathrm{EPE}$ under $0/1$-loss, but it is still common to talk about the bias-variance tradeoff in classification as well.
 
-\subsection{Variance for random forest regression}
-\label{sub:Variance for random forest regression}
+
+
+\section{Cross-validation}
+\label{sec:Cross-validation}
+
+\section{Bootstrapping}
+\label{sec:Bootstrapping}
+Bootstrapping refers to methods based on random sampling with replacement. It is used to approximate the distribution of data, based on the data itself. One can thus do inference on data, like for instance a confidence interval for a parameter estimate. It can also be used to improve predictions, like in the Bagging algorithm in Section~\ref{sec:Bagging}. In the context of this project, bootstrapping refers to sample $N$ data points from the dataset $\left\{ \mathbf{x}_i, y_i \right\}_{i = 1}^N$, with replacement, and is only used for improving predictions. 
+For an introduction to bootstrapping, see \cite{efron1994bootstrap}.
+
+
+\section{Variance for random forest regression}
+\label{sec:Variance for random forest regression}
 Let $T_i(\mathbf{x})$ denote a trained tree. The random forest prediction for $\mathbf{x}$ is 
 \begin{align}
   \hat f(\mathbf{x}) = \frac{1}{B} \sum_{i = 1}^{B} T_i(\mathbf{x}).
@@ -47,7 +58,7 @@ The trees are created by drawing from the same distributions, so they should be 
   \Cov[T_i(\mathbf{x}), T_j(\mathbf{x}))] = \rho \sigma^2, \quad \quad i \neq j,
 \end{align}
 where $\sigma^2$ is the variance of a tree and $\rho$ is the correlation between trees.  
-The variance of $\hat f(\mathbf{x})$ is thus
+The variance of $\hat f(\mathbf{x})$ is thus,
 \begin{align}
 \Var\left[ \frac{1}{B} \sum_{i = 1}^{B} T_i(\mathbf{x}) \right] 
 &= \frac{1}{B^2} \sum_{i =1}^B \sum_{j= 1}^B \Cov[T_i(\mathbf{x}), T_j(\mathbf{x})] \notag \\
@@ -55,11 +66,4 @@ The variance of $\hat f(\mathbf{x})$ is thus
 &= \frac{1}{B^2} \sum_{i =1}^B \left( (B-1) \sigma^2 \rho + \sigma^2  \right)\notag \\
 &= \rho \sigma^2 + \sigma^2 \frac{1-\rho}{B}.
 \end{align}
-
-
-\subsection{Cross-validation}
-\label{sec:Cross-validation}
-
-\subsection{Bootstrapping}
-\label{sec:Bootstrapping}
-For an introduction to Bootstrapping, see \cite{efron1994bootstrap}.
+So it decrease by increasing the number of bootstrap samples $B$ and by decorrelating the trees.
