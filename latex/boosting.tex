@@ -34,7 +34,7 @@ This is repeated for $m = 1, \ldots, M$. Finally the classifier is created,
   C( \mathbf{x}) = \text{sign}\left( \sum^{M}_{m=1} \alpha_m C_m(\mathbf{x}) \right).
 \end{align}
 There are many choices of weak classifiers, but one of the more common is to use classification trees. It is then important to not grow an optimal tree as with CART, but instead grow a shallow tree or just stumps (one split). The size of the individual trees will be discussed in Section~\ref{sub:Tree size}. For computational purposes, the trees are only grown and not pruned back.
-An example of this implementation can be found in the R package \verb+adabag+ [\cite{adabag}], that use the \verb+rpart+ [\cite{rpart}] implementation of CART as base classifiers.
+An example of this implementation can be found in the R package \verb+adabag+ by \cite{adabag}, that use the \verb+rpart+ implementation of CART by \cite{rpart} as base classifiers.
 
 \subsection{Forward stagewise Additive Modeling}
 \label{sub:Forward stagewise additive modeling}

@@ -34,12 +34,18 @@ Under this assumption $\mathrm{EPE}$ can be decomposed into
 \end{align}
 So to minimize $\mathrm{EPE}(\hat f)$ it is necessary to minimize the variance and bias of $\hat f$. This equation is often referred to as the bias-variance tradeoff as usually when one is decreased the other increase. 
 
-As discussed in \ref{sub:Classification trees}, there is no equally satisfactory decomposition of $\mathrm{EPE}$ under $0/1$-loss, but it is still common to talk about the bias-variance tradeoff in classification as well.
+As discussed in \ref{sec:Classification trees}, there is no equally satisfactory decomposition of $\mathrm{EPE}$ under $0/1$-loss, but it is still common to talk about the bias-variance tradeoff in classification as well.
 
 
 
 \section{Cross-validation}
 \label{sec:Cross-validation}
+Ideally, when one have large amount of data, a validation set is set a side to assess the performance of the classifier in question (can also be used for regression). This is useful when tuning of the model is required for good results. When data is scarce, other methods for validation has to be used instead. Cross-validation is probably the simples and most widely used estimate for the test error \citep{modstat}, and there are different version of it. In this project only \textit{K-fold} cross-validation is discussed. 
+
+The idea is simple. Create a random permutation of the dataset and divide it into $K$ subsets. Then remove the first subset and train the algorithm on the remaining $K-1$. The first subset can now be used as a test set. Next, remove the second subset, train, and test. When this is done for all the $K$ sets, the average prediction error is a fairly good estimate of the actual test error. 
+
+The choice of $K$ is important to consider. The number of fittings required is equal to $K$, so a small $K$ gives an computational advantage. So for $N$ data points, a choice of $K = N$, also called \textit{leave-one-out} cross-validation, is the most computationally expensive. However, as almost all data points are used to train on, it is approximately unbiased. On the other hand, as the $N$ different fittings are highly correlated, the variance of leave-one-out is quite high. If $K$ is chosen small, it will decrease the variance but increase the bias. So the best value for $K$ is dependent on the problem. Two particularly common choices for $K$ are 10 and 5.
+
 
 \section{Bootstrapping}
 \label{sec:Bootstrapping}
@@ -47,23 +53,23 @@ Bootstrapping refers to methods based on random sampling with replacement. It is
 For an introduction to bootstrapping, see \cite{efron1994bootstrap}.
 
 
-\section{Variance for random forest regression}
-\label{sec:Variance for random forest regression}
-Let $T_i(\mathbf{x})$ denote a trained tree. The random forest prediction for $\mathbf{x}$ is 
+\section{Variance for Random Forests regression}
+\label{sec:Variance for Random Forests regression}
+Let $T_i(\mathbf{x})$ denote a trained tree. The Random Forests prediction for $\mathbf{x}$ is 
 \begin{align}
   \hat f(\mathbf{x}) = \frac{1}{B} \sum_{i = 1}^{B} T_i(\mathbf{x}).
 \end{align}
-The trees are created by drawing from the same distributions, so they should be identically distributed. \todo{Is this correct?}
+The trees are created by drawing from the same distributions, so they are identically distributed, with covariance,
 \begin{align}
-  \Cov[T_i(\mathbf{x}), T_j(\mathbf{x}))] = \rho \sigma^2, \quad \quad i \neq j,
+  \Cov[T_i(\mathbf{x}), T_j(\mathbf{x}))] = \rho \sigma^2, \quad \quad i \neq j.
 \end{align}
-where $\sigma^2$ is the variance of a tree and $\rho$ is the correlation between trees.  
+Here $\sigma^2$ is the variance of a tree and $\rho$ is the correlation between two trees.  
 The variance of $\hat f(\mathbf{x})$ is thus,
 \begin{align}
 \Var\left[ \frac{1}{B} \sum_{i = 1}^{B} T_i(\mathbf{x}) \right] 
 &= \frac{1}{B^2} \sum_{i =1}^B \sum_{j= 1}^B \Cov[T_i(\mathbf{x}), T_j(\mathbf{x})] \notag \\
 &= \frac{1}{B^2} \sum_{i =1}^B \left(\sum_{j \neq i} \Cov[T_i(\mathbf{x}), T_j(\mathbf{x})] + \Var[T_i(\mathbf{x})]  \right)\notag \\
-&= \frac{1}{B^2} \sum_{i =1}^B \left( (B-1) \sigma^2 \rho + \sigma^2  \right)\notag \\
+&= \frac{1}{B^2} \sum_{i =1}^B \left( (B-1) \rho \sigma^2 + \sigma^2  \right)\notag \\
 &= \rho \sigma^2 + \sigma^2 \frac{1-\rho}{B}.
 \end{align}
-So it decrease by increasing the number of bootstrap samples $B$ and by decorrelating the trees.
+So the variance decrease by increasing the number of bootstrap samples $B$ and by decorrelating the trees.

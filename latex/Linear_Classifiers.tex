@@ -90,7 +90,7 @@ The classifier is constructed by evaluating the log-ratio of the probabilities
   & \quad + \mathbf{x}'\bm{\Sigma}^{-1} (\bm \mu_2-\bm \mu_1).
   \notag \ 
 \end{align}
-So one classify to $\mathcal{C}_2$ if \eqref{eq:lda} is positive and to $\mathcal{C}_1$ if not. Another approach is to use the only last part of \eqref{eq:lda}, $\mathbf{x}'\bm{\Sigma}^{-1} (\bm \mu_1-\bm \mu_2)$, and classify based on some threshold $t$ found by e.g. cross-validation. The reasoning behind this is that if the Gaussian assumptions are wrong, a better threshold can be created based on the training data. \\
+So one classify to $\mathcal{C}_2$ if \eqref{eq:lda} is positive and to $\mathcal{C}_1$ if not. Another approach is to use the only last part of \eqref{eq:lda}, $\mathbf{x}'\bm{\Sigma}^{-1} (\bm \mu_1-\bm \mu_2)$, and classify based on some threshold $t$ found by e.g. cross-validation (see Appendix~\ref{sec:Cross-validation}). The reasoning behind this is that if the Gaussian assumptions are wrong, a better threshold can be created based on the training data. \\
 \\
 When using LDA, the parameters are not know, so they are usually estimated from the training data by
 \begin{align}
@@ -131,7 +131,7 @@ So the likelihood and log-likelihood are
   l(\beta) &\propto \sum^{N}_{i=1} z_i \log p_{2i} + (n_i - z_i) \log (1- p_{2i}).
 \end{align}
 There is no analytical solution that maximizes the likelihood, so one has to use a numerical optimization algorithm to find the MLE.  
-After $\bm \beta$ is found, one can create a classifier the same way as for logistic regression, i.e. classify to $\mathcal{C}_2$ if \eqref{eq:logclass} is positive and to $\mathcal{C}_1$ if not. However, this assumes the logit link gives accurate probabilities. Often the choice of logit link is based on lack of a better choice so there is little suggesting the probabilities are particularly accurate. It might therefore be better to classify based on a threshold found by e.g. cross-validation. 
+After $\bm \beta$ is found, one can create a classifier the same way as for logistic regression, i.e. classify to $\mathcal{C}_2$ if \eqref{eq:logclass} is positive and to $\mathcal{C}_1$ if not. However, this assumes the logit link gives accurate probabilities. Often the choice of logit link is based on lack of a better choice so there is little suggesting the probabilities are particularly accurate. It might therefore be better to classify based on a threshold found by e.g. cross-validation.
 \\\colorbox{yellow}{Have hear a lot that logit is used because: "Why not".}
 \colorbox{yellow}{Write something about how it is a probabilistic classifier.}
 %

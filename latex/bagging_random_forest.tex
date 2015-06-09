@@ -11,7 +11,7 @@ Consider a scenario where a learning set $\left\{ \mathbf{x}_i, y_i \right\}_{i=
 \end{align}
 \cite{Breiman1996} found that this process could be imitated on a single learning set by drawing bootstrap samples from the data (see Appendix~\ref{sec:Bootstrapping}). He called this method \textit{Bagging}, or bootstrap aggregating. 
 
-The way it works is to draw $N$ samples (with replacement) from the data set $\left\{ \mathbf{x}_i, y_i \right\}_{i=1}^{N}$, and train a classifier $C_b(\mathbf{x})$ on the samples. Repeat this $B$ times and get the aggregated classifier in  \eqref{eq:aggClass}. The use of bootstrap samples makes the computations for each individual classifier independent. This mean that the training is easy to parallelize for faster computation. However, if the underlying method is interpretable, this will be lost in bagging.
+The way it works is to draw $N$ samples (with replacement) from the data set $\left\{ \mathbf{x}_i, y_i \right\}_{i=1}^{N}$, and train a classifier $C_b(\mathbf{x})$ on the samples. Repeat this $B$ times and get the aggregated classifier in  \eqref{eq:aggClass}. The use of bootstrap samples makes the computations for each individual classifier independent. This mean that the training is easy to parallelize for faster computation. However, if the underlying method is interpretable, this will be lost in Bagging.
 For a background on bootstrapping see \cite{efron1994bootstrap}.
 \\
 \\
@@ -29,14 +29,14 @@ However, often the underlying method used for each single classifier has a proba
 \end{align}
 This method is more descriptive than \eqref{eq:aggClass}, and has also, according to \cite{modstat}, been shown to often produce classifiers with lower variance, especially for small B's.
 
-\subsection{Why bagging works}
-\label{sub:Why bagging works}
+\subsection{Why Bagging works}
+\label{sub:Why Bagging works}
 \todo{Change $c$ to $y$ in this subsection}
-The typical argument for the success of Bagging is that it lowers the variance of the predictor. This can be shown for regression (see Appendix~\ref{sec:Variance for random forest regression}), but the argument does not quite hold for classification, because of the non-additivity of bias and variance. The instability of the classifiers still plays an important role in the performance of bagging. For very stable methods it is clear that the classifiers for each bootstrap set will be very similar, so the gain of averaging or voting, will be minimal. However, for unstable methods bagging has be shown to perform very well. Breiman showed that neural networks, classification and regression trees, and subset selection in linear regression are relatively unstable.
+The typical argument for the success of Bagging is that it lowers the variance of the predictor. This can be shown for regression (see Appendix~\ref{sec:Variance for Random Forests regression}), but the argument does not quite hold for classification, because of the non-additivity of bias and variance. The instability of the classifiers still plays an important role in the performance of Bagging. For very stable methods it is clear that the classifiers for each bootstrap set will be very similar, so the gain of averaging or voting, will be minimal. However, for unstable methods Bagging has be shown to perform very well. Breiman showed that neural networks, classification and regression trees, and subset selection in linear regression are relatively unstable.
 Trees are ideal to use because, if grown large, they can capture complex structures in the data, and have relatively low bias. A small change in the training set, can cause a tree to change completely, so their variance is high. Bagging manage to remove a lot of this variance. Because of the success of using trees, Bagging is considered a tree based algorithm.
 \\
 \\
-A more thorough argument for bagging as a classifier was made by \cite{Breiman1996}. Denote $y \in \left\{ 1, \ldots, K \right\}$ as the correct class for a given $\mathbf{x}$. Then the probability of correct classification for a classifier $C(\mathbf{x})$ given the predictor $\mathbf{x}$ is,
+A more thorough argument for Bagging as a classifier was made by \cite{Breiman1996}. Denote $y \in \left\{ 1, \ldots, K \right\}$ as the correct class for a given $\mathbf{x}$. Then the probability of correct classification for a classifier $C(\mathbf{x})$ given the predictor $\mathbf{x}$ is,
 \begin{align}
   P(C(\mathbf{x}) = y \mid \mathbf{x})  &= \sum^{K}_{k=1} P(C(\mathbf{x})=y \medcap y = k \mid \mathbf{x}) \notag \\
   &= \sum^{K}_{k=1} P(C(\mathbf{x}) = y \mid y = k, \mathbf{x}) \cdot P(y=k \mid \mathbf{x}) \notag \\
@@ -89,7 +89,7 @@ and $G(\mathbf{x})$ will have the same probability of correct classification as 
 \end{align}
 This shows that if a classifier is good in the sense that it is order-correct for most inputs $\mathbf{x}$, then $G(\mathbf{x})$ is very good, and so should its approximation $C_{agg}(\mathbf{x})$ be. On the other hand, if $C(\mathbf{x})$ is not a good classifier, aggregating it can actually make it worse.
 
-In \cite{domingos1997Bagging} the another attempt on explaining bagging's success is made. Empirical experiments are used to validate the hypothesis that bagging reduces a classification learner's error rate because it changes the learner's model space and prior distribution to one that better fits the domain. 
+In \cite{domingos1997Bagging} the another attempt on explaining Bagging's success is made. Empirical experiments are used to validate the hypothesis that Bagging reduces a classification learner's error rate because it changes the learner's model space and prior distribution to one that better fits the domain. 
 
 
 \subsection{Out-of-bag}
@@ -102,84 +102,80 @@ When constructing a bootstrap sample $B^* = \left\{ (\mathbf{x}_1^*, y_1^*), \ld
 Thus for large $N$ the point $(\mathbf{x}_j, y_j)$ will not be used to train $37 \%$ of the trees. Breiman suggested in 1996 \cite{outOfBag} that these points could be used to create an approximation of the misclassification error. This is done the following way: For each $(\mathbf{x}_i, y_i)$ construct a prediction $C(\mathbf{x}_i)$ of $y_i$ based only on the trees not trained on $(\mathbf{x}_i, y_i)$. Breiman called this the \textit{Out-of-bag} estimate or OOB. 
 
 Test has shown that OOB gives an good approximations of the cross-validated error \cite{outOfBag}, but without the large training cost. 
-Hence, sequential classifiers based on bootstrap sampling, like bagging, stochastic gradient boosting \ref{sub:Stochastic gradient boosting} and random forest \ref{sec:Random forests}, can report the OOB for each iteration and terminate when the error stabilize. It can also be used instead of cross-validation for tuning parameters.
+Hence, sequential classifiers based on bootstrap sampling, like Bagging, stochastic gradient boosting \ref{sub:Stochastic gradient boosting} and Random Forest \ref{sec:Random forests}, can report the OOB for each iteration and terminate when the error stabilize. It can also be used instead of cross-validation for tuning parameters.
 
 
-\section{Random forests}
-\label{sec:Random forests}
+\section{Random Forests}
+\label{sec:Random Forests}
 \todo{forests or forest?}
 \todo{overfitt or overfit?}
-%%fakesubsection Random forests
+%%fakesubsection Random Forests
 \colorbox{yellow}{Boosting seems to outperform RF, but more tuning and takes longer to run?} \\
 \colorbox{yellow}{RF and overfitting in modstat}\\
 \url{http://www.montefiore.ulg.ac.be/~glouppe/pdf/phd-thesis.pdf} \\
-\colorbox{yellow}{referance to random variable selection at each node. See phd. above p. 72} \\
+\colorbox{yellow}{Different random forests methods. See phd. above p. 72} \\
 \\
-\cite{randomforests} made an extension of his Bagging algorithm called Random forests. The term \textit{random forests} is often used as a collection of methods building an ensemble of decision trees grown in a randomized way. Some other methods include \cite{dietterich1995}, \cite{Amit1997}, \cite{ho1998random}, \cite{cutler2001pert}, \cite{Geurts2006} and \cite{Rodriguez2006}. 
-\todo{Give actual names?}
-However, as Breiman's Random forests is the most famous, only it will be considered in this project.  
+\cite{randomforests} made an extension of his Bagging algorithm called \textit{Random Forests}. The term \textit{random forests} is often used as a collection of methods building an ensemble of decision trees grown in a randomized way. 
+Some of the most famous methods include Bagging from Section~\ref{sec:Bagging}, \textit{Random Subspace method} by \cite{ho1998random}, \textit{Perfect Random Tree Ensembles} by \cite{cutler2001pert}, \textit{Extremely Randomized Trees} by \cite{Geurts2006} and \textit{Rotation forests} by \cite{Rodriguez2006}. 
+However, as Breiman's Random Forests is the most famous, only it will be considered in this project. That means that from here on, Random Forests will refer to the specific method and not the class of methods.
+\\
+\\
+The idea behind Bagging was to reduce the instability of a classifier through aggregation of bootstrap samples. From a regression point of view, the success is explained through variance reduction. Trees were used in Bagging as they are  high variance and low bias. Random Forests is an attempt to improve this method. The extra randomization is suppose to reduce the variance further through decorrelating the trees. 
 
-The idea behind bagging was to reduce the instability of a classifier through aggregation of bootstrap samples. From a regression point of view, the success is is explained through variance reduction. Trees are very well suited for bagging, as they are  high variance and low bias. In 2001, Breiman suggested an improvement of this method, by reducing the variance further through de-correlating the trees in the method. He called this method \textit{Random forests} \cite{randomforests}.
-
-The idea is very similar to bagging. The only difference is in the growing of a tree for each bootstrap sample. To grow a tree, each split should be done in the following fashion:
+The method is very similar to Bagging. They only differ in how the individual trees are grown. Bootstrap samples are drawn in the same fashion as for Bagging. Then, for the creation of each split in a tree, the following steps are done. 
 \begin{enumerate}
-  \item Select $m$ predictors from the total amount of $p$ predictors ($\mathrm{dim}(\mathbf{x}) = p$).
+  \item Select $m$ predictors at random from the total amount of $p$ predictors ($\mathrm{dim}(\mathbf{x}) = p$).
   \item Do \textit{one} split, based on these $m$ variables (pick best variable and split-point). 
-  \item Start over for the next split.
 \end{enumerate}
 Each tree is grown large and not pruned. Usually the stopping criterion is some minimum terminal node size.
 
 Intuitively, the correlation between the trees should decrease by reducing $m$, but increase the variance of the single trees. Therefore $m$ should be considered a tuning parameter. However, the inventors recommend using $m = \lfloor \sqrt{p} \rfloor$, as a default value.
-\\\colorbox{yellow}{Something about how few tuning parameters RF has compared to boosting}\\
 
-\subsection{Why random forests works}
-\label{sub:Why random forests works}
-\url{https://stat.ethz.ch/education/semesters/ss2012/ams/slides/v10.2.pdf} \\
-\colorbox{yellow}{The url has nice derivation of bias/variance tradeoff for regression (p. 6)}\\
-\\
-In section \ref{sub:Why bagging works} an argument was made for why aggregating bootstrap samples can improved the prediction power of a classifier. This argument is still valid for the random forest algorithm, but in this section the effect of de-correlating the trees will be investigated. As discussed earlier \ref{sub:Classification trees}, the bias-variance tradeoff from regression \ref{sub:Bias-variance tradeoff} is sort of applicable to classification as well. It is easier to study the effect of de-correlating  the trees in the regression framework, so this will be presented first.
+\subsection{Why Random Forests works}
+\label{sub:Why Random Forests works}
+In section \ref{sub:Why Bagging works} an argument was made for why aggregating bootstrap samples can improved the prediction power of a classifier. This argument is still valid for the Random Forests algorithm, but in this section the effect of decorrelating the trees will be investigated. As discussed in \ref{sec:Classification trees}, the bias-variance tradeoff from regression is sort of applicable to classification as well. It is easier to study the effect of decorrelating  the trees in the regression framework, so this will be presented first.
 
 \subsubsection{Regression}
 \label{sub:Regression}
 
-Let $T_i(\mathbf{x})$ denote a trained tree. The random forest prediction for $\mathbf{x}$ is the average prediction over all the $B$ trees,
+Let $T_i(\mathbf{x})$ denote a trained tree. The Random Forest prediction for $\mathbf{x}$ is the average prediction over all the $B$ trees,
 \begin{align}
   \hat f(\mathbf{x}) = \frac{1}{B} \sum_{i = 1}^{B} T_i(\mathbf{x}).
 \end{align}
-As the trees are created from the same distribution, the are identically distributed \todo{Is this correct?}. Let $\sigma^2$ denote the variance of a tree, and $\rho$ the correlation between trees. In Appendix~\ref{sub:Variance for random forest regression} it is shown that the variance of the prediction is, 
+As the trees are created from the same distribution, they are identically distributed. Let $\sigma^2$ denote the variance of a tree, and $\rho$ the correlation between trees. In Appendix~\ref{sec:Variance for Random Forests regression} it is shown that the variance of the prediction is, 
 \begin{align}
 \label{eq:RFVarReg} 
   \Var[\hat f(\mathbf{x})] = \rho \sigma^2 + \sigma^2 \frac{1-\rho}{B}.
 \end{align}
-As discussed earlier, large trees are considered relatively unbiased, but with high variance. As the bias is a linear operator, the bias of the ensemble $\hat f(\mathbf{x})$ is the same as for an individual tree $T_i(\mathbf{x})$. From Eq.~\eqref{eq:RFVarReg} it is clear that the second term vanish as $B$ grows, thus bagging and random forest manage to reduce the variance of a method without increasing the bias. To further reduce the variance the first term in in Eq.~\eqref{eq:RFVarReg} must be reduced, which can be accomplished by reducing the correlation $\rho$ between the trees. 
+Recall that large trees are considered relatively unbiased, but with high variance. As the bias is a linear operator, the bias of the ensemble $\hat f(\mathbf{x})$ is the same as for an individual tree $T_i(\mathbf{x})$. From \eqref{eq:RFVarReg} it is clear that the second term vanish as $B$ grows, thus Bagging and Random Forests manage to reduce the variance of a method without increasing the bias. To further reduce the variance the first term in \eqref{eq:RFVarReg} must be reduced, which can be accomplished by reducing the correlation $\rho$ between the trees. 
 
 \subsubsection{Classification}
 \label{sub:Classification}
-For classification there are no equivalent measures to variance of the individual classifiers. One approach is therefore to construct a function based on the classifier and use the variance of the function as a substitute for the variance of the classifier. 
-In he's paper about random forest \cite{randomforests}, Breiman had a similar approach. He showed that for classification, the generalization error (or $\mathrm{EPE}$) for random forests is composed by the strength of the individual classifiers, and the correlation between classifiers in terms of raw margin functions. 
-The following derivation will be a slightly rewritten version of his argument.
+For classification there is no equivalent measure to variance of an individual classifiers. One approach is therefore to construct a function based on the classifier and use the variance of this as a substitute for the variance of the classifier. 
+\cite{randomforests} suggested one such approach. He showed that for Random Forests classification, a connection could be made between the \textit{generalization error}, the \textit{strength} of the individual classifiers and the correlation between classifiers in terms of raw margin functions. 
 
-A margin function for an ensemble of trees is given by
+A margin function for an ensemble of trees is given by,
 \begin{align}
   mg(\mathbf{x}, y) = \mathrm{ave}_k I\left\{ T_k(\mathbf{x}) = y \right\} - 
   \max_{j \neq y} \mathrm{ave}_k I\left\{ T_k(\mathbf{x}) = j \right\}.
 \end{align}
-Here $T_k(\mathbf{x})$ is a single tree in the forest, and $\bm \theta$ represents its parameters. 
-The margin function thus measure the extent to which the vote for the right class exceeds any other class, and is a useful measure for performance of a classifier given point $(\mathbf{x}, y)$.  
-In \ref{sub:Overfitting} it is shown that the margin function for a random forest is a good approximation of
+Here $T_k(\mathbf{x})$ is a single tree in the forest. 
+The margin function thus measure the extent to which the vote for the right class exceeds any other class, and is a useful measure for performance of a classifier in point $(\mathbf{x}, y)$.  
+In \ref{sub:Overfitting} it is shown that the margin function for Random Forests is a good approximation of,
 \begin{align}
   mr(\mathbf{x}, y) = P_{\bm \theta} (T(\mathbf{x}, \bm \theta) = y) - \max_{j \neq y} P_{\bm \theta}(T(\mathbf{x}, \bm \theta) = j), 
 \end{align}
-for a large forest. The generalization error is given by
+where $\bm \theta$ represents a trees parameters.
+The generalization error is a performance measure of the probabilities of $\mathbf{x}$ and $y$, and is given by,
 \begin{align}
   PE^* = P_{\mathbf{x}, y}(mr(\mathbf{x}, y) < 0),
 \end{align}
-and gives a performance measure over the probabilities for $\mathbf{x}$ and $y$. It can be read as the probability for misclassification, and is gives the same value as the expected prediction error $\mathrm{EPE}$ for $0/1$-loss discussed earlier. 
-The strength of a set of classifiers $\left\{ T(\mathbf{x}, \bm \theta) \right\}$ is defined as
+It can be read as the probability for misclassification, and takes the same value as the expected prediction error $\mathrm{EPE}$ under $0/1$-loss. 
+Let the strength of a set of classifiers $\left\{ T(\mathbf{x}, \bm \theta) \right\}$ be defined as,
 \begin{align}
-  s = \E_{\mathbf{x}, y} [mr(\mathbf{x}, y)]. 
+  s = \E_{\mathbf{x}, y} [mr(\mathbf{x}, y)],
 \end{align}
-Assume that for the rest of this section that $s \geq 0$.  
+and assume that for the rest of this section that $s \geq 0$.  
 According to Chebyshev's inequality,
 \begin{align}
   P_{\mathbf{x}, y} ([mr(\mathbf{x}, y)-s]^2 \geq s^2) \leq 
@@ -193,13 +189,13 @@ where
   &= P_{\mathbf{x}, y} (mr(\mathbf{x}, y) \geq s  \cup mr(\mathbf{x}, y) \leq 0) \notag \\
   & \geq P_{\mathbf{x}, y} (mr(\mathbf{x}, y) < 0).
 \end{align}
-This mean a connection between the generalization error and the variance of the method is
+This means a connection between the generalization error and the variance of the method is,
 \begin{align}
   \label{eq:PEVar} 
   PE^* \leq  \frac{\Var[mr(\mathbf{x}, y)]}{s^2}.
 \end{align}
-It it thus clear that for higher strength of individual trees and lower variance of the ensemble, the methods performance will improve. This should not be a surprise. Further, the variance is investigated to explicitly find a connection to the correlation between the margin functions.  
-First, let us simplify notation by defining
+It it thus clear that for higher strength of individual trees and lower variance of the ensemble, the methods performance will improve. This should not come as a surprise. Further, the variance is investigated to explicitly find a connection to the correlation between the margin functions.  
+First, let us simplify notation by defining,
 \begin{align}
   \hat j(\mathbf{x}, y) = \argmax_{j \neq y} P_{\bm \theta}(T(\mathbf{x}, \bm \theta) = j).
 \end{align}
@@ -215,15 +211,15 @@ where
 \end{align}
 is called the \textit{raw margin function}.
 
-Let $\bm \theta$ and $\bm \theta'$ be independent identically distributed, and let $f$ be an arbitrary function. Then
+Let $\bm \theta$ and $\bm \theta'$ be independent identically distributed, and let $f$ be an arbitrary function. Then the following identity can be useful,
 \begin{align}
   \E_{\bm \theta}[f(\bm \theta)]^2 = \E_{\bm \theta, \bm \theta'}[f(\bm \theta) f(\bm \theta')]. 
 \end{align}
-Using this gives that 
+This gives that,
 \begin{align}
   mr(\mathbf{x}, y)^2  = \E_{\bm \theta, \bm \theta'}[rmg(\bm \theta, \mathbf{x}, y) \: rmg(\bm \theta', \mathbf{x}, y)]. 
 \end{align}
-The variance in Eq.~\eqref{eq:PEVar} can be rewritten the following way.
+The variance in \eqref{eq:PEVar} can now be rewritten the following way,
 \begin{align}
   \Var(mr(\mathbf{x}, y)) 
   &= \E_{\mathbf{x}, y}[mr(\mathbf{x}, y)^2] - s^2 \notag \\
@@ -252,7 +248,7 @@ The last equations comes from the fact that $\bm \theta$ and $\bm \theta'$ are i
   &= \E_{\mathbf{x}, y} [\E_{\bm \theta} [rmg(\bm \theta, \mathbf{x}, y)]^2]  \notag \\
   &= s^2.
 \end{align}
-Introducing $\rho(\bm \theta, \bm \theta')$ as the correlation between $rmg(\bm \theta, \mathbf{x}, y)$ and $rmg(\bm \theta', \mathbf{x}, y)$, holding $\bm \theta$, $\bm \theta'$ fixed, and let $sd(\bm \theta)$ be the standard deviation of $rmg(\bm \theta, \mathbf{x}, y)$ holding $\bm \theta$ fixed. \eqref{eq:VarCovRF} can now be expressed as 
+Introducing $\rho(\bm \theta, \bm \theta')$ as the correlation between $rmg(\bm \theta, \mathbf{x}, y)$ and $rmg(\bm \theta', \mathbf{x}, y)$, holding $\bm \theta$, $\bm \theta'$ fixed, and let $sd(\bm \theta)$ be the standard deviation of $rmg(\bm \theta, \mathbf{x}, y)$, holding $\bm \theta$ fixed. \eqref{eq:VarCovRF} can now be expressed as,
 \begin{align}
   \Var[mr(\mathbf{x}, y)] 
   &= \E_{\bm \theta, \bm \theta'}[\rho(\bm \theta, \bm \theta') \: sd(\bm \theta) \: sd(\bm \theta')] \notag \\
@@ -260,13 +256,13 @@ Introducing $\rho(\bm \theta, \bm \theta')$ as the correlation between $rmg(\bm 
   \label{eq:RFVarMr} 
   &\overset{\text{Jensen}}{\leq}  \bar \rho \: \E_{\bm \theta}[\Var_{\mathbf{x}, y}[rmg(\bm \theta, \mathbf{x}, y)]],
 \end{align}
-where $\bar \rho$ is the mean of the correlation, defined by
+where $\bar \rho$ is the mean of the correlation, defined by,
 \begin{align}
   \bar \rho = 
   \frac{\E_{\bm \theta, \bm \theta'}[\rho(\bm \theta, \bm \theta') \: sd(\bm \theta) \: sd(\bm \theta')]}
   {\E_{\bm \theta, \bm \theta'}[sd(\bm \theta) \: sd(\bm \theta')]}.
 \end{align}
-Further the expectation of variance of the raw margin function, has the following relationship with the strength $s$,
+Further, the expectation of variance of the raw margin function has the following relationship with the strength $s$,
 \begin{align}
   \E_{\bm \theta}[\Var_{\mathbf{x}, y}[rmg(\bm \theta, \mathbf{x}, y)]] 
   &= \E_{\bm \theta}[\E_{\mathbf{x}, y}[rmg(\bm \theta, \mathbf{x}, y)^2]] - \E_{\bm \theta}[\E_{\mathbf{x}, y}[rmg(\bm \theta, \mathbf{x}, y)]^2] \notag \\
@@ -276,42 +272,42 @@ Further the expectation of variance of the raw margin function, has the followin
   \label{eq:RF1mins2} 
   &\leq 1 - s^2,
 \end{align}
-as $rmg(\bm \theta, \mathbf{x}, y) \in \left\{ -1, 1 \right\}$. Now combining \eqref{eq:RF1mins2}, \eqref{eq:RFVarMr} and \eqref{eq:VarCovRF} yields the bound,
+as $rmg(\bm \theta, \mathbf{x}, y) \in \left\{ -1, 1 \right\}$. Now combining \eqref{eq:RF1mins2}, \eqref{eq:RFVarMr} and \eqref{eq:PEVar} yields the bound,
 \begin{align}
   PE^* \leq \bar \rho  \frac{1 - s^2}{s^2} .
 \end{align}
-So Breiman managed to create a bound for the generalization error only based on the strength $s$ of the individual classifiers, and the correlation between them $\bar \rho$ in terms of raw margin functions. 
+So Breiman managed to create a bound for the generalization error only based on the strength $s$ of the individual classifiers, and the correlation $\bar \rho$ between them in terms of raw margin functions. 
 
 For the two class case with $y \in \left\{ -1, 1 \right\}$ the expression simplifies. The raw margin function become $2 I\left\{ T(\mathbf{x}, \bm \theta) = y \right\} - 1$, and $\bar \rho$ becomes the correlation between the trees,
 \begin{align}
   \bar \rho = \E_{\bm \theta, \bm \theta'}[\rho(T(\mathbf{x}, \bm \theta), T(\mathbf{x}, \bm \theta'))]. 
 \end{align}
+This suggest that by decorrelating the trees, the prediction error will decrease. 
 
 
 
 \subsection{Overfitting}
 \label{sub:Overfitting}
-Following the reasoning in \ref{sub:Why random forests work}, the margin function for an ensemble of trees is
+Following the reasoning in \ref{sub:Why Random Forests works}, the margin function for an ensemble of trees is
 \begin{align}
   mg(\mathbf{x}, y) = \mathrm{ave}_k I\left\{ T_k(\mathbf{x}) = y \right\} - 
   \max_{j \neq y} \mathrm{ave}_k I\left\{ T_k(\mathbf{x}) = j \right\}.
 \end{align}
-As the trees in random forests are identically distributed \todo{Is this correct?}, $T_k(\mathbf{x})$ is a function of a set of parameters $\bm \theta$, so $T_k(\mathbf{x}) = T(\mathbf{x}, \bm \theta)$. In \cite{randomforests}, Breiman proves that as the number of trees increase, for almost surely all sequences $\bm \theta_1, \bm \theta_2, \ldots$, $PE^*$ converges to 
+As the trees in Random Forests are identically distributed, $T_k(\mathbf{x})$ is a function of a set of parameters $\bm \theta$, so $T_k(\mathbf{x}) = T(\mathbf{x}, \bm \theta)$. \cite{randomforests} proves that as the number of trees increase, for almost surely all sequences $\bm \theta_1, \bm \theta_2, \ldots$, $PE^*$ converges to 
 \begin{align}
   P_{\mathbf{x}, y} (P_{\bm \theta} (T(\mathbf{x}, \bm \theta) = y) - \max_{j \neq y} P_{\bm \theta}(T(\mathbf{x}, \bm \theta) = j) < 0).
 \end{align}
-This shows that random forests do not overfitt by increasing the number of trees. The same argument of course counts for bagging. This is a desirable property that for instance boosting does not have. 
+This shows that Random Forests does not overfitt by increasing the number of trees. The same argument of course counts for Bagging. 
 
-From \ref{sub:Why random forests work} it is clear that the strength of the individual trees plays a major part in the performance of the ensemble. The individual trees, however, can be overfitted. Segal showed this in \cite{segal2004},  by controlling the depth of the individual trees in random forest regression, and experiencing small gains. 
+From \ref{sub:Why Random Forests works} it is clear that the strength of the individual trees plays a major part in the performance of the ensemble. They, however, can be overfitted. \cite{segal2004} showed this by controlling the depth of the individual trees in Random Forests regression, and experiencing small gains. 
 
 
 \subsection{Tuning}
 \label{sub:Tuning}
-One of the reasons why random forest is popular is that it is relatively easy to tune. As discussed above, it does not overfit as the number of bootstrap samples $B$ increase. So $B$ can either just be set high, or one can use the OOB error as a stopping criterion on number of iterations (see Section~\ref{sub:Out-of-bag}). It was suggested that the tree depth could be tuned, but in \cite{modstat}'s experience, fully grown trees usually works just fine and results in one less tuning parameter. 
+One of the reasons why Random Forests is popular is that it is relatively easy to tune. As discussed above, it does not overfit as the number of bootstrap samples $B$ increase. So $B$ can either just be set high, or one can for instance use the OOB error as a stopping criterion on number of iterations (see Section~\ref{sub:Out-of-bag}). It was suggested that the tree depth could be tuned, but \cite{modstat} argue that fully grown trees usually works just fine and result in one less tuning parameter. 
 
-The number of splitting variables $m$ is however an important tuning parameter. As mentioned earlier, $m = \lfloor \sqrt{p} \rfloor$, is a good default value and the optimal $m$ is often close to this value. 
-
-So tuning random forest can often just be on one variable, $m$, that has a good default value. Comparing this to for instance gradient boosting, from Section~\ref{sec:Boosting}, the random forest algorithm might be the preferred out-of-the-box classifier. 
+The number of splitting variables $m$, however, is  important to consider. As mentioned earlier, $m = \lfloor \sqrt{p} \rfloor$, is a good default value and the optimal $m$ is often close to this value. 
+So tuning Random Forests can often be do by considering \textit{one} variable, $m$, that has a good default value. Comparing this to for instance Gradient Boosting, the Random Forests algorithm might be the preferred out-of-the-box classifier. 
 
 
 \subsection{Robustness}

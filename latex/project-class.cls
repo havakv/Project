@@ -19,26 +19,37 @@
 \RequirePackage{wrapfig} % Wrap text around figure wrapfig [tab]
 \RequirePackage{graphicx}
 \RequirePackage{subcaption}
+\RequirePackage[usenames,dvipsnames,svgnames,table]{xcolor}
 \RequirePackage{enumerate} % Use e.g. \begin{enumerate}[a)]
 \RequirePackage[font={small, it}]{caption} % captions on figures and tables
 \RequirePackage[toc]{appendix} % Page make Appendices title, toc fix table of content 
 \RequirePackage{todonotes} % Notes. Use \todo{"text"}. Comment out \listoftodos
 \RequirePackage{microtype} % Improves spacing. Include AFTER fonts
-\RequirePackage{hyperref} % Use \autoref{} and \nameref{}
+\RequirePackage[backref=page]{hyperref} % Use \autoref{} and \nameref{}
 \hypersetup{backref,
   colorlinks=true,
   breaklinks=true,
   %hidelinks, %uncomment to make links black
   linkcolor=blue,
-  urlcolor=blue,
+  urlcolor=SeaGreen,
   citecolor=blue,
   %linktoc=all,
   linktocpage=true
 }
 \RequirePackage[all]{hypcap} % Makes hyperref jup to top of pictures and tables
+
+%---------------------------------------------------------------------------------------------
+% Set page reference in bibliography.
+\renewcommand*{\backref}[1]{}
+\renewcommand*{\backrefalt}[4]{%
+  \ifcase #1 (Not cited.)%
+  \or        (Cited on page~#2.)%
+  \else      (Cited on pages~#2.)%
+\fi}
 %
-%-------------------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Page layout
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\RequirePackage{showframe} % Uncomment if you want the margin frames
 \RequirePackage{fullpage}
 \setlength{\marginparwidth}{2cm} % Needed when using todos and book toughether.
@@ -59,7 +70,9 @@
 \renewcommand{\chaptermark}[1]{ \markboth{\thechapter.\ \ #1}{} } % Usefull for book?
 \renewcommand{\sectionmark}[1]{ \markright{\thesection\ #1}{} } % Remove formating and nr.
 \fancyhead[LE]{\thepage \quad \quad \nouppercase{\leftmark}}
-\fancyhead[RO]{\rightmark \quad \quad \nouppercase{\thepage}}
+\fancyhead[RO]{\nouppercase{\rightmark} \quad \quad \thepage}
+%\fancyhead[LE]{\thepage \quad \quad \MakeUppercase{\leftmark}}
+%\fancyhead[RO]{\rightmark \quad \quad \thepage}
 \fancyhead[LO]{}
 \fancyhead[RE]{}
 

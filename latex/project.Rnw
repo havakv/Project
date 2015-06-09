@@ -70,7 +70,8 @@ Write something interesting here!!!!! And make the margins larger (text more nar
 \clearpage
 %\bibliographystyle{plain}
 %\bibliographystyle{apa}
-\bibliographystyle{authordate1}
+%\bibliographystyle{authordate4}
+\bibliographystyle{plainnat}
 \bibliography{mybib}
 \addcontentsline{toc}{chapter}{Bibliography}
 %\begin{thebibliography}{99} % At most 99 references.

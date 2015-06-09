@@ -22,7 +22,7 @@ To measure the performance and explore the how well theory and practice coincide
  \end{itemize}
  For more information on the dataset see \cite{Spamdata}.
 
- In the tests that follows the spam data was split into a training and test set of same size. The algorithms are first trained on the training set, and the test error in form of $0/1$ misclassification error rate is plotted, i.e.
+ In the tests that follows the Spam data was split into a training and test set of same size. The algorithms are first trained on the training set, and the test error in form of $0/1$ misclassification error rate is plotted, i.e.
  \begin{align}
    \label{eq:missClassErr} 
    error =  \frac{1}{n_{test}} \sum_{i = 1}^{n_{test}} I\{C(\mathbf{x}_i) \neq y_i\},
@@ -43,7 +43,7 @@ First classification trees were fitted to the data using \verb+rpart+ by \cite{r
 \begin{center}
     \includegraphics[scale=0.5]{./figures/cartCPSpam.pdf}
 \end{center}
-\caption{CART on spam data. Test error as function of number of splits. The two lines represent trees grown with Gini index and deviance splitting criterion. A large tree is grown and the different points are test error of pruned trees depending on the tuning parameter $\alpha$ in \eqref{eq:CostPruning}. The green and magenta line marks the minima for the two lines. }
+\caption{CART on Spam data. Test error as function of number of splits. The two lines represent trees grown with Gini index and deviance splitting criterion. A large tree is grown and the different points are test error of pruned trees depending on the tuning parameter $\alpha$ in \eqref{eq:CostPruning}. The green and magenta line marks the minima for the two lines. }
 \label{fig:cartCPSpam}
 \end{figure}
 %
@@ -68,7 +68,7 @@ The magenta figure in Figure~\ref{fig:CartSpam}, is the tree grown using devianc
   \end{subfigure}
           %(or a blank line to force the subfigure onto a new line)
   \vspace{1\baselineskip}
-  \caption{CART on spam data. Trees from \ref{fig:cartCPSpam} are displayed. The green tree has the minimal test error using the Ginie index, while the red have a much simpler structure with almost the same test error. The magenta tree is the best performing using the deviance splitting criterion.}
+  \caption{CART on Spam data. Trees from \ref{fig:cartCPSpam} are displayed. The green tree has the minimal test error using the Ginie index, while the red have a much simpler structure with almost the same test error. The magenta tree is the best performing using the deviance splitting criterion.}
   \label{fig:CartSpam}
 \end{figure}
 \colorbox{yellow}{Write something about how the red tree is the same as the green tree only with more nodes collapsed.}\\
@@ -78,7 +78,7 @@ The magenta figure in Figure~\ref{fig:CartSpam}, is the tree grown using devianc
 
 \section{Adaboost}
 \label{sec:SimAdaBoost}
-Adaboost was fitted to the spam data using the package \verb+adabag+ by \cite{adabag}. It use the \verb+rpart+ implementation of CART in Section~\ref{sec:CARTsim} as base classifiers. The main tuning parameters in Adaboost is the number of iterations, and the tree depth. In Figure~\ref{fig:adaboostSpam}, the test error is plotted as function of iterations, for different tree depths. It is clear that the algorithm does pretty well after few iterations, and outperforms CART easily. Only a maximum of 300 iterations were done, but by the look of it, Adaboost seems quite robust to overfitting. 
+Adaboost was fitted to the Spam data using the package \verb+adabag+ by \cite{adabag}. It use the \verb+rpart+ implementation of CART in Section~\ref{sec:CARTsim} as base classifiers. The main tuning parameters in Adaboost is the number of iterations, and the tree depth. In Figure~\ref{fig:adaboostSpam}, the test error is plotted as function of iterations, for different tree depths. It is clear that the algorithm does pretty well after few iterations, and outperforms CART easily. Only a maximum of 300 iterations were done, but by the look of it, Adaboost seems quite robust to overfitting. 
 
 Surprisingly, Adaboost does better for deeper trees. It is expected to overfit for larger trees, but it does not. One possible explanation could be that there is higher order interactions between the features in the dataset. It is not possible to fit trees deeper than $30$ in the \verb+adabag+ package, but it would have been interesting to see how the performance developed for even deeper trees.
 %
@@ -86,13 +86,13 @@ Surprisingly, Adaboost does better for deeper trees. It is expected to overfit f
 \begin{center}
     \includegraphics[scale=0.5]{./figures/adaboostSpam.pdf}
 \end{center}
-\caption{Adaboost on spam data. Each line represent a tree depth.}
+\caption{Adaboost on Spam data. Each line represent a tree depth.}
 \label{fig:adaboostSpam}
 \end{figure}
 %
 \section{Gradient boosting}
 \label{sec:SimGradBoost}
-Gradient boosting is a very powerful method, but requires a lot of tuning. The goal here was not to find the optimal tuning parameters for the spam dataset, but rather to investigate the effect of changing different parameters. The package \verb+gbm+ by \cite{gbm} was used to fit the gradient boosting with deviance loss.
+Gradient boosting is a very powerful method, but requires a lot of tuning. The goal here was not to find the optimal tuning parameters for the Spam dataset, but rather to investigate the effect of changing different parameters. The package \verb+gbm+ by \cite{gbm} was used to fit the gradient boosting with deviance loss.
 
 \begin{figure}[htbp]
   \centering
@@ -109,7 +109,7 @@ Gradient boosting is a very powerful method, but requires a lot of tuning. The g
   \end{subfigure}
           %(or a blank line to force the subfigure onto a new line)
   \vspace{1\baselineskip}
-  \caption{Gradient boosting on spam data.}
+  \caption{Gradient boosting on Spam data.}
   \label{fig:GradBoostSpam}
 \end{figure}
 
@@ -126,81 +126,70 @@ The figure show the same trend as Adaboost did. Deeper trees give better results
 \begin{center}
     \includegraphics[scale=0.5]{./figures/gradboostSpamStoch.pdf}
 \end{center}
-\caption{Stochastic gradient boosting on spam data. The bootstrap fractions are specified in the legend.}
+\caption{Stochastic gradient boosting on Spam data. The bootstrap fractions are specified in the legend.}
 \label{fig:StochasticGradBoost}
 \end{figure}
 \\
 Stochastic gradient boosting was mentioned as a small modification of gradient boosting in Section~\ref{sub:Stochastic gradient boosting}. The only difference is that a subset of the training data is drawn (without replacement) at each iteration. \verb+gbm+ refers to this parameter as the \verb+bag.fraction+. In Figure~\ref{fig:StochasticGradBoost}, the test error is plotted for different bootstrap fractions. From the figure is looks like there is little gain in error from introducing randomness. However, for bootstrap fractions down to $0.5$ the performance is not worse. As a smaller dataset requires less computations, there is still some gain in doing stochastic gradient boosting here.
 
-\section{Bagging and Random Forest}
+\section{Bagging and Random Forests}
 \label{sec:BaggandRFSim}
-Simulation 1: \\
-Do simulations for bagging with different bootstrap sizes. And the same for random forests\\
+Random Forests is in many ways an extension of Bagging, and tries to improve performance through decorrelating the trees. In Figure~\ref{fig:baggingAndRFSpam}, both methods are fitted to the Spam data using \verb+ipred+ by \cite{ipred} and \verb+randomForest+ by \cite{randomForestR}. The default tuning parameters were used for the methods. The figure shows how the test error changes with number of trees used. Here Random Forest slightly outperform Bagging, which is as expected, and both are a vast improvement of CART. There is no sign that either method is overfitting as the number of trees increase, which coincide with the theory in Section~\ref{sub:Overfitting}.
 \\
-\begin{figure}[h!]
+\begin{figure}[htbp]
   \centering
   \begin{subfigure}[b]{0.48\textwidth}
     \includegraphics[width=\textwidth]{./figures/baggingAndRFSpam.pdf}
-    \caption{Test error as function of bootstrap samples for bagging and RF.}
+    \caption{Test error as function of bootstrap samples for Bagging and RF.}
     \label{fig:baggingAndRFSpam}
   \end{subfigure}%
   \quad
   \begin{subfigure}[b]{0.48\textwidth}
     \includegraphics[width=\textwidth]{./figures/RFSpam.pdf}
-    \caption{RF as func. of m, for different number of bootstrap samples. Vertical line marks $\sqrt{p}$.}
+    \caption{RF as func. of m, for different number of bootstrap samples. Vertical line marks $\lfloor \sqrt{p} \rfloor$.}
     \label{fig:RFSpam}
   \end{subfigure}
           %(or a blank line to force the subfigure onto a new line)
   \vspace{1\baselineskip}
-  \caption{Misclassification rate for bagging and random forests on spam data.}
+  \caption{Bagging and Random Forests on Spam data.}
   \label{fig:baggAndRF}
 \end{figure}
-\todo{Comment on line in Figure~\ref{fig:RFSpam}}
-\colorbox{yellow}{Comment how Figure~\ref{fig:baggingAndRFSpam} is many runs and not different iterations for one run.}
+\\
+Figure~\ref{fig:RFSpam} shows how the number of randomly chosen features $m$ effects the test error. This is done for different number of trees, and the vertical line marks the default value $m = \lfloor \sqrt{p} \rfloor$. In this case the default value for $m$ seems a little high, at least for larger forests. Nevertheless, it is very close to the optimal value in terms of test error, and defends its position as a default parameter value well. 
+\\\colorbox{yellow}{Comment how Figure~\ref{fig:baggingAndRFSpam} is many runs and not different iterations for one run.}
 \\\colorbox{yellow}{That is why it is not smooth compared to Figure~\ref{fig:OOBvsTestvsCV}.}
-
-
-Simulation 2: \\
 \\
-Maybe together with bagging, do simulations for as function of $m$'s, for different bootstrap sizes? \\
-\colorbox{yellow}{Not sure what is best here.}\\
-\\
-\colorbox{yellow}{Comment that Figure~\ref{fig:baggingAndRFSpam} shows how RF don't overfit. Is the same true for bagging?}\\
-\\
-Simulation 3: \\
-Show an example of when bagging and RF fails? If the base classifier is bad, then the aggregated can be bad as well.\\
-\colorbox{yellow}{Should I do this?}\\
-\\
-\colorbox{yellow}{Do simulation to show diffenece between \eqref{eq:aggClass} and \eqref{eq:aggClassP}.}
-
-
-\begin{figure}[h!]
+\begin{figure}[htpb]
 \begin{center}
     \includegraphics[scale=0.5]{./figures/RFTreeDepth.pdf}
 \end{center}
-\caption{Random forest on spam data, with different tree depths. The numbers in the legend indicates the minimum number of nodes in a terminal node.}
+\caption{Random Forests on Spam data, with different tree depths. The numbers in the legend indicates the minimum number of nodes in a terminal node.}
 \label{fig:RFTreeDepth}
 \end{figure}
-\colorbox{yellow}{Benefits of not growing full sized trees is that it is faster, and some regularization.}
-
+\\
+As discussed in Section~\ref{sub:Overfitting}, Bagging and Random Forests can overfitted in terms of overfitting the individual trees. Figure~\ref{fig:RFTreeDepth} show the test error for 4 different tree depths. The \verb+randomForest+ package does not take depth as an argument, but instead the minimum number of training points in each terminal node. So the red line corresponds to a fully grown tree. It is clear from the figure that there is no gain in restricting the size of the trees. For high restrictions (see light blue line 40), unnecessary bias is introduced and the performance drops.  As Bagging and Random Forests are so similar, the experiment was not repeated with bagging.
+\\
+\\
+In Section~\ref{sub:Out-of-bag}, the Out-of-bag error was introduced as an approximation of the test error. It has very little computational cost and can replace cross-validation in tuning of parameters. Figure~\ref{fig:OOBvsTestvsCV} shows OOB, test error, and 10-fold cross-validated error for Random Forest on the Spam data, as function of number of trees. 
+OOB error is also available for Stochastic Gradient Boosting and Bagging, but only Random Forests was tested here.
+The figure shows that both OOB and 10-fold cross-validated error are good approximations for the test error. This mean that OOB can be used as a check of when the test error has converged and no more trees are needed. 
 
 \begin{figure}[h!]
 \begin{center}
     \includegraphics[scale=0.5]{./figures/OOBvsTestvsCV.pdf}
 \end{center}
-\caption{Out-of-bag, 10-fold cross-validation and test error for random forest on spam data.}
+\caption{Out-of-bag, 10-fold cross-validation and test error for Random Forests on Spam data.}
 \label{fig:OOBvsTestvsCV}
 \end{figure}
-\colorbox{yellow}{Comment how they are very random, so Figure~\ref{fig:OOBvsTestvsCV} varies a lot.}\\
 
+Figure~\ref{fig:OOBvsTestvsCV} only show \textit{one} run. As there is a lot of randomness in the methods the lines varies somewhat between runs. Maybe a figure with bootstrapped confidence bounds would be a better choice in this context. This was not done as the figure perfectly illustrate its purpose as is. 
 
-
-
-
+\section{Categorical predictors}
+\label{sec:Categorical predictors}
+\colorbox{yellow}{Probably only necessary to write about CART as all the other are based on it.}
 
 \section{Compare methods}
 \label{sec:Compare methods}
-\colorbox{yellow}{Show CART here as well.}
 
 \subsection{Robustness}
 \label{sub:Robustness}
