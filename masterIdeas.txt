@@ -1,0 +1,9 @@
+
+Look at methods with missing data. How to handle for instance medial prediction.
+
+Methods that are sequential in that they can be expanded with more data.
+
+A tweak of an already existing algorithm.
+
+
+

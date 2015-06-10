@@ -34,7 +34,7 @@ Under this assumption $\mathrm{EPE}$ can be decomposed into
 \end{align}
 So to minimize $\mathrm{EPE}(\hat f)$ it is necessary to minimize the variance and bias of $\hat f$. This equation is often referred to as the bias-variance tradeoff as usually when one is decreased the other increase. 
 
-As discussed in \ref{sec:Classification trees}, there is no equally satisfactory decomposition of $\mathrm{EPE}$ under $0/1$-loss, but it is still common to talk about the bias-variance tradeoff in classification as well.
+As discussed in \ref{sec:Tree}, there is no equally satisfactory decomposition of $\mathrm{EPE}$ under $0/1$-loss, but it is still common to talk about the bias-variance tradeoff in classification as well.
 
 
 
@@ -73,3 +73,7 @@ The variance of $\hat f(\mathbf{x})$ is thus,
 &= \rho \sigma^2 + \sigma^2 \frac{1-\rho}{B}.
 \end{align}
 So the variance decrease by increasing the number of bootstrap samples $B$ and by decorrelating the trees.
+
+\chapter{Code from experiments}
+\label{chap:Code}
+Make sure to refer to this appendix in the experiments chapter.

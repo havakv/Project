@@ -1,17 +1,14 @@
 <<echo=FALSE, cache=FALSE>>=
 set_parent('./project.Rnw')
 @
-\section{Boosting}
-\label{sec:Boosting}
-\todo{Chapter?}
-%%fakesubsection Boosting
+%%fakesection Boosting
 In this part boosting will be discussed. Two algorithms will be discussed, \textit{Adaboost} and \textit{gradient boosting}. First the basic framework will be introduced, much through Adaboost, but the main focus will be on gradient boosting based on trees. 
 
 The idea behind boosting is to combine many ''weak'' classifiers to create one ''strong''. This is usually referred to as a committee-based classifier, and bears some resemblance to other committee-based approaches such as \textit{bagging} as will be discussed in Section~\ref{sec:Bagging}. The weak classifiers are usually high biased with low variance, so boosting is often referred to as a bias reducing method. 
 
 The algorithms train weak classifiers sequentially, and for each new classifier the data points are weighted by how hard they were for previous classifiers to classify correctly. At the end all the classifiers are combined and weighted based on how well they preform. The idea is better illustrated in the \textit{Adaboost.M1} algorithm by  \cite{adaboostM1}.
-\subsection{Adaboost}
-\label{sub:Adaboost}
+\section{Adaboost}
+\label{sec:Adaboost}
 \todo{Adaboost or AdaBoost}
 Adaboost.M1 \url{http://cseweb.ucsd.edu/~yfreund/papers/IntroToBoosting.pdf} This is mentioned in the start of boosting \cite{modstat} \\
 \colorbox{yellow}{Some say it is sensitive to noisy data and outliers}\\
@@ -36,8 +33,8 @@ This is repeated for $m = 1, \ldots, M$. Finally the classifier is created,
 There are many choices of weak classifiers, but one of the more common is to use classification trees. It is then important to not grow an optimal tree as with CART, but instead grow a shallow tree or just stumps (one split). The size of the individual trees will be discussed in Section~\ref{sub:Tree size}. For computational purposes, the trees are only grown and not pruned back.
 An example of this implementation can be found in the R package \verb+adabag+ by \cite{adabag}, that use the \verb+rpart+ implementation of CART by \cite{rpart} as base classifiers.
 
-\subsection{Forward stagewise Additive Modeling}
-\label{sub:Forward stagewise additive modeling}
+\section{Forward stagewise Additive Modeling}
+\label{sec:Forward stagewise additive modeling}
 A common way to view the goal of classification problems is through the expected prediction error (Appendix~\ref{sec:EPE}). The goal is to find
 \begin{align}
   \label{eq:fargmin} 
@@ -74,7 +71,7 @@ it can be shown [\cite{modstat}] that forward stagewise modeling is equivalent t
 \end{align}
 So the classification rule in Adabost.M1 approximates one half of the log-odds. That justifies using its sign as a classification rule.
 %
-\subsubsection{Loss functions}
+\subsection{Loss functions}
 \label{sub:Loss functions}
 <<lossFunctions, echo=FALSE>>=
 # Plot of different loss functions
@@ -91,11 +88,11 @@ The choice of loss function is important in terms of both accuracy and computati
 \end{figure}
 %
 
-From the figure it is clear that exponential and misclassification loss decrease with the margin and are therefore better choices than square-error loss. But as mentioned earlier, and will become more clear in Section~\ref{sub:Gradient boosting}, a differentiable loss gives some computational advantages. The last loss function in Figure~\ref{fig:lossFunctions} is the \textit{negative binomial log-likelihood}, or \textit{binomial deviance},
+From the figure it is clear that exponential and misclassification loss decrease with the margin and are therefore better choices than square-error loss. But as mentioned earlier, and will become more clear in Section~\ref{sec:Gradient boosting}, a differentiable loss gives some computational advantages. The last loss function in Figure~\ref{fig:lossFunctions} is the \textit{negative binomial log-likelihood}, or \textit{binomial deviance},
 \begin{align}
   L(y, f(\mathbf{x})) = \log \left( 1 + \exp (-2 y f(\mathbf{x})) \right).
 \end{align}
-It is very similar to the exponential loss. The main difference is that for increasingly negative margins the exponential loss penalize exponentially, while the binomial deviance penalize linearly. Therefore the binomial deviance is not as vulnerable in noisy settings. The binomial deviance is a very common choice and will be the main focus for the rest of Section~\ref{sec:Boosting}. 
+It is very similar to the exponential loss. The main difference is that for increasingly negative margins the exponential loss penalize exponentially, while the binomial deviance penalize linearly. Therefore the binomial deviance is not as vulnerable in noisy settings. The binomial deviance is a very common choice and will be the main focus for the rest of this chapter. 
 
 For multiclass cases, the binomial deviance generalizes to the \textit{multinomial deviance}
 \begin{align}
@@ -108,9 +105,9 @@ For multiclass cases, the binomial deviance generalizes to the \textit{multinomi
 As with logistic regression, this is a probabilistic classifier, i.e. it returns class probabilities. That is very useful in fields like data mining, but can also be useful in pure classification tasks when combining into ensembles. 
 
 A generalization of the exponential loss for multiple classes can be found in \cite{zhu2009}.
-\subsection{Gradient boosting}
-\label{sub:Gradient boosting}
-%%fakesubsubsection Gradient boosting
+\section{Gradient boosting}
+\label{sec:Gradient boosting}
+%%fakesubsection Gradient boosting
 Gradient boosting is a method developed by \cite{friedman}. It is built on the stagewise framework for arbitrary differentiable loss functions, and the idea is to solve for $f^*$ \eqref{eq:fargmin} numerically, using steepest decent in function space.
 
 Let $g_m$ denote the gradient at step $m$
@@ -155,10 +152,10 @@ Note here that $h$ and $f$ are continuous functions and not classifiers. The cla
 \end{align}
 Later it will be show how powerful this simple algorithm is, but first trees will be introduced as basis functions $\beta_m h(\mathbf{x}; \bm{\gamma}_m)$.
 
-\subsubsection{Regression Trees}
+\subsection{Regression Trees}
 \label{sub:Regression Trees}
 It was earlier mentioned that the basis functions $h(\mathbf{x}; \bm{\gamma}_m)$ in gradient boosting are continuous functions. Therefore, classification trees can not be used and the regression framework needs to be explored.
-In section \ref{sub:CART} it was shown how classification trees can be fitted using the CART method. CART stands for \textit{Classification And Regression Trees} and can obviously also be used for regression. The ides behind fitting regression trees are almost identical to classification, but the functions used during growing and pruning are different. However, this will not be investigated deeply. This section discuss only how trees can be used in the boosting framework.\\
+In section \ref{sec:CART} it was shown how classification trees can be fitted using the CART method. CART stands for \textit{Classification And Regression Trees} and can obviously also be used for regression. The ides behind fitting regression trees are almost identical to classification, but the functions used during growing and pruning are different. However, this will not be investigated deeply. This section discuss only how trees can be used in the boosting framework.\\
 \\
 A regression tree $T$ can be represented on the following form,
 \begin{align}
@@ -185,7 +182,7 @@ As the trees are disjunct, each $\eta_{m j}$ can be found independently,
   \eta_{m j} = \argmin_\eta  \sum_{\mathbf{x}_i \in R_{m j}} L(y_i, f_{m-1}(\mathbf{x}) + \eta).
 \end{align}
 
-\subsubsection{The two-class logistic regression classifier}
+\subsection{The two-class logistic regression classifier}
 \label{sub:The two-class logistic regression classifier}
 The framework for gradient boosting is now reviewed, and as a final step the algorithm is summarize under binomial deviance loss. As before $y \in \left\{ -1, 1 \right\}$ and the loss is 
 \begin{align}
@@ -221,13 +218,13 @@ All this is repeated $M$ times, and classification can be done based on the log-
 \\
 It is pretty straight forward to expand the algorithm to the multi-class case. As mentioned earlier, the binomial deviance generalizes to the multinomial deviance in \eqref{eq:multinomialDeviance}. As there are now $K$ functions $f_k$, $K$ different trees has to be fitted at each iteration, one for each pair $(\tilde y_{k i}, f_k)$. Correspondingly, $J$ coefficients $\eta_{m k j}$ has to be fit for each tree, using the Newton-Raphson step. At he end the classifier is created based on the estimated class probabilities in \eqref{eq:multinomialDevianceProb}. For more details see for example \cite{friedman}.
 
-\subsection{Tuning boosting algorithms}
-\label{sub:Tuning boosting algorithms}
-Boosting algorithms have parameters that need to be set by the user. These can have a great impact on both performance and time, and often depend on each other. The first parameter that might come to mind is the number of boosting iterations $M$. It controls much of the balance between underfitting and overfitting. The choice for $M$ is usually made through either a test set, if there is a large amount of data, or through cross-validation. It is also possible to use the \textit{Out-of-bag} estimates for  \textit{Stochastic gradient boosting} (see Section~\ref{sub:Stochastic gradient boosting}), which will be discussed in Section~\ref{sub:Out-of-bag}.
+\section{Tuning boosting algorithms}
+\label{sec:Tuning boosting algorithms}
+Boosting algorithms have parameters that need to be set by the user. These can have a great impact on both performance and time, and often depend on each other. The first parameter that might come to mind is the number of boosting iterations $M$. It controls much of the balance between underfitting and overfitting. The choice for $M$ is usually made through either a test set, if there is a large amount of data, or through cross-validation. It is also possible to use the \textit{Out-of-bag} estimates for  \textit{Stochastic gradient boosting} (see Section~\ref{sec:Stochastic gradient boosting}), which will be discussed in Section~\ref{sub:Out-of-bag}.
 
-\subsubsection{Tree size}
+\subsection{Tree size}
 \label{sub:Tree size}
-The number of terminal nodes $J$ in the trees controls the ''bias-variance tradeoff'' for the individual classifiers, as discussed in Section~\ref{sec:Classification trees}.  Large trees has high variance and low bias, while small trees have the opposite.   Following the reasoning in \cite{modstat} and \cite{friedman}, the goal is to find $f^*$ solving \eqref{eq:fargmin}. Consider an ANOVA expansion of the solution,
+The number of terminal nodes $J$ in the trees controls the ''bias-variance tradeoff'' for the individual classifiers, as discussed in Section~\ref{sec:Tree}.  Large trees has high variance and low bias, while small trees have the opposite.   Following the reasoning in \cite{modstat} and \cite{friedman}, the goal is to find $f^*$ solving \eqref{eq:fargmin}. Consider an ANOVA expansion of the solution,
 \begin{align}
   \label{eq:ANOVAexpansion} 
   f^*(\mathbf{x}) = \sum_{i} f_i(x_i) + \sum_{ij} f_{ij}(x_i, x_j) + 
@@ -238,7 +235,7 @@ where $\mathbf{x} = (x_1, x_2, \ldots, x_p)^T$. $f_i$ is called the ''main-effec
 When fitting an additive model of trees with only two terminal nodes (commonly referred to as stumps), these will have the same structure as the ''main-effects''. To capture interactions of order up to $J$, a tree with $J+1$  terminal nodes is needed, in addition to $N>J$. However, by setting $J$ to large, unnecessary variance is introduced in the trees. Boosting methods works by lowering the bias through the forward stagewise process, so it might be advantageous to use high bias low variance trees, but ideally one would of course try to be close to the dominant interaction order of $f^*$.
 Experience suggest that $4 \leq J \leq 8$ usually works well, and $J>10$ is rarely needed according to \cite{modstat}.  
 
-\subsubsection{Shrinkage}
+\subsection{Shrinkage}
 \label{sub:Shrinkage}
 As discussed earlier, regularization is mainly controlled by number of boosting iterations $M$. However, test has shown  \cite{copas1983} that \textit{shrinkage} might improve the results obtained by only restricting on $M$. For the gradient boosting algorithm it is straight forward to include this. 
 The update of $f$ in \eqref{eq:gradBoostUpdateF} is just changed to,
@@ -253,7 +250,7 @@ Here $\nu$ is often referred to as the ''learning rate'' or ''shrinkage paramete
 \\\colorbox{yellow}{This can be expensive as computations scales with $M$. This $\nu$-$M$ tradeoff will be illustrated in simulations.}
 
 
-\subsubsection{Influence trimming}
+\subsection{Influence trimming}
 \label{sub:Influence trimming}
 \todo{influence trimming \cite{friedman}?}
 For binomial loss, at the $m$'th iteration, the problem at hand is to minimize
@@ -283,16 +280,12 @@ Using this method could have an considerable impact on computing time, while lea
 
 
 
-\subsection{Variable selection}
-\label{sub:Variable selection}
-\colorbox{yellow}{Should at least mention something about variable selection. See \cite[sec. 8.1]{friedman}?}
-
-\subsection{Interpretation}
-\label{sub:Interpretation}
+\section{Interpretation}
+\label{sec:Interpretation}
 \colorbox{yellow}{Section on interpretation? See \cite[10.3]{modstat} and \cite{friedman}.}
 
-\subsection{Stochastic gradient boosting}
-\label{sub:Stochastic gradient boosting}
+\section{Stochastic gradient boosting}
+\label{sec:Stochastic gradient boosting}
 Bagging was introduced by \cite{Breiman1996} and will be covered in Section~\ref{sec:Bagging}. Breiman here showed that the performance of function estimation procedures could be improved by introducing randomness in the training data. 
 Inspired by this, in addition to the randomization of Adaboost by \cite{freund1996} and the hybrid procedure of boosting and bagging by \cite{breiman1999}, \cite{FriedmanStochBoost} developed the \textit{stochastic gradient boosting} algorithm.
 This new method is only a slight modification of the gradient boosting algorithm, but has been shown capable of outperforming gradient boosting, both in terms of accuracy and computational speed.  

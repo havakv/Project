@@ -102,7 +102,7 @@ When constructing a bootstrap sample $B^* = \left\{ (\mathbf{x}_1^*, y_1^*), \ld
 Thus for large $N$ the point $(\mathbf{x}_j, y_j)$ will not be used to train $37 \%$ of the trees. Breiman suggested in 1996 \cite{outOfBag} that these points could be used to create an approximation of the misclassification error. This is done the following way: For each $(\mathbf{x}_i, y_i)$ construct a prediction $C(\mathbf{x}_i)$ of $y_i$ based only on the trees not trained on $(\mathbf{x}_i, y_i)$. Breiman called this the \textit{Out-of-bag} estimate or OOB. 
 
 Test has shown that OOB gives an good approximations of the cross-validated error \cite{outOfBag}, but without the large training cost. 
-Hence, sequential classifiers based on bootstrap sampling, like Bagging, stochastic gradient boosting \ref{sub:Stochastic gradient boosting} and Random Forest \ref{sec:Random forests}, can report the OOB for each iteration and terminate when the error stabilize. It can also be used instead of cross-validation for tuning parameters.
+Hence, sequential classifiers based on bootstrap sampling, like Bagging, Stochastic Gradient Boosting \ref{sec:Stochastic gradient boosting} and Random Forests \ref{sec:Random Forests}, can report the OOB for each iteration and terminate when the error stabilize. It can also be used instead of cross-validation for tuning parameters.
 
 
 \section{Random Forests}
@@ -116,8 +116,8 @@ Hence, sequential classifiers based on bootstrap sampling, like Bagging, stochas
 \colorbox{yellow}{Different random forests methods. See phd. above p. 72} \\
 \\
 \cite{randomforests} made an extension of his Bagging algorithm called \textit{Random Forests}. The term \textit{random forests} is often used as a collection of methods building an ensemble of decision trees grown in a randomized way. 
-Some of the most famous methods include Bagging from Section~\ref{sec:Bagging}, \textit{Random Subspace method} by \cite{ho1998random}, \textit{Perfect Random Tree Ensembles} by \cite{cutler2001pert}, \textit{Extremely Randomized Trees} by \cite{Geurts2006} and \textit{Rotation forests} by \cite{Rodriguez2006}. 
-However, as Breiman's Random Forests is the most famous, only it will be considered in this project. That means that from here on, Random Forests will refer to the specific method and not the class of methods.
+Some of the most well known methods include Bagging from Section~\ref{sec:Bagging}, \textit{Random Subspace method} by \cite{ho1998random}, \textit{Perfect Random Tree Ensembles} by \cite{cutler2001pert}, \textit{Extremely Randomized Trees} by \cite{Geurts2006} and \textit{Rotation forests} by \cite{Rodriguez2006}. 
+However, as Breiman's Random Forests might be the most popular \todo{rewrite}, only it will be considered in this project. That means that from here on, Random Forests will refer to the specific method and not the class of methods.
 \\
 \\
 The idea behind Bagging was to reduce the instability of a classifier through aggregation of bootstrap samples. From a regression point of view, the success is explained through variance reduction. Trees were used in Bagging as they are  high variance and low bias. Random Forests is an attempt to improve this method. The extra randomization is suppose to reduce the variance further through decorrelating the trees. 
@@ -133,7 +133,7 @@ Intuitively, the correlation between the trees should decrease by reducing $m$, 
 
 \subsection{Why Random Forests works}
 \label{sub:Why Random Forests works}
-In section \ref{sub:Why Bagging works} an argument was made for why aggregating bootstrap samples can improved the prediction power of a classifier. This argument is still valid for the Random Forests algorithm, but in this section the effect of decorrelating the trees will be investigated. As discussed in \ref{sec:Classification trees}, the bias-variance tradeoff from regression is sort of applicable to classification as well. It is easier to study the effect of decorrelating  the trees in the regression framework, so this will be presented first.
+In section \ref{sub:Why Bagging works} an argument was made for why aggregating bootstrap samples can improved the prediction power of a classifier. This argument is still valid for the Random Forests algorithm, but in this section the effect of decorrelating the trees will be investigated. As discussed in \ref{sec:Tree}, the bias-variance tradeoff from regression is sort of applicable to classification as well. It is easier to study the effect of decorrelating  the trees in the regression framework, so this will be presented first.
 
 \subsubsection{Regression}
 \label{sub:Regression}

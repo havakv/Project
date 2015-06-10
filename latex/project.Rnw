@@ -39,7 +39,7 @@ Write something interesting here!!!!! And make the margins larger (text more nar
 %
 %\input{./introduction.tex}
 \chapter{Introduction}
-<<introduction, child='./introduction.tex', chache=TRUE>>=
+<<Introduction, child='./Introduction.tex', chache=TRUE>>=
 @
 %
 \let\cleardoublepage\clearpage
@@ -49,22 +49,30 @@ Write something interesting here!!!!! And make the margins larger (text more nar
 @
 %
 \let\cleardoublepage\clearpage
-\chapter{Tree-based methods}
+\chapter{Classification trees}
 % Section on Tree-based methods should be and Rnw file.
 <<Classification_trees, child='./Classification_trees.tex', cache=TRUE>>=
 @
 %
-<<boosting, child='./boosting.tex', cache=TRUE>>=
-@
-%
-<<bagging_random_forest, child='./bagging_random_forest.tex', cache=TRUE>>=
+\let\cleardoublepage\clearpage
+\chapter{Boosting}
+<<Boosting, child='./Boosting.tex', cache=TRUE>>=
 @
 %
 \let\cleardoublepage\clearpage
-\chapter{Empirical experiments}
-\colorbox{yellow}{Numerical experiments?}\\
-<<simulations, child='./simulations.tex', cache=TRUE>>=
+\chapter{Random forests}
+<<Bagging_random_forest, child='./Bagging_random_forest.tex', cache=TRUE>>=
 @
+%
+\let\cleardoublepage\clearpage
+\chapter{Experiments}
+<<Experiments, child='./Experiments.tex', cache=TRUE>>=
+@
+
+\chapter{Summary and discussion}
+<<Summary, child='./Summary.tex', cache=TRUE>>=
+@
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
