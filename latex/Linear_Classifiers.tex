@@ -69,6 +69,7 @@ Thus, a framework for classification has been established in form of either an o
 The derivation for LDA takes a Bayesian approach. 
 Assume knowledge of a prior distributions for the classes $P(y = k) = \pi_k$, and conditional distributions for $\mathbf{x}$ given $y$, $f_k(\mathbf{x})$. Simple application of the Bayes theorem yields,
 \begin{align}
+  \label{eq:ldaPostProb} 
   P(y=k\mid \mathbf{x}) = \frac{f_k(\mathbf{x}) \pi_k}{\sum^{K}_{i=1} f_i(\mathbf{x})\pi_i} .
 \end{align}
 Using this posterior distribution, a classifier can be constructed from \eqref{eq:EPE},
@@ -97,11 +98,22 @@ Another approach is to use only the last part of \eqref{eq:lda}, $\mathbf{x}^T\b
 \\
 When using LDA, the parameters are not know, so they are usually estimated from the training data by,
 \begin{align}
+  \label{eq:ldapihat} 
    \hat{\pi}_k &= \frac{N_k}{N},  \\
+  \label{eq:ldamuhat} 
    \hat{\bm \mu}_k &= \frac{1}{N_k} \sum_{i \in \mathcal{C}_k}\mathbf{x}_i, \\
+  \label{eq:ldasigmahat} 
    \hat{\bm \Sigma} &= \frac{1}{N-2} \sum_{k = 1}^{2} \sum_{i \in \mathcal{C}_k}(\mathbf{x}_i - \hat{\bm{\mu}}_k)(\mathbf{x}_i - \hat{\bm{\mu}}_k)^T.
 \end{align}
 It now becomes clear that both LDA and Fisher's linear discriminant do the same projection. The only difference between the methods is that because of the Gaussian assumptions, LDA can give a suggested threshold.
+\\
+\\
+\textit{Probabilistic classifiers} is a collective term for algorithms that does not only output the predicted class, but give a probability distribution over all the classes. 
+I.e. they assign a probability for an instance to be in each of the possible classes.  
+When the estimates in \eqref{eq:ldapihat}, \eqref{eq:ldamuhat} and \eqref{eq:ldasigmahat} are obtained, the posterior probabilities in \eqref{eq:ldaPostProb} can be estimated as well. So the LDA framework can be used to create a probabilistic classifier.
+This can be useful in fields like data mining, and when combining classifiers into ensembles. However, the quality of the probability estimates are dependent on the correctness of the Gaussian assumptions. LDA might perform decent as a classifier, without particularly good probability estimates. 
+
+Most of the algorithms covered in this report can give class probabilities, but the focus will be on their ability to predict the right class, not on the accuracy of their suggested probability distribution.
 %
 \section{Logistic Regression}
 \label{sec:Logistic Regression}

@@ -2,42 +2,35 @@
 set_parent('./project.Rnw')
 @
 %
-To measure the performance and explore the how well theory and practice coincide, the methods discussed will be trained and tested on different datasets in this chapter. Some extensions will also briefly be discussed at the end.
+To measure the performance and explore the how well theory and practice coincide, the methods discussed was trained and tested on the Spam dataset \citep{Spamdata}. 
 
 \section{Spam dataset}
 \label{sec:Spam dataset}
-\colorbox{yellow}{Need to write something about the data set. Description and so on.}\\
-\colorbox{yellow}{Look at what others have done.} \\
-\url{http://sci2s.ugr.es/keel/dataset.php?cod=109} Spam data.\\
-\\
-\colorbox{yellow}{If I use categorical variables, should I include section on how the algorithms handles them?}\\
- The first dataset explored is a pretty common dataset in the machine learning world. 
- Each data point in the dataset corresponds to an email, with the binary response telling if an email is spam or not. There are a total of 4601 data points and 57 predictors:
+ The Spam dataset is qute common in the machine learning world. 
+ Each data point corresponds to an email, with a binary response telling if an email is spam or not. There are a total of 4601 data points and 57 predictors:
  \begin{itemize}
    \item 48 continuous real $[0, 100]$ corresponding to words. Each giving the percentage of words in the email matching that word. 
-   \item 6 continuous real $[0, 100]$ corresponding to characters. Each giving the percentage of characters in the email matching that characters.
+   \item 6 continuous real $[0, 100]$ corresponding to characters. Each giving the percentage of characters in the email matching that character.
    \item 1 continuous real $[1, \ldots]$ giving average length of uninterrupted sequences of capital letters. 
    \item 1 continuous integer $[1, \ldots]$ giving length of longest uninterrupted sequence of capital letters.
    \item 1 continuous integer $[1, \ldots]$ giving total number of capital letters in the email.
  \end{itemize}
  For more information on the dataset see \cite{Spamdata}.
 
- In the tests that follows the Spam data was split into a training and test set of same size. The algorithms are first trained on the training set, and the test error in form of $0/1$ misclassification error rate is plotted, i.e.
+ In the tests that follow the Spam data was split into a training and test set of equal size. The algorithms are first trained on the training set, and the test error in form of $0/1$ misclassification error rate is plotted, i.e.
  \begin{align}
    \label{eq:missClassErr} 
    error =  \frac{1}{n_{test}} \sum_{i = 1}^{n_{test}} I\{C(\mathbf{x}_i) \neq y_i\},
  \end{align}
- where $C(\mathbf{x}_i)$ is the prediction based on $\mathbf{x}_i$, and $n_{test}$ is the number of test points. If the goal had been to actually make a spam filter, the error measure would not weight misclassification of spam and non-spam the same. Different costs for misclassification has not been the focus of this project, but for the purpose of testing the behavior of different methods \eqref{eq:missClassErr} works well.
-\\ 
-\\
-In all the following experiments, the methods are trained on half the data and tested on the other half. All methods are trained using the same data points. 
+ where $C(\mathbf{x}_i)$ is the prediction based on $\mathbf{x}_i$, and $n_{test}$ is the number of test points. 
+All methods are trained using the same data points. 
+If the goal had been to actually make a spam filter, the error measure would not weight misclassification of spam and non-spam the same. Different costs for misclassification has not been the focus of this project, and for the purpose of testing the behavior of different methods \eqref{eq:missClassErr} works perfectly well.
+
 
 \section{CART}
 \label{sec:CARTsim}
-Simulation 1: \\
-Plot test error for different \verb+cp+ parameters, or (same) different pruning. From full tree, back to a stump.\\
-\\
-First classification trees were fitted to the data using \verb+rpart+ by \cite{rpart}. Large trees was grown using both the Gini index and deviance. They were then pruned back to a single node and the test errors for the different trees were plotted as function of the tree size in Figure~\ref{fig:cartCPSpam}. 
+First classification trees were fitted to the data using \verb+rpart+ by \cite{rpart}. Large trees were grown using both the Gini index and deviance. They were then pruned back to a single node and the test errors for the different trees were plotted as function of the tree size in Figure~\ref{fig:cartCPSpam}. 
+Both methods show how small trees are underfitted while large trees are overfitted, and somewhere in the middle, the optimal tree can be found. 
 %
 \begin{figure}[h!tp]
 \begin{center}
@@ -47,13 +40,12 @@ First classification trees were fitted to the data using \verb+rpart+ by \cite{r
 \label{fig:cartCPSpam}
 \end{figure}
 %
-Both methods show how small trees are underfitted while large trees are overfitted, and somewhere in the middle, the optimal tree can be found. 
 
-The green line marks the minimum test error using the Gini index. This graph is very flat around the minimum, so in terms of interpretability, a smaller tree can be chosen without sacrificing much of the predicting power. In Figure~\ref{fig:CartSpam}, the optimal tree (green) is displayed along the tree from the red line. Their performance is almost identical, but the red tree give a nicer view of the data. Usually the trees are plotted with the splits like in Figure~\ref{fig:cart}. Here, they are left out because they serve no purpose in the context of the experiment. If the goal was to find which factors were most important in terms of classifying spam, they would be investigated more closely.
+The green line marks the minimum test error using the Gini index. This graph is very flat around the minimum, so in terms of interpretability, a smaller tree can be chosen without sacrificing much of the predicting power. In Figure~\ref{fig:CartSpam}, the optimal tree (green) is displayed along the tree from the red line (red). Their performance is almost identical, but the red tree give a nicer view of the data. Usually the trees are plotted with the splits like in Figure~\ref{fig:cart}. Here, they are left out because they serve no purpose in the context of the experiment. If the goal was to find which factors were most important in terms of classifying spam, they would be investigated more closely.
 
 The magenta figure in Figure~\ref{fig:CartSpam}, is the tree grown using deviance in Figure~\ref{fig:cartCPSpam} corresponding to the magenta line.In this experiment, it outperforms all the Gini trees, though only barely. 
 
-\begin{figure}[h!tp]
+\begin{figure}[htb]
   \centering
   \begin{subfigure}[b]{0.48\textwidth}
     \includegraphics[width=\textwidth]{./figures/cartSmallSpam.pdf}
@@ -71,10 +63,9 @@ The magenta figure in Figure~\ref{fig:CartSpam}, is the tree grown using devianc
   \caption{CART on Spam data. Trees from \ref{fig:cartCPSpam} are displayed. The green tree has the minimal test error using the Ginie index, while the red have a much simpler structure with almost the same test error. The magenta tree is the best performing using the deviance splitting criterion.}
   \label{fig:CartSpam}
 \end{figure}
-\colorbox{yellow}{Write something about how the red tree is the same as the green tree only with more nodes collapsed.}\\
 
 
-
+\todo{Here!!!!}
 
 \section{Adaboost}
 \label{sec:SimAdaBoost}
