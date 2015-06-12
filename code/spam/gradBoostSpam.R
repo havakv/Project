@@ -1,5 +1,5 @@
 #!/usr/bin/env Rscript
-# Preformance test of gradient boosting on Spam data
+# Gradient Boosting on Spam data
 
 set.seed(0)
 
@@ -7,6 +7,7 @@ set.seed(0)
 if(system("echo $OMP_NUM_THREADS", intern = TRUE) != 1)
     stop("OMP_NUM_THREADS is not 1")
 
+# Get number of cores
 argv <- commandArgs(trailingOnly=TRUE)
 if (identical(argv, character(0)))
     stop("Need number of threads as input parameter")
@@ -26,7 +27,7 @@ X$train$spam <- as.character(X$train$spam)
 X$test$spam <- as.character(X$test$spam)
 
 #-----------------------------------------------------------------------------
-# Get error as function of interatoins for different shrinkages
+# Get error as function of interactions for different shrinkages
 shrink <- c(1, 0.1, 0.01, 0.001)
 fit1 <- list()
 registerDoParallel(nCores)
@@ -85,71 +86,4 @@ cat("Done with sim 3 \n")
 # Saving results
 save(fit1, fit2, fit3, X, file = "../../dataset/spamResults/gradBoostSpam.Rdata")
 cat("Done!\n")
-quit()
 
-#############################################################################
-#############################################################################
-#############################################################################
-#############################################################################
-#############################################################################
-
-
-
-#-----------------------------------------------------------------------------
-# Testing stuff
-fit <- gbm(spam ~ ., distribution = "bernoulli", data = X$train, n.trees=3000,
-           cv.folds=5, n.cores=4, shrinkage=0.02, interaction.depth = 2)
-gbmPerf <- gbm.perf(fit)
-pred <- predict(fit, X$test, n.trees=gbmPerf, type="response")
-pred[pred>0.5] <- 1
-pred[pred<0.5] <- 0
-err <- sum(pred != X$test$spam)/X$nTest
-err
-
-
-#-----------------------------------------------------------------------------
-fit <- gbm(spam ~ ., distribution = "bernoulli", data = X$train, n.trees=100000)
-#pred <- predict(fit, X$test[,-58], n.trees=gbmPerf, type="response")
-pred <- predict(fit, X$test, n.trees=50000, type="response")
-pred[pred>0.5] <- 1
-pred[pred<0.5] <- 0
-err <- sum(pred != X$test$spam)/X$nTest
-err
-
-nTrees <- round(seq(10000, 100000, length.out=10))
-errVec <- rep(NA, length(nTrees))
-
-for (i in 1:length(nTrees)) {
-    pred <- predict(fit, X$test, n.trees=nTrees[i], type="response")
-    pred[pred>0.5] <- 1
-    pred[pred<0.5] <- 0
-    errVec[i] <- sum(pred != X$test$spam)/X$nTest
-}
-
-plot(nTrees, errVec)
-
-min(errVec)
-
-#-----------------------------------------------------------------------------
-# Trying different shinkage
-fit <- gbm(spam ~ ., distribution = "bernoulli", data = X$train, n.trees=1000, shrinkage=1, bag.fraction=1, keep.data = FALSE)
-#pred <- predict(fit, X$test[,-58], n.trees=gbmPerf, type="response")
-pred <- predict(fit, X$test, n.trees=1000, type="response")
-pred[pred>0.5] <- 1
-pred[pred<0.5] <- 0
-err <- sum(pred != X$test$spam)/X$nTest
-err
-
-nTrees <- round(seq(1, 100, length.out=100))
-errVec <- rep(NA, length(nTrees))
-
-for (i in 1:length(nTrees)) {
-    pred <- predict(fit, X$test, n.trees=nTrees[i], type="response")
-    pred[pred>0.5] <- 1
-    pred[pred<0.5] <- 0
-    errVec[i] <- sum(pred != X$test$spam)/X$nTest
-}
-
-plot(nTrees, errVec, type='l')
-
-min(errVec)

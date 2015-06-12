@@ -1,46 +1,33 @@
-\section{Remove this!!!!!!!!}
-\label{sec:Remove this!!!!!!!!}
-
-This project is an intro level literary study of statistical classification. The goal is get an overview of methods used in classification and further use this knowledge in a master thesis. This project will start by introducing the concepts of classification through some historically important linear classifiers. They will only be discussed briefly. The main focus will be on tree-based methods, and hereunder CART, boosting, bagging and random forest. Lastly a \colorbox{yellow}{simulation study} is performed to further investigate the method's performance. 
+%
+This project is an intro level study of statistical classification. The goal is get an overview of methods used in classification and further use this knowledge in a master's thesis. The report will start by introducing the concepts of classification through some historically well known linear classifiers. However, they will only be discussed briefly. The main focus will be on tree-based methods, and hereunder CART, Boosting mehods, Bagging and Random Forests. Lastly the methods will be tested on a dataset to further investigate the their performance. 
 \\
 \\
-In statistics and machine learning, classification is the problem of finding to which category, out of a set of categories, a new observation belongs. This is done by creating a classifier on a training set of observed data, $(\mathbf{x}_i, y_i)$, for $i = 1, \ldots, N$, where $\mathbf{x}_i$ is a vector of features (covariates, predictors, etc.), and $y_i$ is the class label of the observation. 
+In statistics and machine learning, classification is the problem of finding to which category, out of a set of categories, a new observation belongs. This is done by creating a classifier on a training set of observed data, $\{\mathbf{x}_i, y_i\}_{i = 1}^N$, where $\mathbf{x}_i$ is a vector of features (covariates, predictors, etc.), and $y_i$ is the class label of the observation. 
 
 These sort of problems arise in applications like picture and speech recognition, computer vision, spam filters, document classification and medical imaging.
-Over time, a variety of approaches have been suggested. Some might give a highly interpretable method, while others have more accurate predictions. Their performance might differ in different applications as well. There is still not found a single method that outperforms all other, so knowledge about a variety of algorithms is beneficial. 
+Over time, a variety of approaches have been suggested. Some might give a highly interpretable method, while others have more accurate predictions. Their performance might differ in different applications as well. There is still not a single method capable of outperforming all other, so knowledge about a variety of algorithms is highly beneficial. 
 \\
 \\
-In this project it is assumed that the cost of misclassifying a point is $1$ for all points, and $0$ for correct classification. This is often referred to as $0/1$ classification, or the $0/1$ loss function, 
+In this report it is assumed that the cost of misclassifying a point is $1$ for all points. The cost of correct classification is $0$. This is often referred to as $0/1$ classification, or the $0/1$ loss function, 
 \begin{align}
   L(y, \hat y) = I\left\{ \hat y \neq y \right\}.
 \end{align}
 Here $\hat y$ is the prediction given by the classifier. 
 
-The alternative would be to assign weights to different misclassifications. For example, a lending institution might consider it five times worse that a customer defaults, than not giving a loan to a customer that is able meet all payments. Usually \todo{is this true?}, it is not hard to generalize algorithms to meet such requirements, but it is still considered outside the scope of this project.
+The alternative would be to assign weights to different misclassifications. For example, a lending institution might consider it five times worse that a customer defaults, than not giving a loan to a customer that is able meet all payments. Often it is not hard to generalize algorithms to meet such requirements. Nevertheless,  it is considered outside the scope of this report.
 
-It is also assumed the classes are unordered. That means the response has no ordering, like colors or pictures. An example of ordered classes are tax rates, or feelings (bad, fine, great). Ordered classes require special techniques and will therefore not be considered here. 
-\\
-\\
-Another important aspect of a classifier is the time it use to complete its computations. Often a weaker algorithm can outperform a stronger algorithm if the weaker has more data. Some application have huge amounts of data, so standard methods for classification are not able to do the computations, and other methods need to be proposed. The popular term ''Big data'' relates to these problems. In this project computation time will generally not be addressed. \colorbox{yellow}{Should I say why???}
-\\
-
-\colorbox{yellow}{Should do some simulations on difference in dataset size?.}\\
-\colorbox{yellow}{Say something about unordered classes.}\\
-\colorbox{yellow}{Something about how most of the methods can be used for regression as well, but that is not of importance here.}\\
-\colorbox{yellow}{Mention something about this being supervised learning.}
+It is also assumed the classes are unordered. That means the response has no ordering, like colors or pictures. Some examples of ordered classes are tax rates and feelings (bad, fine, great). Ordered classes require special techniques and will therefore not be considered here. 
 
 
 
 \section{Notation}
 \label{sec:Notation}
-MCE is misclassification error. \\
-SD is standard deviation. \\
+I have tried to follow most conventions when it comes to notation, and be consistent throughout the report. Stochastic variables have no particular notation, but is should usually follow from the context. Note the following:\\
 $\mathbf{x}$ is a vector. \\
 $x_i$ is an element in $\mathbf{x}$. \\
 $\mathbf{x}_i$ is a predictor/data point.  \\
-$\mathbf{x}_{ij}$ is element $j$ in $\mathbf{x}_i$. \\
 $\mathbf{A}$ is a matrix \\
 $I\{a = b\}$ is the indicator function.\\
-Subscripts on probabilities and expectations are used to either emphasize the stochastic variables, or instead of conditioning. 
+Subscripts on probabilities and expectations are used to either emphasize the stochastic variables, or as a substitute for conditioning. 
 E.g. $P_{\mathbf{x}, y}(T(\theta, \mathbf{x}) = y) = P(T(\theta, \mathbf{x}) = y \mid \theta)$.
 

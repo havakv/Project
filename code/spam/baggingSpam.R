@@ -6,6 +6,7 @@ set.seed(0)
 if(system("echo $OMP_NUM_THREADS", intern = TRUE) != 1)
     stop("OMP_NUM_THREADS is not 1")
 
+# Get number of cores
 argv <- commandArgs(trailingOnly=TRUE)
 if (identical(argv, character(0)))
     stop("Need number of threads as input parameter")
@@ -37,13 +38,3 @@ errBag <- err
 BBag <- B
 save(errBag, BBag, file = "../../dataset/spamResults/baggingSpam.Rdata")
 
-quit()
-
-
-
-
-#-----------------------------------------------------------------------------
-fit <- bagging(spam ~ ., data = X$train)
-pred <- predict(fit, X$test)
-err <- sum(pred != X$test$spam)/X$nTest
-err

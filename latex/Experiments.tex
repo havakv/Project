@@ -4,6 +4,12 @@ set_parent('./project.Rnw')
 %
 To measure the performance and explore the how well theory and practice coincide, the methods discussed was trained and tested on the Spam dataset \citep{Spamdata}. 
 
+Most computations were run on a sever, and as a result the computation times were too inaccurate to be presented as results. They were therefore omitted from the report.
+\\
+\\
+The most important part of the code used in the experiments can be found in Appendix~\ref{chap:Code}. It is primarily included so the reader can easily check which parameters are used. The full code can be found at my github repository \footnote{\url{https://github.com/havakv/Project}}.
+
+
 \section{Spam dataset}
 \label{sec:Spam dataset}
  The Spam dataset is qute common in the machine learning world. 
@@ -65,15 +71,16 @@ The magenta figure in Figure~\ref{fig:CartSpam}, is the tree grown using devianc
 \end{figure}
 
 
-\todo{Here!!!!}
-
 \section{Adaboost}
 \label{sec:SimAdaBoost}
-Adaboost was fitted to the Spam data using the package \verb+adabag+ by \cite{adabag}. It use the \verb+rpart+ implementation of CART in Section~\ref{sec:CARTsim} as base classifiers. The main tuning parameters in Adaboost is the number of iterations, and the tree depth. In Figure~\ref{fig:adaboostSpam}, the test error is plotted as function of iterations, for different tree depths. It is clear that the algorithm does pretty well after few iterations, and outperforms CART easily. Only a maximum of 300 iterations were done, but by the look of it, Adaboost seems quite robust to overfitting. 
+Adaboost was fitted to the Spam data using the \verb+boosting+ function in \verb+adabag+ by \cite{adabag}. It use the \verb+rpart+ implementation of CART as base classifiers. The main tuning parameters in Adaboost is the number of iterations, and the tree depth. In Figure~\ref{fig:adaboostSpam}, the test error is plotted as function of iterations, for different tree depths. It is clear that the algorithm does pretty well after few iterations, and outperforms CART easily. Only a maximum of 300 iterations were done, but by the look of it, Adaboost seems quite robust to overfitting. 
 
-Surprisingly, Adaboost does better for deeper trees. It is expected to overfit for larger trees, but it does not. One possible explanation could be that there is higher order interactions between the features in the dataset. It is not possible to fit trees deeper than $30$ in the \verb+adabag+ package, but it would have been interesting to see how the performance developed for even deeper trees.
+Surprisingly, Adaboost does better for deeper trees. It is expected to overfit for larger trees, but it does not. One possible explanation could be that there is higher order interactions between the features in the dataset (see Section~\ref{sub:Tree size}). 
+In this case, depth refers to them maximum number of successive splits. So the root node as depth 0, its children depth 1 and so on.
+
+It is not possible to fit trees deeper than $30$ in the \verb+boosting+ function, but it would have been interesting to see how the performance developed for even deeper trees. 
 %
-\begin{figure}[h!tp]
+\begin{figure}[htbp]
 \begin{center}
     \includegraphics[scale=0.5]{./figures/adaboostSpam.pdf}
 \end{center}
@@ -81,9 +88,9 @@ Surprisingly, Adaboost does better for deeper trees. It is expected to overfit f
 \label{fig:adaboostSpam}
 \end{figure}
 %
-\section{Gradient boosting}
+\section{Gradient Boosting}
 \label{sec:SimGradBoost}
-Gradient boosting is a very powerful method, but requires a lot of tuning. The goal here was not to find the optimal tuning parameters for the Spam dataset, but rather to investigate the effect of changing different parameters. The package \verb+gbm+ by \cite{gbm} was used to fit the gradient boosting with deviance loss.
+Gradient Boosting is a very powerful method, but requires a lot of tuning. The goal here was not to find the optimal tuning parameters for the Spam dataset, but rather to investigate the effect of changing different parameters. The package \verb+gbm+ by \cite{gbm} was used to fit the Gradient Boosting with deviance loss.
 
 \begin{figure}[htbp]
   \centering
@@ -100,32 +107,33 @@ Gradient boosting is a very powerful method, but requires a lot of tuning. The g
   \end{subfigure}
           %(or a blank line to force the subfigure onto a new line)
   \vspace{1\baselineskip}
-  \caption{Gradient boosting on Spam data.}
+  \caption{Gradient Boosting on Spam data.}
   \label{fig:GradBoostSpam}
 \end{figure}
 
-The optimal number of iterations is highly dependent on the shrinkage parameter (see Section~\ref{sub:Shrinkage}). In Figure~\ref{fig:gradboostSpamShrink2} the test error is plotted against number of boosting iterations. Each line represent a different shrinkage. It is clear from the plot that for lower shrinkage, the number of iteration needed increase. This mean shrinkage comes as a cost in terms of computations. However, the worst performing line is that without shrinkage ($\nu = 1$), although not a very large difference. In this case it seems like the is no point with $\nu < 0.1$ as there is no gain in test error.
+The optimal number of iterations is highly dependent on the shrinkage parameter (see Section~\ref{sub:Shrinkage}). In Figure~\ref{fig:gradboostSpamShrink2} the test error is plotted against number of boosting iterations. Each line represent a different shrinkage. It is clear from the plot that for lower shrinkage, more iterations are needed. This means shrinkage is costly in terms of computations. However, the worst performing line is that without shrinkage ($\nu = 1$), though the difference is quite small. The figure indicates that, for the Spam data, there is no point with $\nu < 0.1$, as there is no gain in test error.
 
-It is also clear form the plot that gradient boosting can overfit, but note that many iterations are needed, so there is no evidence that it is less robust than Adaboost.
+Studying the lines with shrinkage 1 and 0.1, it is clear that Gradient Boosting can overfitt. However, many iterations are needed, so there is no evidence here that it is more prone to overfitting than Adaboost.
+\\
+\\
+As with Adaboost, the tree depths are important to to consider. In Figure~\ref{fig:gradboostSpamDepth} test error for different tree depths are displayed. \verb+gbm+ does not take depth as a parameter, but instead the parameter \verb+interaction.depth+. It represents the interactions discussed in Section~\ref{sub:Tree size}, where $1$ is an additive model, $2$ is a model with up to second order interactions, and so on. In principle \verb+interaction.depth+$+1$ gives the maximum number of terminal nodes.
 
-As with Adaboost, the depth of the trees plays an important role. In Figure~\ref{fig:gradboostSpamDepth} test error for different tree depths are displayed. \verb+gbm+ does not take depth as a parameter, but a parameter called \verb+interaction.depth+, which represent the interactions in Section~\ref{sub:Tree size}. $1$ is an additive model, $2$ is a model with up to second order interactions. In principle \verb+interaction.depth+$+1$ gives the maximum number of terminal nodes.
-
-The figure show the same trend as Adaboost did. Deeper trees give better results, although the difference is much smaller for gradient boosting.
+The figure shows the same trend as Adaboost did. Deeper trees give better results, though the difference is much smaller than for Adaboost.
 \\
 %
 \begin{figure}[htbp]
 \begin{center}
     \includegraphics[scale=0.5]{./figures/gradboostSpamStoch.pdf}
 \end{center}
-\caption{Stochastic gradient boosting on Spam data. The bootstrap fractions are specified in the legend.}
+\caption{Stochastic Gradient Boosting on Spam data. The sample fractions are specified in the legend.}
 \label{fig:StochasticGradBoost}
 \end{figure}
 \\
-Stochastic gradient boosting was mentioned as a small modification of Gradient Boosting in Section~\ref{sec:Stochastic gradient boosting}. The only difference is that a subset of the training data is drawn (without replacement) at each iteration. \verb+gbm+ refers to this parameter as the \verb+bag.fraction+. In Figure~\ref{fig:StochasticGradBoost}, the test error is plotted for different bootstrap fractions. From the figure is looks like there is little gain in error from introducing randomness. However, for bootstrap fractions down to $0.5$ the performance is not worse. As a smaller dataset requires less computations, there is still some gain in doing stochastic gradient boosting here.
+Stochastic Gradient Boosting was mentioned as a small modification of Gradient Boosting in Section~\ref{sec:Stochastic Gradient Boosting}. The only difference is that a subset of the training data is drawn at each iteration. \verb+gbm+ refers to this parameter as the \verb+bag.fraction+. In Figure~\ref{fig:StochasticGradBoost}, the test error is plotted for different sample sizes, where \verb+bag.fraction+ gives the fraction of the dataset sampled. The figure does not show any improvement in test error from introducing randomness. However, for subset fractions down to $0.5$ the performance does not drop. As the number of computations decreases with smaller fractions, there is still some gain in doing Stochastic Gradient Boosting here.
 
 \section{Bagging and Random Forests}
 \label{sec:BaggandRFSim}
-Random Forests is in many ways an extension of Bagging, and tries to improve performance through decorrelating the trees. In Figure~\ref{fig:baggingAndRFSpam}, both methods are fitted to the Spam data using \verb+ipred+ by \cite{ipred} and \verb+randomForest+ by \cite{randomForestR}. The default tuning parameters were used for the methods. The figure shows how the test error changes with number of trees used. Here Random Forest slightly outperform Bagging, which is as expected, and both are a vast improvement of CART. There is no sign that either method is overfitting as the number of trees increase, which coincide with the theory in Section~\ref{sub:Overfitting}.
+Random Forests is more or less an extension of Bagging, and tries to improve performance through decorrelating the trees. In Figure~\ref{fig:baggingAndRFSpam} both methods are fitted to the Spam data using \verb+ipred+ by \cite{ipred} and \verb+randomForest+ by \cite{randomForestR}. The default tuning parameters were used for the methods. The figure shows how the test error changes with number of trees used. Here Random Forest slightly outperform Bagging, which is as expected, and both are a vast improvement of CART. There is no sign that either method is overfitting as the number of trees increase, which coincide with the theory in Section~\ref{sub:Overfitting}.
 \\
 \begin{figure}[htbp]
   \centering
@@ -146,9 +154,7 @@ Random Forests is in many ways an extension of Bagging, and tries to improve per
   \label{fig:baggAndRF}
 \end{figure}
 \\
-Figure~\ref{fig:RFSpam} shows how the number of randomly chosen features $m$ effects the test error. This is done for different number of trees, and the vertical line marks the default value $m = \lfloor \sqrt{p} \rfloor$. In this case the default value for $m$ seems a little high, at least for larger forests. Nevertheless, it is very close to the optimal value in terms of test error, and defends its position as a default parameter value well. 
-\\\colorbox{yellow}{Comment how Figure~\ref{fig:baggingAndRFSpam} is many runs and not different iterations for one run.}
-\\\colorbox{yellow}{That is why it is not smooth compared to Figure~\ref{fig:OOBvsTestvsCV}.}
+Figure~\ref{fig:RFSpam} shows how the number of randomly chosen features $m$ affects the test error. This is done for different number of trees, and the vertical line marks the default value $m = \lfloor \sqrt{p} \rfloor$. In this case the default value for $m$ might seem a little high for larger forests. Nevertheless, in terms of test error, it is very close to the optimal value and defends its position as a default parameter value well. 
 \\
 \begin{figure}[htpb]
 \begin{center}
@@ -158,14 +164,14 @@ Figure~\ref{fig:RFSpam} shows how the number of randomly chosen features $m$ eff
 \label{fig:RFTreeDepth}
 \end{figure}
 \\
-As discussed in Section~\ref{sub:Overfitting}, Bagging and Random Forests can overfitted in terms of overfitting the individual trees. Figure~\ref{fig:RFTreeDepth} show the test error for 4 different tree depths. The \verb+randomForest+ package does not take depth as an argument, but instead the minimum number of training points in each terminal node. So the red line corresponds to a fully grown tree. It is clear from the figure that there is no gain in restricting the size of the trees. For high restrictions (see light blue line 40), unnecessary bias is introduced and the performance drops.  As Bagging and Random Forests are so similar, the experiment was not repeated with bagging.
+As discussed in Section~\ref{sub:Overfitting}, Bagging and Random Forests can overfitted in terms of overfitting the individual trees. Figure~\ref{fig:RFTreeDepth} show the test error for 4 different tree depths. The \verb+randomForest+ package does not take depth as an argument, but instead the minimum number of training points in each terminal node. So the red line corresponds to a fully grown tree. The figure shows that there is no gain in restricting the size of the trees for the Spam data. For high restrictions (see light blue line 40), unnecessary bias is introduced and the performance drops.  As Bagging and Random Forests are so similar, the experiment was not repeated with bagging.
 \\
 \\
-In Section~\ref{sub:Out-of-bag}, the Out-of-bag error was introduced as an approximation of the test error. It has very little computational cost and can replace cross-validation in tuning of parameters. Figure~\ref{fig:OOBvsTestvsCV} shows OOB, test error, and 10-fold cross-validated error for Random Forest on the Spam data, as function of number of trees. 
+In Section~\ref{sub:Out-of-bag}, the Out-of-bag error was introduced as an approximation of the test error. It has very little computational cost and can replace cross-validation in tuning of parameters. Figure~\ref{fig:OOBvsTestvsCV} shows OOB, test error, and 10-fold cross-validation error for Random Forest on the Spam data. 
 OOB error is also available for Stochastic Gradient Boosting and Bagging, but only Random Forests was tested here.
-The figure shows that both OOB and 10-fold cross-validated error are good approximations for the test error. This mean that OOB can be used as a check of when the test error has converged and no more trees are needed. 
+The figure shows that both OOB and 10-fold cross-validated error are good approximations for the test error. This means that OOB can be used as a check of when the test error has converged and no more trees are needed. 
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 \begin{center}
     \includegraphics[scale=0.5]{./figures/OOBvsTestvsCV.pdf}
 \end{center}
@@ -173,176 +179,26 @@ The figure shows that both OOB and 10-fold cross-validated error are good approx
 \label{fig:OOBvsTestvsCV}
 \end{figure}
 
-Figure~\ref{fig:OOBvsTestvsCV} only show \textit{one} run. As there is a lot of randomness in the methods the lines varies somewhat between runs. Maybe a figure with bootstrapped confidence bounds would be a better choice in this context. This was not done as the figure perfectly illustrate its purpose as is. 
+Figure~\ref{fig:OOBvsTestvsCV} only shows \textit{one} run. As there is a lot of randomness in the methods the lines varies somewhat between runs. Maybe a figure with bootstrapped confidence bounds would be a better choice in this context. This was not done as the figure perfectly illustrate its purpose as is. 
 
-\section{Categorical predictors}
-\label{sec:Categorical predictors}
-\colorbox{yellow}{Probably only necessary to write about CART as all the other are based on it.}
-
-\section{Compare methods}
-\label{sec:Compare methods}
-
-\subsection{Robustness}
-\label{sub:Robustness}
-
-\colorbox{yellow}{Add noise to previous test and see how stable the results are.}
 \section{Phoneme}
 \label{sec:Phoneme}
-\begin{figure}[h!]
-\begin{center}
-    \includegraphics[scale=0.5]{./figures/cartCPPhoneme.pdf}
-\end{center}
-\caption{CART on Phoneme data.}
-\label{fig:cartCPPhoneme}
-\end{figure}
+All the experiments were repeated on the Phoneme dataset from \cite{phoneme}. 
+The aim of this dataset is to distinguish between nasal (class 0) and oral sounds (class 1). The class distribution is 3,818 samples in class 0 and 1,586 samples in class 1. 
 
-
-\begin{figure}[h!]
-\begin{center}
-    \includegraphics[scale=0.5]{./figures/adaboostPhoneme.pdf}
-\end{center}
-\caption{Adaboost on Phoneme data. For different tree depths.}
-\label{fig:adaboostPhoneme}
-\end{figure}
-
-\begin{figure}[h!]
-\begin{center}
-    \includegraphics[scale=0.5]{./figures/gradboostPhonemeShrink2.pdf}
-\end{center}
-\caption{Gradient boosting on Phoneme data. The shrinkage of each line is specified in the legend.}
-\label{fig:gradboostPhonemeShrink2}
-\end{figure}
-
-\begin{figure}[h!]
-  \centering
-  \begin{subfigure}[b]{0.48\textwidth}
-    \includegraphics[width=\textwidth]{./figures/gradboostPhonemeStoch.pdf}
-    \caption{Different bootstrap fractions.}
-    \label{fig:gradboostPhonemeStoch}
-  \end{subfigure}%
-  \quad
-  \begin{subfigure}[b]{0.48\textwidth}
-    \includegraphics[width=\textwidth]{./figures/gradboostPhonemeDepth.pdf}
-    \caption{Different tree depths.}
-    \label{fig:gradboostPhonemeDepth}
-  \end{subfigure}
-          %(or a blank line to force the subfigure onto a new line)
-  \vspace{1\baselineskip}
-  \caption{Stochastic gradient boosting on Phoneme data. Give some parameter values here!!!}
-  \label{fig:StochasticGradBoostPhoneme}
-\end{figure}
-
-\begin{figure}[h!]
-  \centering
-  \begin{subfigure}[b]{0.48\textwidth}
-    \includegraphics[width=\textwidth]{./figures/baggingAndRFPhoneme.pdf}
-    \caption{Test error as function of bootstrap samples for bagging and RF.}
-    \label{fig:baggingAndRFPhoneme}
-  \end{subfigure}%
-  \quad
-  \begin{subfigure}[b]{0.48\textwidth}
-    \includegraphics[width=\textwidth]{./figures/RFPhoneme.pdf}
-    \caption{Test error for RF as function of m, for different number of bootstrap samples. Vertical line marks $\sqrt{p}$.}
-    \label{fig:RFPhoneme}
-  \end{subfigure}
-          %(or a blank line to force the subfigure onto a new line)
-  \vspace{1\baselineskip}
-  \caption{Misclassification rate for bagging and random forests on Phoneme data.}
-  \label{fig:baggAndRFPhoneme}
-\end{figure}
+However, all the results coincide with the results from the Spam data. As a consequence, they do not contribute in any way to the report and are therefore not displayed. 
 
 
 \clearpage
 \section{Needs to be done}
 \label{sec:Needs to be done}
-Do bagging/RF with probs instead of vote. (The two different methods in Bagging section). Write something about how p should be faster for B around 0.5.\\
-\\
-Write about categorical variables after simulation study. In modstat 9.2.4. discussion for CART\\
-\\
-Comment on how the timing is not particularly good. \\
-\\
-Comment on how a tree can be deep, but split on the same variable multiple times?\\
-\\
-Maybe repeat some of experiments with added noise?\\
-\\
-Find convention on capitalization. Logistic regression, logistic regression, Logistic Regression. \\
-Both in text and in section names.\\
-\\
 Clean up code so everything after quit is removed\\
 \\
 Check that equations are correct\\
 \\
-Random forests or Random forest? \\
-\\
-Find first reference to cross-validation, and write section in appendix.\\
-\\
-Not famous, but well known.\\
-\\
-Move CART figure forward to start of classification. \\
-\\
-Chapters for different methods. \\
-\\
-Use ''report'' instead of ''project''\\
+Figure placement\\
 \\
 Title: metods for classification using trees.\\
 \\
-Form and from. \\
-\\
-Write intro for all new chapters\\
-\\
-Write random forest in start of chapter\\
-\\
-Change notation in introduction. No particular notation for stochastic variables. Also change stochastic variable in different sections.\\
-\\
-Write that the parameters for the different experiments can be found in the code in appendix.\\
-\\
-Continuous regression trees in gradient boosting section. Make sure the point is correct.\\
-\\
-Remove sections Deletesec and so on.
+Remove sections Deletesec and so on.\\
 
-\section{Questions}
-\label{sec:Questions}
-Need to borrow book again. \\
-\\
-How much should be explained in the simulation part? Give all inputparameters?\\
-\\
-How does linear classifier fit into this project?\\
-\\
-Should the bias-variance tradeoff be descussed before CART (as now), or inside the CART section?\\
-\\
-Should I call it Simulations, or Numerical experiments, or somehting else? (Just experiments?)\\
-\\
-Should I have Preface, abstract (also in norwegian), Project overview?\\
-\\
-Should Linear classifiers be a seperate chapter? \\
-\\
-Should all methods Boosting, Bagging, RF get their own chapter?\\
-\\
-Should the derivations of "Why random forest work" be put in the appendex, and only the idea and results discussed in that section?\\
-\\
-Should I remove the equation number on equations note referred to?\\
-\\
-Preface and abstract.\\
-\\
-Where should the notation section be? \\
-\\
-Should I remove section about computation time in the introduction? \\
-\\
-Ordered classes in introduction.\\
-\\
-Should i mention for Logistic regression that by regularizing it it pretty powerfull? And that QDA and RDA exist aswell?\\
-\\
-Do simulations on importance of training set size? \\
-\\
-Need book to do the Fisher's linear discriminant sectino\\
-\\
-Should I look into randomized Adaboost? \cite{freund1996}. I think it's called boosting by resampling. In \verb+adabag+ I think they call it bootstrapping.\\
-\\
-In boosting experiments, should I specify input parameters in the different plots? \\
-\\
-Is argument for why votes does not give probailities good? In Bagging.\\
-\\
-Conclusion and Suggestions for further work?\\
-\\
-Discussion?\\
-\\

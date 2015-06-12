@@ -1,12 +1,12 @@
 #!/usr/bin/env Rscript
-# Plotting for adaboost on spam data
+# Plotting for Adaboost on spam data
 NOPRINT=FALSE
 #NOPRINT=TRUE
 
 library(common)
 
 load("../../dataset/spamResults/adaboostSpam.Rdata")
-
+## ---- plotAdaboost ----
 # Different depths
 printfig("adaboostSpam", NOPRINT)
 ylim <- c(min(Errors), max(Errors))

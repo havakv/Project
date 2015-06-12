@@ -1,5 +1,4 @@
-\section{Deletesec}
-\label{sec:Deletesec}
+%
 It is reasonable to start with two of the most intuitive and well known methods for classification, LDA and Logistic Regression. 
 The point of this chapter is to give an introduction to classification through the use of these methods. They will only be considered in their most general form, and only with two classes. The term linear classifier refers to the fact that the decision boundary is linear in the features $\mathbf{x}$.
 %
@@ -139,10 +138,10 @@ To find good values for $\bm \beta$, it is common to use the Maximum likelihood 
 \begin{align}
   P(Z_i = z_i) = \binom{n_i}{z_i} p_{2i}^{z_i} (1-p_{2i})^{n_i - z_i}.
 \end{align}
-So the likelihood and log-likelihood are,
+Let the $N$ data points constitute $M$ groups. Then the likelihood and log-likelihood are,
 \begin{align}
-  L(\beta) &= \prod_{i = 1}^{N} P(Z_i = z_i). \\
-  l(\beta) &\propto \sum^{N}_{i=1} z_i \log p_{2i} + (n_i - z_i) \log (1- p_{2i}).
+  L(\beta) &= \prod_{i = 1}^{M} P(Z_i = z_i). \\
+  l(\beta) &\propto \sum^{M}_{i=1} z_i \log p_{2i} + (n_i - z_i) \log (1- p_{2i}).
 \end{align}
 There is no analytical solution that maximizes the likelihood, so one has to use a numerical optimization algorithm to find the MLE.  
 

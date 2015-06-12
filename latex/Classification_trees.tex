@@ -1,4 +1,4 @@
-\section{Deletesec}
+%
 In the previous chapter only very basic linear methods for classification were discussed. The log odds were modeled in a linear fashion and a decision boundary was drawn based on this. Now the framework changes completely. The linearity assumptions are removed along with restrictions on number of classes. 
 In this chapter classification trees will be discussed. They are the foundation of this report. Later, attempts to enhancing their performance will be made through different ensemble methods. 
 
@@ -44,12 +44,12 @@ An underfitted model is too simple to capture the complexity of the data. On the
 In the regression framework, under squared error loss, it can be shown that a small tree is highly biased with low variance, while a larger tree is highly unstable (high variance), but with smaller bias. 
 In appendix~\ref{sub:Bias-variance tradeoff}, it is shown how the $\mathrm{EPE}$, introduced in \ref{sub:LDA}, has an additive relationship with the classifier's bias and variance. As a result, the \textit{bias-variance tradeoff} should be considered when creating the prediction method. 
 
-For classification the same argument does not quite hold, but similar definitions for bias and variance has been proposed for $0/1$ loss in the literature. Some of the most well known methods include \cite{kong1995error}, \cite{kohavi1996bias}, \cite{breiman1996bias} and \cite{Friedman1997bias}. While they have all provided useful insight to classification problems, non of them present a framework as simple and satisfactory as for regression. In this project, when referring to bias or variance of classifiers, it is more in a heuristic way. Loosely, bias measures the systematic error of a classifier, i.e. the average error over different training sets. Variance measures the additional error do to variations in the classifier between training sets. 
+For classification the same argument does not quite hold, but similar definitions for bias and variance has been proposed for $0/1$ loss in the literature. Some of the most well known methods include \cite{kong1995error}, \cite{kohavi1996bias}, \cite{breiman1996bias} and \cite{Friedman1997bias}. While they have all provided useful insight to classification problems, non of them present a framework as simple and satisfactory as for regression. In this report, when referring to bias or variance of classifiers, it is more in a heuristic way. Loosely, bias measures the systematic error of a classifier, i.e. the average error over different training sets. Variance measures the additional error do to variations in the classifier between training sets. 
 \\
 \\
 There are proposed different algorithms for building classification trees. They all try to find the optimal balance between bias and variance. This is done in terms of how the tree is grown, but more importantly, how to control the size of the tree. 
 Some of the more common methods include ID3 by \cite{ID3}, C4.5 by \cite{C4.5} and its successor See5/C5.0, CHAID by \cite{CHAID} and CART by \cite{breiman}.
-In this project only CART will be covered, as it is one of the more widely used.
+In this report only CART will be covered, as it is one of the more widely used.
 %
 \section{CART}
 \label{sec:CART}

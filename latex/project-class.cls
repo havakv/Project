@@ -17,6 +17,7 @@
 \RequirePackage{bm}
 \RequirePackage{float}  % Used for minipage and stuff.
 \RequirePackage{wrapfig} % Wrap text around figure wrapfig [tab]
+\RequirePackage{afterpage}
 \RequirePackage{graphicx}
 \RequirePackage{subcaption}
 \RequirePackage[usenames,dvipsnames,svgnames,table]{xcolor}
@@ -101,6 +102,13 @@
 %
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Titlepage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Abstract
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newenvironment{abstract}
@@ -111,9 +119,16 @@
   \begin{center}
     \setlength{\parskip}{0pt}
     {\underline{ABSTRACT} \par}
-    \bigskip
   \end{center}
+  \vspace{-1cm}
+  \list{}{
+    \setlength{\leftmargin}{1.5cm}%
+    \setlength{\rightmargin}{\leftmargin}%
+  }%
+  \item\relax
+  {\endlist}
 }
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

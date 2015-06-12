@@ -1,5 +1,5 @@
 #!/usr/bin/env Rscript
-# Script for simulations for adaboost.M1
+# Script for  Adaboost.M1
 
 set.seed(0)
 
@@ -7,15 +7,17 @@ set.seed(0)
 if(system("echo $OMP_NUM_THREADS", intern = TRUE) != 1)
     stop("OMP_NUM_THREADS is not 1")
 
+# Get number of cores
 argv <- commandArgs(trailingOnly=TRUE)
 if (identical(argv, character(0)))
     stop("Need number of threads as input parameter")
 
 nCores <- as.integer(argv[1])
 
+## ---- codeAdaboost ----
 library(common)    
 library(adabag)
-require(parallel) # one of the core R packages
+require(parallel)
 require(doParallel)
 library(foreach)
 
@@ -48,25 +50,3 @@ Errors <- foreach(i = 1:nit, .combine = rbind) %dopar% {
 # Save variables
 save(maxdepth, its, ndept, nit, Errors, file = "../../dataset/spamResults/adaboostSpam.Rdata")
 
-
-
-
-
-
-
-#ada2 <- boosting(spam ~ ., X$train, boos=FALSE, mfinal=100, coeflearn="Freund")
-#predAda2 <- predict(ada2, X$test)
-#sum(predAda2$class != X$test$spam)/X$nTest
-
-
-#ada3 <- boosting(spam ~ ., X$train, boos=TRUE, mfinal=100, coeflearn="Freund")
-#predAda3 <- predict(ada3, X$test)
-#sum(predAda3$class != X$test$spam)/X$nTest
-
-
-
-#ada3 <- boosting(spam ~ ., X$train, boos=FALSE, mfinal=100, coeflearn="Freund", 
-                 #control = rpart.control(maxdepth=1))
-#ada3 <- boosting(spam ~ ., X$train, boos=FALSE, mfinal=100, coeflearn="Freund")
-#predAda3 <- predict(ada3, X$test)
-#sum(predAda3$class != X$test$spam)/X$nTest

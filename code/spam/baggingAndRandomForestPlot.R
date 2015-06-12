@@ -1,7 +1,6 @@
 #!/usr/bin/env Rscript
-# Plotting for bagging
+# Plotting for Bagging and Random Forests
 NOPRINT=FALSE
-#NOPRINT=TRUE
 
 library(common)
 
@@ -53,16 +52,4 @@ grid()
 legend(x = "topright", as.character(nodesize), lty = rep(1, nsizes), 
        lwd = rep(1, nsizes), col = 1:nsizes+1, bg="white")
 off(NOPRINT)
-
-
-
-
-
-
-
-
-
-
-
-
 

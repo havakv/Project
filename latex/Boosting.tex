@@ -2,8 +2,6 @@
 set_parent('./project.Rnw')
 @
 %%fakesection Boosting
-\section{Deletesec}
-
 In this chapter two boosting algorithms will be discussed, \textit{Adaboost} and \textit{Gradient Boosting}. First the basic framework will be introduced, much through Adaboost, but the main focus will be on Gradient Boosting based on trees. 
 
 Boosting algorithms combine many ''weak'' classifiers to create one ''strong'', and goes under the class of committee-based classifiers. The weak classifiers are usually high biased with low variance, so boosting is often referred to as a bias reducing method. 
@@ -64,7 +62,7 @@ If the basis functions are set to be a classifier $h(\mathbf{x}; \bm \gamma) \in
 \end{align}
 it can be shown [\cite{modstat}] that forward stagewise additive modeling is equivalent to the Adaboost.M1 classifier. However, this was not the original motivation for Adaboost.M1. The way Adaboost.M1 fits in the forward stagewise framework, was only discovered years later. Nevertheless, the forward stargewise framework provides opportunity to further study Adaboost.M1, and compare it to other loss functions. Under the exponential loss in \eqref{eq:expLoss}, the solution to \eqref{eq:fargmin} is,
 \begin{align}
-  f^*( \mathbf{x}) = \frac{1}{2} \log \frac{P(Y=1 |X=x)}{P(Y=-1 | X = x)} .
+  f^*( \mathbf{x}) = \frac{1}{2} \log \frac{P(y=1 \mid \mathbf{x})}{P(y=-1 \mid \mathbf{x})} .
 \end{align}
 So the classification rule in Adabost.M1 approximates one half of the log-odds. This justifies using its sign as a classification rule.
 %
@@ -141,7 +139,7 @@ Then $f_m$ is updated using,
 \begin{align}
   &f_m(\mathbf{x}) = f_{m-1}(\mathbf{x}) + \rho_m h(\mathbf{x}; \bm{\gamma}_{m}),\\
   \label{eq:lineSearch} 
-  &\text{where} \quad \rho_m = \argmin_\rho \sum^{N}_{i=1} L(y_i, f_{m-1}(\mathbf{x}) + \rho h(\mathbf{x}; \bm{\gamma}_m)).
+  &\text{where} \quad \rho_m = \argmin_\rho \sum^{N}_{i=1} L(y_i, f_{m-1}(\mathbf{x}_i) + \rho h(\mathbf{x}_i; \bm{\gamma}_m)).
 \end{align}
 These last three equations are know as the \textit{Gradient Boosting} algorithm.
 As \eqref{eq:forStageWise} is replaced by \eqref{eq:gradBoostFit} and \eqref{eq:lineSearch}, $\tilde{y}_i = -g_m(\mathbf{x}_i)$ is often referred to as the ''pseudo-response''. 
@@ -149,9 +147,9 @@ As \eqref{eq:forStageWise} is replaced by \eqref{eq:gradBoostFit} and \eqref{eq:
 Note here that $h$ and $f$ are continuous functions and not classifiers. The classification is done after all the $M$ iterations, usually trough some relationship between $f_M$ and class probabilities. For the binomial deviance loss this relationships are the log-odds,
 \begin{align}
   \label{eq:boostLogOdds1} 
-  &\hat P(y = 1 |  \mathbf{x}) = \left( 1+ \exp\left( -2 f_M (\mathbf{x}) \right) \right)^{-1},\\
+  &\hat P(y = 1 \mid  \mathbf{x}) = \left( 1+ \exp\left( -2 f_M (\mathbf{x}) \right) \right)^{-1},\\
   \label{eq:boostLogOdds2} 
-  &\hat P(Y = -1 |  \mathbf{x}) = \left( 1+ \exp\left( 2 f_M (\mathbf{x}) \right) \right)^{-1}.
+  &\hat P(y = -1 \mid \mathbf{x}) = \left( 1+ \exp\left( 2 f_M (\mathbf{x}) \right) \right)^{-1}.
 \end{align}
 \subsection{Regression Trees}
 \label{sub:Regression Trees}
@@ -180,15 +178,15 @@ This way $J$ separate basis functions are fitted instead of one single additive,
   &f_m(\mathbf{x}) = f_{m-1}(\mathbf{x}) +  \sum^{J}_{j=0} \eta_{m j} I\left\{ \mathbf{x} \in R_{m j} \right\}, \\
   \label{eq:etaLineSearch} 
   &\text{where} \quad
-  \eta_{m j} = \argmin_\eta  \sum_{\mathbf{x}_i \in R_{m j}} L(y_i, f_{m-1}(\mathbf{x}) + \eta).
+  \eta_{m j} = \argmin_\eta  \sum_{\mathbf{x}_i \in R_{m j}} L(y_i, f_{m-1}(\mathbf{x}_i) + \eta).
 \end{align}
 
 \subsection{The two-class logistic regression classifier}
 \label{sub:The two-class logistic regression classifier}
 The framework for Gradient Boosting is now reviewed, and as a final step the algorithm is summarize under binomial deviance loss. As before $y \in \left\{ -1, 1 \right\}$ and the loss is,
 \begin{align}
-  &L(Y, f(\mathbf{x})) = \log (1 + \exp (-2 Y f(\mathbf{x}))),\\
-  &\text{where} \quad f(\mathbf{x}) = \frac{1}{2} \log \frac{ P(Y = 1 | \mathbf{x})}{ P(Y = -1 | \mathbf{x})}  .
+  &L(y, f(\mathbf{x})) = \log (1 + \exp (-2 y f(\mathbf{x}))),\\
+  &\text{where} \quad f(\mathbf{x}) = \frac{1}{2} \log \frac{ P(y = 1 \mid \mathbf{x})}{ P(y = -1 \mid \mathbf{x})}  .
 \end{align}
 $f_0(\mathbf{x})$ is initialized to $\frac{1}{2} \log \frac{1+\bar{y}}{1-\bar{y}}$.  The pseudo-response is,
 \begin{align}

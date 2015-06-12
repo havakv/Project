@@ -5,6 +5,7 @@
 if(system("echo $OMP_NUM_THREADS", intern = TRUE) != 1)
     stop("OMP_NUM_THREADS is not 1")
 
+# Get number of cores
 argv <- commandArgs(trailingOnly=TRUE)
 if (identical(argv, character(0)))
     stop("Need number of threads as input parameter")

@@ -5,8 +5,109 @@
 %	TITLE SECTION
 %-----------------------------------------------------------------------------
 \newcommand{\AuthorName}{Håvard Kvamme} % Your name
+\newcommand{\Location}{Trondheim}
 
-\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Title page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newcommand\bhrule{\typeout{------------------------------------------------------------------------------}}
+%\newcommand\btypeout[1]{\bhrule\typeout{\space #1}\bhrule}
+
+%\newcommand*{\supervisor}[1]{\def\supname{#1}}
+%\newcommand*{\examiner}[1]{\def\examname{#1}}
+%\newcommand*{\degree}[1]{\def\degreename{#1}}
+%\newcommand*{\authors}[1]{\def\authornames{#1}}
+%\newcommand*{\addresses}[1]{\def\addressnames{#1}}
+%\newcommand*{\university}[1]{\def\univname{#1}}
+%\newcommand*{\UNIVERSITY}[1]{\def\UNIVNAME{#1}}
+%\newcommand*{\department}[1]{\def\deptname{#1}}
+%\newcommand*{\DEPARTMENT}[1]{\def\DEPTNAME{#1}}
+%\newcommand*{\group}[1]{\def\groupname{#1}}
+%\newcommand*{\GROUP}[1]{\def\GROUPNAME{#1}}
+%\newcommand*{\faculty}[1]{\def\facname{#1}}
+%\newcommand*{\FACULTY}[1]{\def\FACNAME{#1}}
+%\newcommand*{\subject}[1]{\def\subjectname{#1}}
+%\newcommand*{\keywords}[1]{\def\keywordnames{#1}}
+%\supervisor  {}
+%\examiner    {}
+%\degree      {}
+%\authors     {}
+%\university  {NTNU}
+%\UNIVERSITY  {NTNU}
+%\department  {Department of Mathematical Sciences}
+%\DEPARTMENT  {\texorpdfstring{\href{http://www.ecs.soton.ac.uk}
+                %{SCHOOL OF ELECTRONICS AND COMPUTER SCIENCE}}
+                %{SCHOOL OF ELECTRONICS AND COMPUTER SCIENCE}}
+%\group       {\texorpdfstring{\href{http://www.isis.ecs.soton.ac.uk}
+                %{Image, Speech and Intelligent Systems Group}}
+                %{Image, Speech and Intelligent Systems Group}}
+%\GROUP       {\texorpdfstring{\href{http://www.isis.ecs.soton.ac.uk}
+                %{IMAGE, SPEECH AND INTELLIGENT SYSTEMS GROUP}}
+                %{IMAGE, SPEECH AND INTELLIGENT SYSTEMS GROUP}}
+%\faculty     {Faculty of Information Technology, Mathematics and Electrical Engineering}
+%\FACULTY     {\texorpdfstring{\href{http://www.engineering.soton.ac.uk}
+                %{FACULTY OF ENGINEERING, SCIENCE AND MATHEMATICS}}
+                %{FACULTY OF ENGINEERING, SCIENCE AND MATHEMATICS}}
+%\addresses   {}
+%\subject     {}
+%\keywords    {}
+
+
+
+%\renewcommand\maketitle{
+  %\btypeout{Title Page}
+  %\thispagestyle{empty}
+  %\begin{titlepage}
+    %%\let\footnotesize\small
+    %%\let\footnoterule\relax
+    %%\let \footnote \thanks
+    %%\setcounter{footnote}{0}
+    %\null\vfil
+    %\vskip 60\p@
+    %\begin{center}
+      %\setlength{\parskip}{0pt}
+      %{\huge\textbf{\univname}\par}
+      %\vfill
+      %{\huge \bf \@title \par}
+      %\vfill
+      %{\LARGE by \par}
+      %\smallskip
+      %{\LARGE \authornames \par}
+      %\vfill
+      %\bigskip
+      %{\large \facname \par}
+      %{\large \deptname \par}
+      %\bigskip
+      %\bigskip
+      %\bigskip
+      %{\Large \@date \par}
+      %\bigskip
+    %\end{center}
+    %\par
+    %\vfil\null
+  %\end{titlepage}
+  %\setcounter{footnote}{0}%
+  %\global\let\thanks\relax
+  %\global\let\maketitle\relax
+  %\global\let\title\relax
+  %\global\let\author\relax
+  %\global\let\date\relax
+  %\global\let\and\relax
+  %\cleardoublepage
+%}
+
+%\title      {An Investigation into statistical classification}
+%\authors    {Håvard Kvamme} 
+%\addresses  {\groupname\\\deptname\\\univname}
+%\date       {\today}
+%\subject    {}
+%\keywords   {}
+
+
+
+
+
 
 \title{	
 \normalfont \normalsize 
@@ -19,19 +120,43 @@
 \author{\AuthorName } % Your name
 
 \date{\normalsize\today} % Today's date or a custom date
+
+
 \begin{document}
 \frontmatter
 \maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Preface
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter*{Preface}
 \addcontentsline{toc}{chapter}{Preface}
-Something about the project and thanks to Håvard Rue.
+%
+This project is an introductory to study of statistical classification preparing me for my master's thesis. Together they will completing my master's degree in industrial mathematics at NTNU.
 
+I would like to thank my supervisor, professor Håvard Rue, for his good help and support with the project.
+\\
+\begin{center}
+\vspace{2cm}
+\Location, \date{\today}\\
+\vspace{0.5cm}
+\rule{8cm}{0.5pt}
+\\
+\AuthorName
+\end{center}
+
+
+\afterpage{\null\newpage}
 \clearpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Abstract
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
-Write something interesting here!!!!! And make the margins larger (text more narrow).
+This report deals with classification methods based on trees. More specifically, it is an introduction to classification through CART and the ensemble methods Adaboost, Gradient Boosting, Bagging and Random Forests. The methods are explained and tested on a dataset. Their relative performance are less interesting than their how their relations to different tuning parameters. 
 \end{abstract}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \listoftodos{}
 \tableofcontents
 
@@ -69,7 +194,7 @@ Write something interesting here!!!!! And make the margins larger (text more nar
 <<Experiments, child='./Experiments.tex', cache=TRUE>>=
 @
 
-\chapter{Summary and discussion}
+\chapter{Summary}
 <<Summary, child='./Summary.tex', cache=TRUE>>=
 @
 
@@ -104,7 +229,9 @@ Write something interesting here!!!!! And make the margins larger (text more nar
 \begin{appendices}
   %% Use \section
   %% Can use \phantomsection in text to get back
-  \input{./Appendix.tex}
+  %\input{./Appendix.tex}
+<<Appendix, child='./Appendix.tex', cache=FALSE>>=
+@
 \end{appendices}
 %
 \end{document}

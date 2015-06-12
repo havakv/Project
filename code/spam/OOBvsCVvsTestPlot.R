@@ -1,5 +1,5 @@
 #!/usr/bin/env Rscript
-
+# Plotting OOB CV and test error
 NOPRINT <- FALSE
 library(common)
     

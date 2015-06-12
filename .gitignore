@@ -8,8 +8,6 @@ latex/project.tex
 latex/cache
 *Tmp*
 
-latex/figures
-
 ## General
 *.swp
 *.dat

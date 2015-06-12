@@ -6,6 +6,7 @@ NOPRINT = FALSE
 if(system("echo $OMP_NUM_THREADS", intern = TRUE) != 1)
     stop("OMP_NUM_THREADS is not 1")
 
+# Get number of cores
 argv <- commandArgs(trailingOnly=TRUE)
 if (identical(argv, character(0)))
     stop("Need number of threads as input parameter")
@@ -14,47 +15,20 @@ nCores <- as.integer(argv[1])
 
 library(common)
 library(gbm)
-require(parallel) # one of the core R packages
+require(parallel) 
 require(doParallel)
 library(foreach)
 
-#set.seed(0) # Make sure this is the same seed!!!!!!!!!!!!
-#X <- getSpam() # Remove when run next time
 
 load("../../dataset/spamResults/gradBoostSpam.Rdata")
 
+
+##############################################################################
+# Gradient Boosting with different shrinkage
 nit <- 40
 itVec <- round(seq(1, 1000, length.out=nit))
 nfit1 <- length(fit1)-1
-Errors <- matrix(NA, nit, nfit1)
 
-
-registerDoParallel(nCores)
-err <- rep(NA, nit)
-for (i in 1:nfit1) {
-    fit <- fit1[[i]]
-    err <- foreach(j = 1:nit, .combine = c) %dopar% {
-    #for (j in 1:nit) {
-        pred <- predict(fit, X$test, n.trees=itVec[j], type="response")
-        pred[pred>0.5] <- 1
-        pred[pred<0.5] <- 0
-        sum(pred != X$test$spam)/X$nTest
-    }
-    Errors[, i] <- err
-}
-
-printfig("gradboostSpamShrink1", NOPRINT)
-ylim <- c(min(Errors), max(Errors))
-plot(itVec, Errors[,1], type="l", xlab = "iterations", ylab = "error", ylim = ylim, col = 2)
-for (j in 2:nfit1) {
-    lines(itVec, Errors[, j], col = j+1)
-}
-grid()
-legend(x = "topright", as.character(fit1$shrinkVec[1:nfit1]), lty = rep(1, nfit1), lwd = rep(1, nfit1), 
-       col = 1:nfit1+1, bg="white")
-off(NOPRINT)
-
-#----------------------------------------------------------------------------------------
 nit1 <- 40
 itVec <- round(seq(1, 1000, length.out=nit1))
 nit <- 80
@@ -173,7 +147,4 @@ grid()
 legend(x = "topright", as.character(fit3$interactonVec[1:nit3]), lty = rep(1, nit3), lwd = rep(1, nit3), 
        col = 1:nit3+1, bg="white")
 off(NOPRINT)
-
-
-
 

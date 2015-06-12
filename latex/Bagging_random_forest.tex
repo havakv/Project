@@ -1,8 +1,6 @@
 <<echo=FALSE, cache=FALSE>>=
 set_parent('./project.Rnw')
 @
-\section{Deletesec}
-
 The term \textit{random forests} is often used as a collection of methods averaging an ensemble of decision trees grown in a randomized way. 
 Some of the most well known methods include Bagging by \cite{Breiman1996}, \textit{Random Subspace Method} by \cite{ho1998random}, 
 \textit{Random Forests} \footnote{\textit{Random Forests} with capitals refers to the specific method by \cite{randomforests}, while \textit{random forests} refers to the class of methods} by \cite{randomforests},
@@ -11,7 +9,7 @@ In this report only Bagging and Random Forests will be discussed.
 
 \section{Bagging}
 \label{sec:Bagging}
-Consider a scenario where a learning set $\left\{ \mathbf{x}_i, y_i \right\}_{i=1}^{N}$, is given, and a classifier $C(\mathbf{x})$ is created from the set. If a sequence of such sets are given, all drawn form the same distribution, a better prediction could be obtained by aggregating the classifiers. A typical way to do this is through the majority vote,
+Consider a scenario where a learning set $\left\{ \mathbf{x}_i, y_i \right\}_{i=1}^{N}$, is given, and a classifier $C(\mathbf{x})$ is created from the set. If a sequence of such sets are given, all drawn from the same distribution, a better prediction could be obtained by aggregating the classifiers. A typical way to do this is through the majority vote,
 \begin{align}
   \label{eq:aggClass} 
   C_{agg}(\mathbf{x}) = \mathrm{majority} \left\{ C_b(\mathbf{x}) \right\}_{b=1}^{B}.

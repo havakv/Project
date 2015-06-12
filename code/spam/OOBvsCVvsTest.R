@@ -1,12 +1,12 @@
 #!/usr/bin/env Rscript
 # Difference of OOB, CV and Test error
 NOPRINT=FALSE
-#NOPRINT=TRUE
 
 # Check if environment variables are fine.
 if(system("echo $OMP_NUM_THREADS", intern = TRUE) != 1)
     stop("OMP_NUM_THREADS is not 1")
 
+# Get number of cores
 argv <- commandArgs(trailingOnly=TRUE)
 if (identical(argv, character(0)))
     stop("Need number of threads as input parameter")
@@ -33,8 +33,6 @@ for (i in 1:nindex) {
     pred <- predict(fit, X$test, type="response")
     errVec[i] <- sum(pred != X$test$spam)/X$nTest
 }
-
-
 
 cv.fold <- 10
 shuffled.order <- sample(X$nTrain)
@@ -65,7 +63,6 @@ Rates <- foreach(i = 1:cv.fold, .combine = cbind) %dopar% {
      cat("Ending ", i, "\n", sep = '')
     err
 }
-#Rates
 
 # Save variables
 save(Rates, errVec, fit, index, file = "../../dataset/spamResults/OOBvsCVvsTest.Rdata")
