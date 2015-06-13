@@ -1,0 +1,18 @@
+
+This project was intended as an introductory study of statistical classification. The goal was to become better equipped for a master's thesis in this field. 
+As well as an introduction to the framework around classification, methods based on tree structures has been investigated. 
+
+The linear classifers LDA and Logistic Regression were used to introduce the framework, but were not thoroughly examined. 
+Classification trees were introduced and discussed in the form of CART. Based on the tree framework, ensemble methods were discussed in the form of Adaboost.M1, Gradient Boosting, Bagging and Random Forests.
+
+Experiments on all the methods were conducted. They were fitted to the Spam dataset \cite{Spamdata}, and the performance was reported for different tuning parameters. The experiments coincided with the theory discussed, except for the tree depth in the boosting algorithms. 
+\\
+\\
+If there had been more time many additional aspects would have been interesting to explore. Some examples include:
+\begin{itemize}
+  \item Only real features were discussed, but in real life applications categorical features are equally important. 
+  \item The methods exposure to noisy settings were not discussed. The experiments could be repeated with additional noisy covariates. 
+  \item Only CART splitting was investigated. Splitting on linear combinations of the features could have a positive impact on performance. 
+  \item Like Stochastic Gradient Boosting, Adaboost can also be randomized. 
+  \item How the algorithm scales with the size of the dataset would be interesting to investigate, both in terms of computations and accuracy.
+\end{itemize}
