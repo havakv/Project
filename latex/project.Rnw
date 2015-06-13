@@ -133,7 +133,7 @@
 \chapter*{Preface}
 \addcontentsline{toc}{chapter}{Preface}
 %
-This project is an introductory to study of statistical classification preparing me for my master's thesis. Together they will completing my master's degree in industrial mathematics at NTNU.
+This project is an introductory study of statistical classification preparing me for my master's thesis. Together they will completing my master's degree in industrial mathematics at NTNU.
 
 I would like to thank my supervisor, professor Håvard Rue, for his good help and support with the project.
 \\
@@ -153,7 +153,7 @@ I would like to thank my supervisor, professor Håvard Rue, for his good help an
 % Abstract
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
-This report deals with classification methods based on trees. More specifically, it is an introduction to classification through CART and the ensemble methods Adaboost, Gradient Boosting, Bagging and Random Forests. The methods are explained and tested on a dataset. Their relative performance are less interesting than their how their relations to different tuning parameters. 
+This report deals with classification methods based on trees. More specifically, it is an introduction to classification through CART and the ensemble methods Adaboost, Gradient Boosting, Bagging and Random Forests. The methods are explained and tested on a dataset. Their relative performance are less interesting than the individual relations to different tuning parameters. 
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
