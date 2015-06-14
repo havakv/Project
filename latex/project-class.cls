@@ -104,8 +104,42 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Titlepage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+\newcommand\bhrule{\typeout{------------------------------------------------------------------------------}}
+\newcommand\btypeout[1]{\bhrule\typeout{\space #1}\bhrule}
 
+\renewcommand\maketitle{
+  \btypeout{Title Page}
+  \thispagestyle{empty}
+  \begin{titlepage}
+    %\let\footnotesize\small
+    %\let\footnoterule\relax
+    %\let \footnote \thanks
+    %\setcounter{footnote}{0}
+    \null\vfil
+    \begin{center}
+      \setlength{\parskip}{0pt}
+      {\huge\textbf{\univname}\par}
+      \vfill
+      {\huge \bf \Title \par}
+      \vfill
+      {\LARGE by \par}
+      \smallskip
+      {\LARGE \AuthorName \par}
+      \vfill
+      \bigskip
+      {\large \faculty \par}
+      {\large \department \par}
+      \bigskip
+      \bigskip
+      \bigskip
+      {\Large \date \par}
+      \bigskip
+    \end{center}
+    \par
+    \vfil\null
+  \end{titlepage}
+  \cleardoublepage
+}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

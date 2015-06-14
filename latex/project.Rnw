@@ -1,127 +1,25 @@
 % Created: Tue Feb 17 15:26:53 CET 2015
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass{project-class} % Use style of project-class based on book.
-%-----------------------------------------------------------------------------
-%	TITLE SECTION
-%-----------------------------------------------------------------------------
-\newcommand{\AuthorName}{Håvard Kvamme} % Your name
-\newcommand{\Location}{Trondheim}
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Title page
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\newcommand\bhrule{\typeout{------------------------------------------------------------------------------}}
-%\newcommand\btypeout[1]{\bhrule\typeout{\space #1}\bhrule}
-
-%\newcommand*{\supervisor}[1]{\def\supname{#1}}
-%\newcommand*{\examiner}[1]{\def\examname{#1}}
-%\newcommand*{\degree}[1]{\def\degreename{#1}}
-%\newcommand*{\authors}[1]{\def\authornames{#1}}
-%\newcommand*{\addresses}[1]{\def\addressnames{#1}}
-%\newcommand*{\university}[1]{\def\univname{#1}}
-%\newcommand*{\UNIVERSITY}[1]{\def\UNIVNAME{#1}}
-%\newcommand*{\department}[1]{\def\deptname{#1}}
-%\newcommand*{\DEPARTMENT}[1]{\def\DEPTNAME{#1}}
-%\newcommand*{\group}[1]{\def\groupname{#1}}
-%\newcommand*{\GROUP}[1]{\def\GROUPNAME{#1}}
-%\newcommand*{\faculty}[1]{\def\facname{#1}}
-%\newcommand*{\FACULTY}[1]{\def\FACNAME{#1}}
-%\newcommand*{\subject}[1]{\def\subjectname{#1}}
-%\newcommand*{\keywords}[1]{\def\keywordnames{#1}}
-%\supervisor  {}
-%\examiner    {}
-%\degree      {}
-%\authors     {}
-%\university  {NTNU}
-%\UNIVERSITY  {NTNU}
-%\department  {Department of Mathematical Sciences}
-%\DEPARTMENT  {\texorpdfstring{\href{http://www.ecs.soton.ac.uk}
-                %{SCHOOL OF ELECTRONICS AND COMPUTER SCIENCE}}
-                %{SCHOOL OF ELECTRONICS AND COMPUTER SCIENCE}}
-%\group       {\texorpdfstring{\href{http://www.isis.ecs.soton.ac.uk}
-                %{Image, Speech and Intelligent Systems Group}}
-                %{Image, Speech and Intelligent Systems Group}}
-%\GROUP       {\texorpdfstring{\href{http://www.isis.ecs.soton.ac.uk}
-                %{IMAGE, SPEECH AND INTELLIGENT SYSTEMS GROUP}}
-                %{IMAGE, SPEECH AND INTELLIGENT SYSTEMS GROUP}}
-%\faculty     {Faculty of Information Technology, Mathematics and Electrical Engineering}
-%\FACULTY     {\texorpdfstring{\href{http://www.engineering.soton.ac.uk}
-                %{FACULTY OF ENGINEERING, SCIENCE AND MATHEMATICS}}
-                %{FACULTY OF ENGINEERING, SCIENCE AND MATHEMATICS}}
-%\addresses   {}
-%\subject     {}
-%\keywords    {}
-
-
-
-%\renewcommand\maketitle{
-  %\btypeout{Title Page}
-  %\thispagestyle{empty}
-  %\begin{titlepage}
-    %%\let\footnotesize\small
-    %%\let\footnoterule\relax
-    %%\let \footnote \thanks
-    %%\setcounter{footnote}{0}
-    %\null\vfil
-    %\vskip 60\p@
-    %\begin{center}
-      %\setlength{\parskip}{0pt}
-      %{\huge\textbf{\univname}\par}
-      %\vfill
-      %{\huge \bf \@title \par}
-      %\vfill
-      %{\LARGE by \par}
-      %\smallskip
-      %{\LARGE \authornames \par}
-      %\vfill
-      %\bigskip
-      %{\large \facname \par}
-      %{\large \deptname \par}
-      %\bigskip
-      %\bigskip
-      %\bigskip
-      %{\Large \@date \par}
-      %\bigskip
-    %\end{center}
-    %\par
-    %\vfil\null
-  %\end{titlepage}
-  %\setcounter{footnote}{0}%
-  %\global\let\thanks\relax
-  %\global\let\maketitle\relax
-  %\global\let\title\relax
-  %\global\let\author\relax
-  %\global\let\date\relax
-  %\global\let\and\relax
-  %\cleardoublepage
-%}
-
-%\title      {An Investigation into statistical classification}
-%\authors    {Håvard Kvamme} 
-%\addresses  {\groupname\\\deptname\\\univname}
-%\date       {\today}
-%\subject    {}
-%\keywords   {}
+\newcommand{\AuthorName}{Håvard Kvamme}
+\newcommand{\Location}{Trondheim}
+\newcommand{\Title}{An Investigation into statistical classification using trees}
+\newcommand{\univname}{NTNU}
+\newcommand{\department}{Department of Mathematical Sciences}
+\newcommand{\faculty}{Faculty of Information Technology, Mathematics and Electrical Engineering}
+\renewcommand{\date}{\today}
 
 
 
 
-
-
-\title{	
-\normalfont \normalsize 
-\textsc{NTNU} \\ [25pt] % Your university, school and/or department name(s)
-\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
-\huge Project Classification \\ % The assignment title
-\horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
-}
-
-\author{\AuthorName } % Your name
-
-\date{\normalsize\today} % Today's date or a custom date
-
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 \frontmatter
 \maketitle
@@ -139,7 +37,7 @@ I would like to thank my supervisor, professor Håvard Rue, for his good help an
 \\
 \begin{center}
 \vspace{2cm}
-\Location, \date{\today}\\
+\Location, \date \\
 \vspace{0.5cm}
 \rule{8cm}{0.5pt}
 \\
@@ -147,8 +45,9 @@ I would like to thank my supervisor, professor Håvard Rue, for his good help an
 \end{center}
 
 
-\afterpage{\null\newpage}
-\clearpage
+%\afterpage{\null\newpage}
+%\clearpage
+\cleardoublepage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Abstract
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
