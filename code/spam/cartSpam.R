@@ -7,6 +7,8 @@ library(common)
 library(rpart)
 library(methods)
 
+## ---- cartSpam.R ----
+# Get training and test data
 X <- getSpam()
 
 # Using the Ginie splitting criterion 
@@ -70,6 +72,7 @@ abline(v = nsplit[ns], lty = 2, col = 2)
 abline(v = nsplit[which.min(err)], lty = 2, col = 3)
 abline(v = nsplitDev[which.min(errDev)], lty = 2, col = 6)
 grid()
-legend(x = "topright", c("Gini", "Deviance"), lty = rep(1, 2), lwd = rep(2, 2), col = c(4, 1), bg="white")
+legend(x = "topright", c("Gini", "Deviance"), lty = rep(1, 2), 
+       lwd = rep(2, 2), col = c(4, 1), bg="white")
 off(NOPRINT)
 

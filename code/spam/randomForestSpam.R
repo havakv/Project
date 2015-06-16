@@ -20,6 +20,7 @@ library(foreach)
 
 X <- getSpam()
 
+## ---- randomForestSpam.R ----
 B <- round(seq(5, 2000, length.out = 25))
 err <- rep(NA,length(B))
 
@@ -35,7 +36,7 @@ errRF <- err
 BRF <- B
 
 
-#------------------------------------------
+##################################################
 mVec <- 1:10
 mVec <- c(mVec, round(seq(12, 25, length.out = 10)))
 B <- c(5, 10, 50, 500)
@@ -56,5 +57,6 @@ Errors <- foreach(i = 1:length(mVec), .combine = cbind) %dopar% {
 }
 
 
-save(errRF, BRF, Errors, mVec, B, file = "../../dataset/spamResults/randomForestSpam.Rdata")
+save(errRF, BRF, Errors, mVec, B, 
+     file = "../../dataset/spamResults/randomForestSpam.Rdata")
 

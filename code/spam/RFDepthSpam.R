@@ -22,6 +22,7 @@ library(cvTools)
 
 X <- getSpam()
 
+## ---- RFDepthSpam.R ----
 nodesize <- c(1, 5, 10, 40)
 nsizes <- length(nodesize)
 nTree <- 600
@@ -36,7 +37,8 @@ Errors <- foreach(i = 1:nsizes, .combine = cbind) %dopar% {
     cat("Starting ", i, "\n", sep = '')
     set.seed(seeds[i])
 
-    fit <- randomForest(spam ~ ., data = X$train, ntree = nTree, nodesize = nodesize[i])
+    fit <- randomForest(spam ~ ., data = X$train, ntree = nTree, 
+                        nodesize = nodesize[i])
     err <- rep(NA, nindex)
     for (j in 1:nindex) {
         fit$forest$ntree <- index[j]
@@ -49,6 +51,7 @@ Errors <- foreach(i = 1:nsizes, .combine = cbind) %dopar% {
 
 
 # Save variables
-save(Errors, index, nodesize, nsizes, file = "../../dataset/spamResults/RFDepthSpam.Rdata")
+save(Errors, index, nodesize, nsizes, 
+     file = "../../dataset/spamResults/RFDepthSpam.Rdata")
 
 

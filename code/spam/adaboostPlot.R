@@ -6,7 +6,7 @@ NOPRINT=FALSE
 library(common)
 
 load("../../dataset/spamResults/adaboostSpam.Rdata")
-## ---- plotAdaboost ----
+## ---- adaboostPlot.R ----
 # Different depths
 printfig("adaboostSpam", NOPRINT)
 ylim <- c(min(Errors), max(Errors))
@@ -15,5 +15,6 @@ for (j in 2:ndept) {
     lines(its, Errors[, j], col = j)
 }
 grid()
-legend(x = "topright", as.character(maxdepth), lty = rep(1, 4), lwd = rep(1, 4), col = 1:ndept, bg="white")
+legend(x = "topright", as.character(maxdepth), lty = rep(1, 4), 
+       lwd = rep(1, 4), col = 1:ndept, bg="white")
 off(NOPRINT)

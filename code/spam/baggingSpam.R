@@ -22,6 +22,8 @@ library(foreach)
 
 X <- getSpam()
 
+## ---- baggingSpam.R ----
+
 B <- round(seq(5, 2000, length.out = 25))
 err <- rep(NA,length(B))
 

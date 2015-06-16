@@ -14,7 +14,6 @@ if (identical(argv, character(0)))
 
 nCores <- as.integer(argv[1])
 
-## ---- codeAdaboost ----
 library(common)    
 library(adabag)
 require(parallel)
@@ -24,6 +23,7 @@ library(foreach)
 # Get training and test data
 X <- getSpam()
 
+## ---- adaboostSpam.R ----
 maxdepth  <- c(1, 3, 10, 30)
 its       <- round(c(seq(1, 10, length.out = 5), 
                      seq(20, 300, length.out = 10)))
@@ -39,8 +39,10 @@ Errors <- foreach(i = 1:nit, .combine = rbind) %dopar% {
     for (j in 1:ndept) {
         cat("it:", its[i], "\tdepth:", maxdepth[j], "\n")
 
-        ada2 <- boosting(spam ~ ., X$train, boos=FALSE, mfinal=its[i], coeflearn="Freund",
-                         control = rpart.control(maxdepth=maxdepth[j], cp = cp, minbucket=minbucket))
+        ada2 <- boosting(spam ~ ., X$train, boos=FALSE, mfinal=its[i], 
+                         coeflearn="Freund", 
+                         control = rpart.control(maxdepth=maxdepth[j], 
+                                                 cp = cp, minbucket=minbucket))
         predAda2 <- predict(ada2, X$test)
         err[j] <- sum(predAda2$class != X$test$spam)/X$nTest
     }
@@ -48,5 +50,6 @@ Errors <- foreach(i = 1:nit, .combine = rbind) %dopar% {
 }
 
 # Save variables
-save(maxdepth, its, ndept, nit, Errors, file = "../../dataset/spamResults/adaboostSpam.Rdata")
+save(maxdepth, its, ndept, nit, Errors, 
+     file = "../../dataset/spamResults/adaboostSpam.Rdata")
 

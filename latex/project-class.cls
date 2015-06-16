@@ -14,7 +14,6 @@
 \RequirePackage[utf8]{inputenc} % Norwegian letters
 \RequirePackage{amsmath,amsfonts,amssymb}
 \RequirePackage{natbib} % Need to use bibiliography other than plain.
-\RequirePackage{bm}
 \RequirePackage{float}  % Used for minipage and stuff.
 \RequirePackage{wrapfig} % Wrap text around figure wrapfig [tab]
 \RequirePackage{afterpage}
@@ -38,6 +37,11 @@
   linktocpage=true
 }
 \RequirePackage[all]{hypcap} % Makes hyperref jup to top of pictures and tables
+\RequirePackage[ddmmyyyy]{datetime}
+\renewcommand{\dateseparator}{.} % punctuation so 13.05.1991
+\newdateformat{monthyeardate}{% Get only month and year.
+  \monthname[\THEMONTH], \THEYEAR}
+
 
 %---------------------------------------------------------------------------------------------
 % Set page reference in bibliography.
@@ -111,14 +115,10 @@
   \btypeout{Title Page}
   \thispagestyle{empty}
   \begin{titlepage}
-    %\let\footnotesize\small
-    %\let\footnoterule\relax
-    %\let \footnote \thanks
-    %\setcounter{footnote}{0}
     \null\vfil
     \begin{center}
       \setlength{\parskip}{0pt}
-      {\huge\textbf{\univname}\par}
+      {\large\textbf{\univname}\par}
       \vfill
       {\huge \bf \Title \par}
       \vfill
@@ -126,13 +126,12 @@
       \smallskip
       {\LARGE \AuthorName \par}
       \vfill
-      \bigskip
       {\large \faculty \par}
       {\large \department \par}
       \bigskip
       \bigskip
       \bigskip
-      {\Large \date \par}
+      {\Large \monthyeardate \date \par}
       \bigskip
     \end{center}
     \par
@@ -149,7 +148,6 @@
 {
   \thispagestyle{empty}
   \null\null\null\null
-  \null\null\null\null
   \begin{center}
     \setlength{\parskip}{0pt}
     {\underline{ABSTRACT} \par}
@@ -161,8 +159,34 @@
   }%
   \item\relax
   {\endlist}
+}{%
+  \par%
+  \cleardoublepage
 }
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Preface signature
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newenvironment{preface}
+{%
+  \thispagestyle{empty}
+  \chapter*{Preface}
+  \addcontentsline{toc}{chapter}{Preface}
+}{%
+  \par%
+  \vfill
+  \begin{center}
+    \Location, \date \par%
+    \vspace{1.5cm}
+    \rule{8cm}{0.5pt}
+    \par%
+    \AuthorName%
+  \end{center}
+  \vfill
+  \vfill
+  \cleardoublepage%
+}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

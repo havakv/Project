@@ -3,23 +3,24 @@
 \documentclass{project-class} % Use style of project-class based on book.
 
 
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Title page
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\AuthorName}{Håvard Kvamme}
 \newcommand{\Location}{Trondheim}
 \newcommand{\Title}{An Investigation into statistical classification using trees}
-\newcommand{\univname}{NTNU}
+\newcommand{\univabbr}{NTNU}
+\newcommand{\univname}{Norwegian University of Science and Technology}
 \newcommand{\department}{Department of Mathematical Sciences}
 \newcommand{\faculty}{Faculty of Information Technology, Mathematics and Electrical Engineering}
 \renewcommand{\date}{\today}
 
+%------------------------------------------------
+% Quickfix for this assignment specifically as \bm is not compatible with datetime
+\usepackage{amsbsy}
+\newcommand{\bm}{\boldsymbol}
+%------------------------------------------------
 
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 \frontmatter
 \maketitle
@@ -28,31 +29,18 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Preface
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter*{Preface}
-\addcontentsline{toc}{chapter}{Preface}
-%
+\begin{preface}
 This project is an introductory study of statistical classification preparing me for my master's thesis. Together they will completing my master's degree in industrial mathematics at NTNU.
 
 I would like to thank my supervisor, professor Håvard Rue, for his good help and support with the project.
-\\
-\begin{center}
-\vspace{2cm}
-\Location, \date \\
-\vspace{0.5cm}
-\rule{8cm}{0.5pt}
-\\
-\AuthorName
-\end{center}
+\end{preface}
 
 
-%\afterpage{\null\newpage}
-%\clearpage
-\cleardoublepage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Abstract
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
-This report deals with classification methods based on trees. More specifically, it is an introduction to classification through CART and the ensemble methods Adaboost, Gradient Boosting, Bagging and Random Forests. The methods are explained and tested on a dataset. Their relative performance are less interesting than the individual relations to different tuning parameters. 
+This report deals with classification methods based on trees. More specifically, it is an introduction to classification through CART and the ensemble methods Adaboost, Gradient Boosting, Bagging and Random Forests. The methods are explained and tested on a dataset. Emphasis is not on their relative performance, but rather their individual relations to different tuning parameters. 
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -106,29 +94,11 @@ This report deals with classification methods based on trees. More specifically,
 \bibliographystyle{plainnat}
 \bibliography{mybib}
 \addcontentsline{toc}{chapter}{Bibliography}
-%\begin{thebibliography}{99} % At most 99 references.
-    %\bibitem{bishop}
-  %Christopher M. Bishop,
-  %\emph{Pattern recognition and machine learning}.
-    %\bibitem{modstat}
-  %Trevor Hastie, Robert Tibshirani, Jerome Friedman,
-  %\emph{The Elements of Statistical Learning: Data Mining, Inference, and Prediction}.
-    %\bibitem{breiman}
-  %Leo Breiman, Jerome Friedman, Richard Olshen, Charles Stone. 
-  %\emph{Classification and Regression Trees.}
-  %Wadsworth International Group, 1984.
-    %\bibitem{friedman}
-    %Jerome H. Friedman. \url{http://statweb.stanford.edu/~jhf/ftp/trebst.pdf}
-%% Use "bibit" to generate bibitem
-%\end{thebibliography}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\clearpage
 \appendix
 \begin{appendices}
-  %% Use \section
-  %% Can use \phantomsection in text to get back
-  %\input{./Appendix.tex}
 <<Appendix, child='./Appendix.tex', cache=FALSE>>=
 @
 \end{appendices}

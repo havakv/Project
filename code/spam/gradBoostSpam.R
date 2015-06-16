@@ -27,6 +27,7 @@ X$train$spam <- as.character(X$train$spam)
 X$test$spam <- as.character(X$test$spam)
 
 #-----------------------------------------------------------------------------
+## ---- gradBoostSpam.R ----
 # Get error as function of interactions for different shrinkages
 shrink <- c(1, 0.1, 0.01, 0.001)
 fit1 <- list()
@@ -40,7 +41,7 @@ fit1 <- foreach(i = 1:length(shrink)) %dopar% {
 fit1$shrinkVec <- shrink
 cat("Done with sim 1 \n")
 
-#-----------------------------------------------------------------------------
+###############################################################################
 # Stochastic gradient boosting
 shrink <- 0.01
 nTrees <- 10000
@@ -60,7 +61,7 @@ fit2$bagVec <- bag
 
 cat("Done with sim 2 \n")
 
-#-----------------------------------------------------------------------------
+###############################################################################
 # Different tree depths
 shrink       <- 0.01
 nTrees       <- 10000

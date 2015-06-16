@@ -23,6 +23,7 @@ library(cvTools)
 
 X <- getSpam()
 
+## ---- OOBvsCVvsTest.R ----
 nTree <- 600
 fit <- randomForest(spam ~ ., data = X$train, ntree = nTree)
 nindex <- 100
@@ -65,12 +66,6 @@ Rates <- foreach(i = 1:cv.fold, .combine = cbind) %dopar% {
 }
 
 # Save variables
-save(Rates, errVec, fit, index, file = "../../dataset/spamResults/OOBvsCVvsTest.Rdata")
-
-
-
-
-
-
-
+save(Rates, errVec, fit, index, 
+     file = "../../dataset/spamResults/OOBvsCVvsTest.Rdata")
 

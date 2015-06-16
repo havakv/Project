@@ -7,10 +7,12 @@ library(common)
 load("../../dataset/spamResults/baggingSpam.Rdata")
 load("../../dataset/spamResults/randomForestSpam.Rdata")
 
+## ---- baggingAndRandomForestPlot.R ----
 # Different depths
 printfig("baggingAndRFSpam", NOPRINT)
 ylim <- c(min(c(errBag, errRF)), max(c(errBag, errRF)))
-plot(BBag, errBag, type="l", xlab = "nr. trees", ylab = "error", ylim = ylim, col = 2)
+plot(BBag, errBag, type="l", xlab = "nr. trees", ylab = "error", 
+     ylim = ylim, col = 2)
 lines(BRF, errRF, col = 3)
 grid()
 legend(x = "topright", c("Bagging", "RF"), lty = rep(1, 2), 
@@ -18,7 +20,7 @@ legend(x = "topright", c("Bagging", "RF"), lty = rep(1, 2),
 off(NOPRINT)
 
 
-#-------------------------------------------------------------------------
+######################################################
 # Random forests for different m's
 
 ylim <- c(min(Errors), max(Errors))
@@ -37,14 +39,15 @@ sqrM <- floor(sqrt(preds))
 abline(v = sqrM, lty = 2)
 off(NOPRINT)
 
-#----------------------------------------------------------------------------
+######################################################
 # Different tree depths
 
 load("../../dataset/spamResults/RFDepthSpam.Rdata")
 
 printfig("RFTreeDepth", NOPRINT)
 ylim <- c(min(Errors), 0.08)
-plot(index, Errors[,1], col = 2, ylim = ylim, type = 'l', ylab = "error", xlab = "nr. trees")
+plot(index, Errors[,1], col = 2, ylim = ylim, type = 'l', 
+     ylab = "error", xlab = "nr. trees")
 for (i in 2:ncol(Errors)) {
     lines(index, Errors[,i], col = i+1)
 }

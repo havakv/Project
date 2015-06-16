@@ -78,11 +78,47 @@ So the variance decrease by increasing the number of bootstrap samples $B$ and b
 \label{chap:Code}
 Make sure to refer to this appendix in the experiments chapter.
 
-<<readAll, cache=FALSE, eval=TRUE>>=
+<<readAll, cache=FALSE, eval=TRUE, echo=FALSE>>=
 read_chunk('../code/spam/adaboostSpam.R')
 read_chunk('../code/spam/adaboostPlot.R')
+read_chunk('../code/spam/baggingAndRandomForestPlot.R')
+read_chunk('../code/spam/baggingSpam.R')
+read_chunk('../code/spam/cartSpam.R')
+read_chunk('../code/spam/gradBoostPlot.R')
+read_chunk('../code/spam/gradBoostSpam.R')
+read_chunk('../code/spam/OOBvsCVvsTest.R')
+read_chunk('../code/spam/OOBvsCVvsTestPlot.R')
+read_chunk('../code/spam/randomForestSpam.R')
+read_chunk('../code/spam/RFDepthSpam.R')
 @
-<<codeAdaboost, eval = FALSE>>=
+
+\section{CART}
+<<cartSpam.R, eval = FALSE>>=
 @
-<<plotAdaboost, eval = FALSE>>=
+
+\section{Adaboost}
+<<adaboostSpam.R, eval = FALSE>>=
 @
+<<adaboostPlot.R, eval = FALSE>>=
+@
+
+\section{Gradient Boosting}
+<<gradBoostSpam.R, eval = FALSE>>=
+@
+<<gradBoostPlot.R, eval = FALSE>>=
+@
+
+\section{Bagging and Random Forests}
+<<baggingSpam.R, eval = FALSE>>=
+@
+<<randomForestSpam.R, eval = FALSE>>=
+@
+<<RFDepthSpam.R, eval = FALSE>>=
+@
+<<baggingAndRandomForestPlot.R, eval = FALSE>>=
+@
+<<OOBvsCVvsTest.R, eval = FALSE>>=
+@
+<<OOBvsCVvsTestPlot.R, eval = FALSE>>=
+@
+
