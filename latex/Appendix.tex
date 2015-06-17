@@ -76,7 +76,7 @@ So the variance decrease by increasing the number of bootstrap samples $B$ and b
 
 \chapter{Code from experiments}
 \label{chap:Code}
-Make sure to refer to this appendix in the experiments chapter.
+This appendix shows the most important part of the code used to do the experiments on the Spam dataset. The full code can be found on \url{https://github.com/havakv/Project/tree/master/code/spam}.
 
 <<readAll, cache=FALSE, eval=TRUE, echo=FALSE>>=
 read_chunk('../code/spam/adaboostSpam.R')
@@ -103,20 +103,27 @@ read_chunk('../code/spam/RFDepthSpam.R')
 @
 
 \section{Gradient Boosting}
+This part does the experiments for shrinkage, the sample fractions and the tree depths, in that order.
 <<gradBoostSpam.R, eval = FALSE>>=
 @
+Then the shrinkage, the sample fractions and the tree depths, are plotted in that order.
 <<gradBoostPlot.R, eval = FALSE>>=
 @
 
 \section{Bagging and Random Forests}
+Bagging experiment from Figure~\ref{fig:baggingAndRFSpam}.
 <<baggingSpam.R, eval = FALSE>>=
 @
+Random Forests experiment from Figure~\ref{fig:baggAndRF}.
 <<randomForestSpam.R, eval = FALSE>>=
 @
+Random Forests with different tree depths.
 <<RFDepthSpam.R, eval = FALSE>>=
 @
+Plotting all of the above results.
 <<baggingAndRandomForestPlot.R, eval = FALSE>>=
 @
+Out-of-bag, cross-validation and test error.
 <<OOBvsCVvsTest.R, eval = FALSE>>=
 @
 <<OOBvsCVvsTestPlot.R, eval = FALSE>>=

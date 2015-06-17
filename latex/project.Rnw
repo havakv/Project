@@ -40,11 +40,11 @@ I would like to thank my supervisor, professor Håvard Rue, for his good help an
 % Abstract
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
-This report deals with classification methods based on trees. More specifically, it is an introduction to classification through CART and the ensemble methods Adaboost, Gradient Boosting, Bagging and Random Forests. The methods are explained and tested on a dataset. Emphasis is not on their relative performance, but rather their individual relations to different tuning parameters. 
+This report deals with classification methods based on trees. More specifically, it is an introduction to classification through CART and the ensemble methods Adaboost, Gradient Boosting, Bagging and Random Forests. The methods are explained and tested on a dataset. Emphasis is not on comparing performance, but rather the individual classifiers relations to various tuning parameters. 
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\listoftodos{}
+%\listoftodos{}
 \tableofcontents
 
 \mainmatter
@@ -99,7 +99,7 @@ This report deals with classification methods based on trees. More specifically,
 %\clearpage
 \appendix
 \begin{appendices}
-<<Appendix, child='./Appendix.tex', cache=FALSE>>=
+<<Appendix, child='./Appendix.tex', cache=TRUE>>=
 @
 \end{appendices}
 %

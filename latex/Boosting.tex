@@ -30,7 +30,7 @@ An example of this implementation can be found in the R package \verb+adabag+ by
 
 \section{Forward stagewise additive modeling}
 \label{sec:Forward stagewise additive modeling}
-A common way to view the goal of classification problems is through the expected prediction error discussed in Section~\ref{sub:LDA}. The goal is to find
+A common way to view the goal of classification problems is through the expected prediction error discussed in Section~\ref{sub:LDA}. The goal is to find,
 \begin{align}
   \label{eq:fargmin} 
   f^* = \argmin_f \E_{y, \mathbf{x}}[L(y,f(\mathbf{x}))] = \argmin_f \E_y [L(y,f(\mathbf{x})) \mid \mathbf{x}\:] ,

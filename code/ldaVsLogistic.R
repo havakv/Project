@@ -1,5 +1,6 @@
 #!/usr/bin/env Rscript
 NOPRINT = FALSE # Set to TRUE if you don't want to print figures to pdf files.
+#NOPRINT = TRUE # Set to TRUE if you don't want to print figures to pdf files.
 
 # Simulation to show difference of LDA and Logistic Regression
 library(MASS)
@@ -84,3 +85,19 @@ legend(x = "topright", c("LDA", "Logistic", "Optimal"), lty = c(1, 1, 1),
        lwd = c(1, 1, 1), col = c(3, 6, 1))
 off(NOPRINT)
 
+############
+# LDA optimal
+############
+Nopt <- 1e5
+x1opt <- mvrnorm(Nopt, mu1, Sigma)       
+x2opt <- mvrnorm(Nopt, mu2, Sigma)
+Xopt <- data.frame(rbind(x1opt, x2opt))
+Yopt <- c(rep(0, Nopt), rep(1, Nopt))
+
+# LDA
+fitLdaopt <- lda(Xopt, Yopt, CV=FALSE) 
+predLdaopt <- predict(fitLdaopt, Xtest)
+
+# Misclassification error
+mceLdaopt <- sum(predLdaopt$class != Ytest)/Ntest
+#cat("LDA MCE:\t", mceLdaopt, "\n")
