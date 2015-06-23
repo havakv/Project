@@ -1,9 +1,9 @@
 <<echo=FALSE, cache=FALSE>>=
 set_parent('./project.Rnw')
 @
-The term \textit{random forests} is often used as a collection of methods averaging an ensemble of decision trees grown in a randomized way. 
+The term \textit{random forests} is often used for a collection of methods averaging an ensemble of decision trees grown in a randomized way. 
 Some of the most well known methods include Bagging by \cite{Breiman1996}, \textit{Random Subspace Method} by \cite{ho1998random}, 
-\textit{Random Forests} \footnote{\textit{Random Forests} with capitals refers to the specific method by \cite{randomforests}, while \textit{random forests} refers to the class of methods} by \cite{randomforests},
+\textit{Random Forests} \footnote{\textit{Random Forests} with capitals refers to the specific method by \cite{randomforests}, while \textit{random forests} refers to the class of methods.} by \cite{randomforests},
 \textit{Perfect Random Tree Ensembles} by \cite{cutler2001pert}, \textit{Extremely Randomized Trees} by \cite{Geurts2006} and \textit{Rotation Forests} by \cite{Rodriguez2006}. 
 In this report only Bagging and Random Forests will be discussed.
 
@@ -18,16 +18,16 @@ Consider a scenario where a learning set $\left\{ \mathbf{x}_i, y_i \right\}_{i=
 
 Bagging is done by sampling $N$ points (with replacement) from the data set $\left\{ \mathbf{x}_i, y_i \right\}_{i=1}^{N}$, and train a classifier $C_b(\mathbf{x})$ on the samples. Repeat this $B$ times and get the aggregated classifier in  \eqref{eq:aggClass}. 
 
-The use of bootstrap samples makes the computations for each individual classifier independent. This mean that the training is easy to parallelize for faster computation. However, if the underlying method is interpretable, this will be lost in Bagging.
+The use of bootstrap samples makes the computations for each individual classifier independent. This means that the training is easy to parallelize for faster computation. However, if the underlying method is interpretable, this will be lost in Bagging.
 \\
 \\
-It is important to note that even though the votes gives proportions of classifiers predicting class $k$, these proportions should not be used as estimates for the class probabilities. This can be shown through an easy example. Consider a two class experiment where the probability of class 1 is $p = 0.75$, and the features are pure noise. The prediction of $C_b(\mathbf{x})$ thus only depends on how many points there is from each class. As the draws in a bootstrap sample are done with replacement, the amount of points with class $1$ in sample ($\# 1$) is binomially distributed. The probability that $C_b(\mathbf{x})$ gives class 2 is thus, 
+It is important to note that even though the votes gives proportions of classifiers predicting class $k$, these proportions should not be used as estimates for the class probabilities. This can be shown through an easy example. Consider a two class experiment where the probability of class 1 is $p = 0.75$, and the features are pure noise. The prediction of $C_b(\mathbf{x})$ thus only depends on how many points there are from each class. As the draws in a bootstrap sample are done with replacement, the amount of points with class $1$ in a sample ($\# 1$) is binomially distributed. The probability that $C_b(\mathbf{x})$ gives class 2 is thus, 
 \begin{align}
   P(C_b(\mathbf{x})=2) = P\left(\#1 <  \frac{N}{2} \right) = \sum_{i = 0}^{N/2 - 1} \mathrm{binom}\left(\frac{N}{2}-1,\: N,\: p  \right).
 \end{align}
 This probability will converge to 0 as $N$ increase, for all probabilities $p > 0.5$. Thus the proportion of $C_b(\mathbf{x})$ that votes for class 1 is a horrible estimator of $p$.
 
-However, often the underlying method used for each single classifier has a probability estimate (eg. trees). An alternative method to \eqref{eq:aggClass} is to average these probabilities instead,
+However, often the underlying method used for each single classifier has a probability estimate. An alternative method to \eqref{eq:aggClass} is to average these probabilities instead,
 \begin{align}
   p_{agg, k}(\mathbf{x}) &=  \mathrm{ave}\left\{ p_{b, k}(\mathbf{x}) \right\}_{b = 1}^{B}, \quad k = 1, \ldots, K, \\
   \label{eq:aggClassP} 
@@ -37,7 +37,7 @@ This method is more descriptive than \eqref{eq:aggClass}, and has also, accordin
 
 \subsection{Why Bagging works}
 \label{sub:Why Bagging works}
-The typical argument for the success of Bagging is that it lowers the variance of the classifier through averaging. This can be shown for regression (see Appendix~\ref{sec:Variance for Random Forests regression}), but the argument does not quite hold for classification, because of the non-additivity of bias and variance. The instability of the classifiers still plays an important role in the performance of Bagging. For very stable methods it is clear that the classifiers for each bootstrap set will be very similar, so the gain of averaging or voting, will be minimal. However, for unstable methods Bagging has been shown to perform very well. \cite{Breiman1996Heur} showed that neural networks, classification and regression trees, and subset selection in linear regression are relatively unstable.
+The typical argument for the success of Bagging is that it lowers the variance of the classifier through averaging. This can be shown for regression (see Appendix~\ref{sec:Variance for Random Forests regression}), but the argument does not quite hold for classification. This is because of the non-additivity of bias and variance. The instability of the classifiers still plays an important role in the performance of Bagging. For very stable methods it is clear that the classifiers for each bootstrap set will be very similar, so the gain of averaging or voting, will be minimal. However, for unstable methods Bagging has been shown to perform very well. \cite{Breiman1996Heur} showed that neural networks, classification and regression trees, and subset selection in linear regression are relatively unstable.
 Trees are ideal to use because, if grown large, they can capture complex structures in the data, and have relatively low bias. A small change in the training set, can cause a tree to change completely, so their variance is high. Bagging manage to remove a lot of this variance. Because of the success of using trees, Bagging is considered a tree based algorithm.
 \\
 \\
@@ -63,12 +63,12 @@ with equality if and only if,
     0 & \quad \text{else}
   \end{array} \right. .
 \end{align}
-The Bayes classifier $C_{Bayes}(\mathbf{x}) = \argmax_k P(y = k \mid \mathbf{x})$, discussed earlier, gives the expression above, and gives thus the lowers obtainable misclassification rate,
+The Bayes classifier $C_{Bayes}(\mathbf{x}) = \argmax_k P(y = k \mid \mathbf{x})$, discussed earlier, gives the expression above, and gives thus the lowest obtainable misclassification rate,
 \begin{align}
   \label{eq:bayesBagg} 
   P(C_{Bayes}(\mathbf{x}) = y) = \int_{\mathbf{x}} \max_k P(y=k \mid \mathbf{x})  p(\mathbf{x}) d\mathbf{x}.
 \end{align}
-$C(\mathbf{x})$ is called \textit{order-correct} if it follows the following criterion,
+$C(\mathbf{x})$ is called \textit{order-correct} if it has the following property,
 \begin{align}
   \argmax_k P(C(\mathbf{x}) = k \mid \mathbf{x}) = \argmax_k  P(y = k \mid \mathbf{x}).
 \end{align}
@@ -133,7 +133,7 @@ In section \ref{sub:Why Bagging works} an argument was made for why aggregating 
 \subsubsection{Regression}
 \label{sub:Regression}
 
-Let $T_i(\mathbf{x})$ denote a trained tree. The Random Forest prediction for $\mathbf{x}$ is the average prediction over all the $B$ trees,
+Let $T_i(\mathbf{x})$ denote a trained tree. The Random Forests prediction for $\mathbf{x}$ is the average prediction over all the $B$ trees,
 \begin{align}
   \hat f(\mathbf{x}) = \frac{1}{B} \sum_{i = 1}^{B} T_i(\mathbf{x}).
 \end{align}
@@ -160,12 +160,12 @@ In \ref{sub:Overfitting} it is shown that the margin function for Random Forests
 \begin{align}
   mr(\mathbf{x}, y) = P_{\bm \theta} (T(\mathbf{x}, \bm \theta) = y) - \max_{j \neq y} P_{\bm \theta}(T(\mathbf{x}, \bm \theta) = j), 
 \end{align}
-where $\bm \theta$ represents a trees parameters.
+where $\bm \theta$ represents a tree's parameters.
 The generalization error is a performance measure for the classifier, and is given by,
 \begin{align}
   PE^* = P_{\mathbf{x}, y}(mr(\mathbf{x}, y) < 0),
 \end{align}
-It can be read as the probability for misclassification, and takes the same value as the expected prediction error $\mathrm{EPE}$ under $0/1$ loss. 
+In this report it can be read as the probability for misclassification, and takes the same value as the expected prediction error $\mathrm{EPE}$ under $0/1$ loss. 
 Let the strength of a set of classifiers $\left\{ T(\mathbf{x}, \bm \theta) \right\}$ be defined as,
 \begin{align}
   s = \E_{\mathbf{x}, y} [mr(\mathbf{x}, y)],
@@ -189,9 +189,9 @@ This means a connection between the generalization error and the variance of the
   \label{eq:PEVar} 
   PE^* \leq  \frac{\Var[mr(\mathbf{x}, y)]}{s^2}.
 \end{align}
-It it thus clear that for higher strength of individual trees and lower variance of the ensemble, the methods performance will improve. This should not come as a surprise. 
+It it thus clear that for higher strength of individual trees and lower variance of the ensemble, the method's performance will improve. This should not come as a surprise. 
 
-Further, the variance is investigated to explicitly find a connection to the correlation between the margin functions.  
+Further, the variance is investigated to explicitly find a connection with the correlation between the margin functions.  
 First, let us simplify notation by defining,
 \begin{align}
   \hat j(\mathbf{x}, y) = \argmax_{j \neq y} P_{\bm \theta}(T(\mathbf{x}, \bm \theta) = j).

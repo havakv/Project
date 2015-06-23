@@ -2,12 +2,12 @@
 set_parent('./project.Rnw')
 @
 %
-To measure the performance and explore the how well theory and practice coincide, the methods discussed was trained and tested on the Spam dataset \citep{Spamdata}. 
+To measure the performance and explore how well theory and practice coincide, the methods discussed was trained and tested on the Spam dataset \citep{Spamdata}. 
 
 Most computations were run on a sever, and as a result the computation times were too inaccurate to be presented as results. They were therefore omitted from the report.
 \\
 \\
-The most important part of the code used in the experiments can be found in Appendix~\ref{chap:Code}. It is primarily included so the reader can easily check which parameters are used. The full code can be found at github \footnote{\url{https://github.com/havakv/Project/tree/master/code/spam}}.
+The most important part of the code used in the experiments can be found in Appendix~\ref{chap:Code}. It is primarily included so the reader can check which parameters were used. The full code can be found at github\footnote{\url{https://github.com/havakv/Project/tree/master/code/spam}}.
 
 
 \section{Spam dataset}
@@ -23,14 +23,14 @@ The most important part of the code used in the experiments can be found in Appe
  \end{itemize}
  For more information on the dataset see \cite{Spamdata}.
 
- In the tests that follow the Spam data was split into a training and test set of equal size. The algorithms are first trained on the training set, and the test error in form of $0/1$ misclassification error rate is plotted, i.e.
+ In the tests that follow, the Spam data was split into a training and test set of equal size. The algorithms were first trained on the training set, and then test error was plotted in form of $0/1$ misclassification error rate, i.e.
  \begin{align}
    \label{eq:missClassErr} 
-   error =  \frac{1}{n_{test}} \sum_{i = 1}^{n_{test}} I\{C(\mathbf{x}_i) \neq y_i\},
+   error =  \frac{1}{n_{test}} \sum_{i = 1}^{n_{test}} I\{C(\mathbf{x}_i) \neq y_i\}.
  \end{align}
- where $C(\mathbf{x}_i)$ is the prediction based on $\mathbf{x}_i$, and $n_{test}$ is the number of test points. 
-All methods are trained using the same data points. 
-If the goal had been to actually make a spam filter, the error measure would not weight misclassification of spam and non-spam the same. Different costs for misclassification has not been the focus of this project, and for the purpose of testing the behavior of different methods \eqref{eq:missClassErr} works perfectly well.
+ Here $C(\mathbf{x}_i)$ is the prediction based on $\mathbf{x}_i$, and $n_{test}$ is the number of test points. 
+All methods were trained using the same data points. 
+If the goal had been to actually make a spam filter, the error measure would not weight misclassification of spam and non-spam the same. Different costs for misclassification has not been the focus of this project, and for the purpose of testing the behavior of different methods \eqref{eq:missClassErr} is perfectly fine.
 
 
 \section{CART}
@@ -47,9 +47,9 @@ Both methods show how small trees are underfitted while large trees are overfitt
 \end{figure}
 %
 
-The green line marks the minimum test error using the Gini index. This graph is very flat around the minimum, so in terms of interpretability, a smaller tree can be chosen without sacrificing much of the predicting power. In Figure~\ref{fig:CartSpam}, the optimal tree (green) is displayed along the tree from the red line (red). Their performance is almost identical, but the red tree give a nicer view of the data. Usually the trees are plotted with the splits like in Figure~\ref{fig:cart}. Here, they are left out because they serve no purpose in the context of the experiment. If the goal was to find which factors were most important in terms of classifying spam, they would be investigated more closely.
+The green line marks the minimum test error using the Gini index. This graph is very flat around the minimum, so in terms of interpretability, a smaller tree can be chosen without sacrificing much of the predicting power. In Figure~\ref{fig:CartSpam}, the optimal tree (green) is displayed along with the tree from the red line (red). Their performance is almost identical, but the red tree give a nicer view of the data. Usually the trees are plotted with the splits like in Figure~\ref{fig:cart}. Here, they are left out because they serve no purpose in the context of the experiment. If the goal was to find which factors were most important in terms of classifying spam, they would be investigated more closely.
 
-The magenta figure in Figure~\ref{fig:CartSpam}, is the tree grown using deviance in Figure~\ref{fig:cartCPSpam} corresponding to the magenta line.In this experiment, it outperforms all the Gini trees, though only barely. 
+The magenta tree in Figure~\ref{fig:CartSpam}, is the tree grown using deviance in Figure~\ref{fig:cartCPSpam} corresponding to the magenta line. In this experiment, it outperforms all the Gini trees, though only barely. 
 
 \begin{figure}[htb]
   \centering
@@ -73,11 +73,11 @@ The magenta figure in Figure~\ref{fig:CartSpam}, is the tree grown using devianc
 
 \section{Adaboost}
 \label{sec:SimAdaBoost}
-Adaboost was fitted to the Spam data using the \verb+boosting+ function in \verb+adabag+ by \cite{adabag}. It use the \verb+rpart+ implementation of CART as base classifiers. The main tuning parameters in Adaboost is the number of iterations, and the tree depth. In Figure~\ref{fig:adaboostSpam}, the test error is plotted as function of iterations, for different tree depths. It is clear that the algorithm does pretty well after few iterations, and outperforms CART easily. Only a maximum of 300 iterations were done, but by the look of it, Adaboost seems quite robust to overfitting. 
+Adaboost was fitted to the Spam data using the \verb+boosting+ function in \verb+adabag+ by \cite{adabag}. It use the \verb+rpart+ implementation of CART as base classifiers. The main tuning parameters in Adaboost are the number of iterations, and the tree depth. In Figure~\ref{fig:adaboostSpam}, the test error is plotted as function of iterations, for different tree depths. It is clear that the algorithm does pretty well after few iterations, and outperforms CART easily. Only a maximum of 300 iterations were done, but by the look of it, Adaboost seems quite robust to overfitting. 
 
-Surprisingly, Adaboost does better for deeper trees. It is expected to overfit for larger trees, but it does not. One possible explanation could be that there is higher order interactions between the features in the dataset (see Section~\ref{sub:Tree size}). 
+Surprisingly, Adaboost does better for deeper trees. It is expected to overfit for larger trees, but it does not. One possible explanation could be that there are higher order interactions between the features in the dataset (see Section~\ref{sub:Tree size}). 
+
 In this case, depth refers to them maximum number of successive splits. So the root node as depth 0, its children depth 1 and so on.
-
 It is not possible to fit trees deeper than $30$ in the \verb+boosting+ function, but it would have been interesting to see how the performance developed for even deeper trees. 
 %
 \begin{figure}[htbp]
@@ -90,7 +90,7 @@ It is not possible to fit trees deeper than $30$ in the \verb+boosting+ function
 %
 \section{Gradient Boosting}
 \label{sec:SimGradBoost}
-Gradient Boosting is a very powerful method, but requires a lot of tuning. The goal here was not to find the optimal tuning parameters for the Spam dataset, but rather to investigate the effect of changing different parameters. The package \verb+gbm+ by \cite{gbm} was used to fit the Gradient Boosting with deviance loss.
+Gradient Boosting is a very powerful method, but requires some tuning. The goal here was not to find the optimal tuning parameters for the Spam dataset, but rather to investigate the effect of changing different parameters. The package \verb+gbm+ by \cite{gbm} was used to fit the Gradient Boosting with deviance loss.
 
 \begin{figure}[htbp]
   \centering
@@ -129,11 +129,11 @@ The figure shows the same trend as Adaboost did. Deeper trees give better result
 \label{fig:StochasticGradBoost}
 \end{figure}
 \\
-Stochastic Gradient Boosting was mentioned as a small modification of Gradient Boosting in Section~\ref{sec:Stochastic Gradient Boosting}. The only difference is that a subset of the training data is drawn at each iteration. \verb+gbm+ refers to this parameter as the \verb+bag.fraction+. In Figure~\ref{fig:StochasticGradBoost}, the test error is plotted for different sample sizes, where \verb+bag.fraction+ gives the fraction of the dataset sampled. The figure does not show any improvement in test error from introducing randomness. However, for subset fractions down to $0.5$ the performance does not drop. As the number of computations decreases with smaller fractions, there is still some gain in doing Stochastic Gradient Boosting here.
+Stochastic Gradient Boosting was mentioned as a minor modification of Gradient Boosting in Section~\ref{sec:Stochastic Gradient Boosting}. The only difference is that a subset of the training data is drawn at each iteration. \verb+gbm+ refers to this parameter as the \verb+bag.fraction+. In Figure~\ref{fig:StochasticGradBoost}, the test error is plotted for different sample sizes, where \verb+bag.fraction+ gives the fraction of the dataset sampled. The figure does not show any improvement in test error from introducing randomness. However, for subset fractions down to $0.5$ the performance does not drop. As the number of computations decreases with smaller fractions, there is still some gain in doing Stochastic Gradient Boosting here.
 
 \section{Bagging and Random Forests}
 \label{sec:BaggandRFSim}
-Random Forests is more or less an extension of Bagging, and tries to improve performance through decorrelating the trees. In Figure~\ref{fig:baggingAndRFSpam} both methods are fitted to the Spam data using \verb+ipred+ by \cite{ipred} and \verb+randomForest+ by \cite{randomForestR}. The default tuning parameters were used for the methods. The figure shows how the test error changes with number of trees used. Here Random Forest slightly outperform Bagging, which is as expected, and both are a vast improvement of CART. There is no sign that either method is overfitting as the number of trees increase, which coincide with the theory in Section~\ref{sub:Overfitting}.
+Random Forests is more or less an extension of Bagging, and tries to improve performance through decorrelating the trees. In Figure~\ref{fig:baggingAndRFSpam} both methods were fitted to the Spam data using \verb+ipred+ by \cite{ipred} and \verb+randomForest+ by \cite{randomForestR}. The default tuning parameters were used for the methods. The figure shows how the test error changes with number of trees used. Here Random Forest slightly outperform Bagging, which is as expected, and both are a vast improvement of CART. There is no sign that either method is overfitting as the number of trees increase, which coincide with the theory in Section~\ref{sub:Overfitting}.
 \\
 \begin{figure}[htbp]
   \centering
@@ -154,7 +154,7 @@ Random Forests is more or less an extension of Bagging, and tries to improve per
   \label{fig:baggAndRF}
 \end{figure}
 \\
-Figure~\ref{fig:RFSpam} shows how the number of randomly chosen features $m$ affects the test error. This is done for different number of trees, and the vertical line marks the default value $m = \lfloor \sqrt{p} \rfloor$. In this case the default value for $m$ might seem a little high. Nevertheless, in terms of test error, it is very close to the optimal value and defends its position as a default parameter value well. 
+Figure~\ref{fig:RFSpam} shows how the number of randomly chosen features $m$ affects the test error. This is done for different number of trees, and the vertical line marks the default value $m = \lfloor \sqrt{p} \rfloor$. In this case the default value for $m$ is maybe a bit high, but it is more or less equal to the optimal value and defends its position as a default parameter value well. 
 \\
 \begin{figure}[htpb]
 \begin{center}
@@ -164,7 +164,7 @@ Figure~\ref{fig:RFSpam} shows how the number of randomly chosen features $m$ aff
 \label{fig:RFTreeDepth}
 \end{figure}
 \\
-As discussed in Section~\ref{sub:Overfitting}, Bagging and Random Forests can overfitted in terms of overfitting the individual trees. Figure~\ref{fig:RFTreeDepth} show the test error for 4 different tree depths. The \verb+randomForest+ package does not take depth as an argument, but instead the minimum number of training points in each terminal node. So the red line corresponds to a fully grown tree. The figure shows that there is no gain in restricting the size of the trees for the Spam data. For high restrictions (see light blue line 40), unnecessary bias is introduced and the performance drops.  As Bagging and Random Forests are so similar, the experiment was not repeated with bagging.
+As discussed in Section~\ref{sub:Overfitting}, Bagging and Random Forests can be overfitted in terms of overfitting the individual trees. Figure~\ref{fig:RFTreeDepth} show the test error for 4 different tree depths. The \verb+randomForest+ package does not take depth as an argument, but instead the minimum number of training points in each terminal node. So the red line corresponds to a fully grown tree. The figure shows that there is no gain in restricting the size of the trees for the Spam data. For high restrictions (see light blue line 40), unnecessary bias is introduced and the performance drops.  As Bagging and Random Forests are so similar, the experiment was not repeated with bagging.
 \\
 \\
 In Section~\ref{sub:Out-of-bag}, the Out-of-bag error was introduced as an approximation of the test error. It has very little computational cost and can replace cross-validation in tuning of parameters. Figure~\ref{fig:OOBvsTestvsCV} shows OOB, test error, and 10-fold cross-validation error for Random Forest on the Spam data. 
@@ -190,15 +190,4 @@ However, all the results coincide with the results from the Spam data. As a cons
 
 
 \clearpage
-\section{Needs to be done}
-\label{sec:Needs to be done}
-Clean up code so everything after quit is removed\\
-\\
-Check that equations are correct\\
-\\
-Figure placement\\
-\\
-Title: metods for classification using trees.\\
-\\
-Remove sections Deletesec and so on.\\
 

@@ -1,6 +1,7 @@
 %
-In the previous chapter only very basic linear methods for classification were discussed. The log odds were modeled in a linear fashion and a decision boundary was drawn based on this. Now the framework changes completely. The linearity assumptions are removed along with restrictions on number of classes. 
-In this chapter classification trees will be discussed. They are the foundation of this report. Later, attempts to enhancing their performance will be made through different ensemble methods. 
+In the previous chapter only very basic linear methods for classification were discussed. 
+Now the framework changes completely. The linearity assumptions are removed along with restrictions on number of classes. 
+In this chapter classification trees will be discussed. They are the foundation of this report. Later, attempts to enhance their performance will be made through different ensemble methods. 
 
 \section{The tree}
 \label{sec:Tree}
@@ -14,9 +15,7 @@ At the end the subsets are given a class label based on some vote-measure betwee
 The voting proportions can also be used to estimate the class probabilities, if they are of interest.
 An example of such a tree can be found in Figure~\ref{fig:cart}.
 
-The simplicity of the rules make trees very general, both in terms of decision boundaries and in type of predictors. The methods usually work with continuous, discrete ordered, and categorical features. However, only continuous features will be covered in this report.  
-
-The splits for a tree are easy to visualize, which make trees highly interpretable. Prediction is done by following splits down to the decision node, giving the predicted class. An example of such a tree can be found in Figure~\ref{fig:cartTree1}.
+It is easy to visualize the splits in a tree. This makes trees highly interpretable. Prediction is done by following the splits down to the decision node, giving the class prediction. An example of such a tree can be found in Figure~\ref{fig:cartTree1}.
 \\
 \begin{figure}[htbp]
   \centering
@@ -67,7 +66,7 @@ For more than two predictors it is hard to visualize the splits on the actual do
 %
 \subsection{Growing a tree}
 \label{sub:Growing a tree}
-The intuition behind CART is quite simple. Now, the splitting decisions need to be investigated. As it is too computationally expensive to create an optimal tree based on the training data, greedy algorithms for splitting in a sequential matter are used instead. A split needs to to be based on a criterion and one of the more common is the \textit{Gini index}. For $K$ classes it is defined as,
+The intuition behind CART is quite simple. Next, the splitting decisions need to be investigated. As it is too computationally expensive to create an optimal tree based on the training data, greedy algorithms for splitting in a sequential matter are used instead. A split needs to be based on a criterion and one of the more common is the \textit{Gini index}. For $K$ classes it is defined as,
 \begin{align}
   Q_m(T) &= \sum^{K}_{k=1} \hat{p}_{mk} (1 - \hat{p}_{mk}),  \\ 
   \label{eq:pmk} 
@@ -96,7 +95,7 @@ and misclassification error as,
   &Q_m(T) = \frac{1}{N_m} \sum_{\mathbf{x}_i \in R_m} I\{y_i \neq k^*\} = 1 - \hat p_{m k^*},\\
   &\text{where} \quad k^* = \argmax_k \hat p_{m k}. \notag
 \end{align}
-Unlike the Gini index and the deviance, the misclassification error is not differentiable. This makes it hard to use for numerical optimization, so Gini or deviance are usually the preferred choice. 
+Misclassification error might be the most intuitive measure of node impurity, but unlike the Gini index and the deviance, it is not differentiable. This makes it hard to use for numerical optimization, so Gini or deviance are usually the preferred choice. 
 
 \subsection{Pruning}
 \label{sub:Pruning}
@@ -110,7 +109,9 @@ Let $T_0$ denote the full tree and $T$ a subtree of $T_0$ that can be obtained b
   C_\alpha (T) = \sum_{\tau = 1}^{|T|} Q_\tau (T) + \alpha |T|. 
 \end{align}
 This method is referred to as \textit{cost-complexity pruning}.
-Here both the Gini index and deviance can be used for $Q_\tau (T)$, but it might be more common to use the misclassification rate in \eqref{eq:CARTmisclass}. Probably because the actual objective is to minimize the expected prediction error under 0/1 loss.
+Here both the Gini index and deviance can be used for $Q_\tau (T)$, but it might be more common to use the misclassification rate in \eqref{eq:CARTmisclass}. Probably because the actual objective is to minimize the expected prediction error under 0/1 loss. 
+
+Obviously, for $\alpha = 0$, the solution to \eqref{eq:CostPruning} would be the full three. Therefore the term, $\alpha |T|$, is added to penalize larger trees. For a large enough $\alpha$ the solution would clearly be a single node.
 
 The optimization problem in \eqref{eq:CostPruning} mights seem hard to solve. However, \cite{breiman} suggested a method called \textit{weakest link} pruning to find $T_\alpha$. The idea is to sequentially collapse the nodes that gives the smallest increase in $C_\alpha(T)$.
 They proved that if continuing to collapse all the way back to a single node, $T_\alpha$ has to be in this sequence of subtrees. It is usually not that high a cost to prune back to the root node, so it is a commonly used method.

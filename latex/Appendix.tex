@@ -20,7 +20,7 @@ $ f(\mathbf{x}) = \E[\:y \mid \mathbf{x}\:]$. And under $0/1$ loss $ f(\mathbf{x
 \label{sub:Bias-variance tradeoff}
 In the regression framework the relation,
 \begin{align}
-  y = g(X) + \varepsilon,  
+  y = g(\mathbf{x}) + \varepsilon,  
 \end{align}
 is assumed, where $\varepsilon$ has zero mean and variance $\sigma^2$. Let $f$ be an estimator of $g$.
 Under these assumptions the $\mathrm{EPE}$ of $f$ under squared error loss can be decomposed into,
@@ -38,7 +38,7 @@ As discussed in \ref{sec:Tree}, there is no equally satisfactory decomposition o
 
 \section{Cross-validation}
 \label{sec:Cross-validation}
-When given a large dataset, a validation set can be set a side to assess the performance of the classifier in question (can also be used for regression). This is useful when tuning of the model is required for good results. When data is scarce, other methods for validation has to be used instead. Cross-validation is probably the simples and most widely used estimate for the test error \citep{modstat}, and there are different version of it. In this project only \textit{K-fold} cross-validation is discussed. 
+When given a large dataset, a validation set can be set aside to assess the performance of the classifier in question. This is useful when tuning of the model is required for good results. When data is scarce, other methods for validation has to be used instead. Cross-validation is probably the simples and most widely used estimate for the test error \citep{modstat}, and there are different version of it. In this project only \textit{K-fold} cross-validation is discussed. 
 
 The idea is simple. Create a random permutation of the dataset and divide it into $K$ subsets. Then remove the first subset and train the algorithm on the remaining $K-1$. The first subset can now be used as a test set. Next, remove the second subset, train on the other $K-1$, and test. When this is done for all the $K$ sets, the average prediction error is a fairly good estimate of the actual test error. 
 

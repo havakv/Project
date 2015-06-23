@@ -6,7 +6,7 @@ In this chapter two boosting algorithms will be discussed, \textit{Adaboost} and
 
 Boosting algorithms combine many ''weak'' classifiers to create one ''strong'', and goes under the class of committee-based classifiers. The weak classifiers are usually high biased with low variance, so boosting is often referred to as a bias reducing method. 
 
-The algorithms train weak classifiers sequentially, and for each new classifier the data points are weighted by how hard they were for previous classifiers to classify correctly. At the end all the classifiers are combined and weighted based on how well they perform. The idea is better illustrated in the \textit{Adaboost.M1} algorithm by  \cite{adaboostM1}.
+The algorithms train weak classifiers sequentially, and for each new classifier the data points are weighted by how hard they were for previous classifiers to classify correctly. At the end all the classifiers are combined and weighted based on how well they performed. The idea is better illustrated in the \textit{Adaboost.M1} algorithm by  \cite{adaboostM1}.
 \section{Adaboost}
 \label{sec:Adaboost}
 Adaboost is perhaps the most historically significant boosting algorithm and Adaboost.M1 is one of its most basic versions. \cite{modstat} described it as ''the most popular boosting algorithm'', and \cite{Breiman1996} as ''the best of-the-shelf classifier in the world''. Adaboost.M1 only considers two classes, but it generalizes easily to multiple classes through Adaboost.M2 \citep{adaboostM1}. 
@@ -36,17 +36,17 @@ A common way to view the goal of classification problems is through the expected
   f^* = \argmin_f \E_{y, \mathbf{x}}[L(y,f(\mathbf{x}))] = \argmin_f \E_y [L(y,f(\mathbf{x})) \mid \mathbf{x}\:] ,
 \end{align}
 where $L(y, f(\mathbf{x}))$ is some loss function. 
-Note that $L$ does not necessarily need to be the misclassification rate, even though the actual objective is to minimize it.
-Often it is hard to work with, as it is not continuous, and a continuous approximation is used as a substitute.
+Note that $L$ does not necessarily need to be the misclassification rate, even though the actual objective is to minimize exactly that.
+Often the misclassification error is hard to work with, as it is not continuous, and a continuous approximation is used instead.
 
 Even with continuous loss, $f^*$ is often hard to obtain. A common procedure is to restrict $f$ to be a member of a parameterized class of functions. In this section $f$ will be an additive expansion in a set of elementary basis functions,
 \begin{align}
   \label{eq:additive} 
   f(\mathbf{x}) =  \sum^{M}_{m=1} \beta_m h(\mathbf{x}; \bm{\gamma}_m).
 \end{align}
-Here $h$ is usually a simple function of $\mathbf{x}$ and parameters $\bm{\gamma}$. These expansions are common tools in classification and are used in techniques like Neural Networks, Wavelets, MARS and Support Vector Machines.
+Here $h$ is a simple function of $\mathbf{x}$ and parameters $\bm{\gamma}$. These expansions are common tools in classification and are used in techniques like Neural Networks, Wavelets, MARS and Support Vector Machines.
 
-Under \eqref{eq:additive}, the solution of \eqref{eq:fargmin} is usually still hard to obtain. Therefor \textit{forward stagewise additive modelling} approximates the solution by sequentially adding new basis functions without changing parameters of basis functions already fitted. The algorithm works the following way:\\
+Under \eqref{eq:additive}, the solution of \eqref{eq:fargmin} is usually still hard to obtain. Therefore \textit{forward stagewise additive modelling} approximates the solution by sequentially adding new basis functions without changing parameters of basis functions already fitted. The algorithm works the following way:\\
 \\
 $f_0$ is initialized to 0. For $m = 1, \ldots, M$, $\beta_m$ and $\bm \gamma_m$ is found by
 \begin{align}
@@ -55,16 +55,16 @@ $f_0$ is initialized to 0. For $m = 1, \ldots, M$, $\beta_m$ and $\bm \gamma_m$ 
 \end{align}
 $f_m(\mathbf{x})$ is updated by $f_m(\mathbf{x}) = f_{m-1}(\mathbf{x}) + \beta_m h(\mathbf{x}; \bm \gamma_m)$.\\
 \\
-If the basis functions are set to be a classifier $h(\mathbf{x}; \bm \gamma) \in \{-1, 1\}$, and the loss is exponential,
+If the basis functions are set to be classifiers $h(\mathbf{x}; \bm \gamma) \in \{-1, 1\}$, and the loss is exponential,
 \begin{align}
   \label{eq:expLoss} 
   L(y, f(\mathbf{x})) = \exp (-y f(\mathbf{x})),
 \end{align}
-it can be shown [\cite{modstat}] that forward stagewise additive modeling is equivalent to the Adaboost.M1 classifier. However, this was not the original motivation for Adaboost.M1. The way Adaboost.M1 fits in the forward stagewise framework, was only discovered years later. Nevertheless, the forward stargewise framework provides opportunity to further study Adaboost.M1, and compare it to other loss functions. Under the exponential loss in \eqref{eq:expLoss}, the solution to \eqref{eq:fargmin} is,
+it can be shown \citep{modstat} that forward stagewise additive modeling is equivalent to the Adaboost.M1 classifier. However, this was not the original motivation for Adaboost.M1. The way Adaboost.M1 fits in the forward stagewise framework, was only discovered years later. Nevertheless, the forward stargewise framework provides opportunity to further study Adaboost.M1, and compare it to other loss functions. Under the exponential loss in \eqref{eq:expLoss}, the solution to \eqref{eq:fargmin} is,
 \begin{align}
   f^*( \mathbf{x}) = \frac{1}{2} \log \frac{P(y=1 \mid \mathbf{x})}{P(y=-1 \mid \mathbf{x})} .
 \end{align}
-So the classification rule in Adabost.M1 approximates one half of the log-odds. This justifies using its sign as a classification rule.
+So the classification rule in Adabost.M1 approximates one half of the log odds. This justifies using its sign as a classification rule.
 %
 \subsection{Loss functions}
 \label{sub:Loss functions}
@@ -83,7 +83,9 @@ The choice of loss function is important in terms of both accuracy and computati
 \end{figure}
 %
 
-From the figure it is clear that exponential and misclassification loss decrease with the margin and are therefore better choices than squared error loss. But as mentioned earlier, and will become more clear in Section~\ref{sec:Gradient Boosting}, a differentiable loss gives some computational advantages. The last loss function in Figure~\ref{fig:lossFunctions} is the \textit{negative binomial log-likelihood}, or \textit{binomial deviance},
+From the figure it is clear that exponential and misclassification loss decrease with the margin and are therefore better choices than squared error loss. But as mentioned earlier, and will become more clear in Section~\ref{sec:Gradient Boosting}, a differentiable loss gives some computational advantages. 
+
+The last loss function in Figure~\ref{fig:lossFunctions} is the \textit{negative binomial log-likelihood}, or \textit{binomial deviance},
 \begin{align}
   L(y, f(\mathbf{x})) = \log \left( 1 + \exp (-2 y f(\mathbf{x})) \right).
 \end{align}
@@ -102,7 +104,7 @@ A generalization of the exponential loss for multiple classes can be found in \c
 \section{Gradient Boosting}
 \label{sec:Gradient Boosting}
 %%fakesubsection Gradient Boosting
-Gradient Boosting is a method developed by \cite{friedman}. It is built on the forward stagewise framework for arbitrary differentiable loss functions, and the idea is to solve for $f^*$ in \eqref{eq:fargmin} numerically, using steepest decent in function space.
+Gradient Boosting is a method developed by \cite{friedman}. It is built on the forward stagewise framework for arbitrary differentiable loss functions, and the idea behind it is to solve for $f^*$ in \eqref{eq:fargmin} numerically, using steepest decent in function space.
 
 Let $g_m$ denote the gradient at step $m$,
 \begin{align}
@@ -122,7 +124,7 @@ where $\rho_m$ is the step length found by,
 \end{align}
 By repeating these steps, the function is moving towards a minimum of $L$ (in the steepest decent direction $-g_m$), though in a very greedy matter. 
 
-In the steepest decent algorithm above $\mathbf{x}$ and $y$ are considered a stochastic variables, but in practice their distributions are not known. For finite data $\{\mathbf{x}_i, y_i\}_{i = 1}^{N}$, $E_y \left[\: \cdot \mid \mathbf{x} \right]$ can not be accurately estimated, and $g_m(\mathbf{x})$ is defined only at the data points. As the goal is to find a good approximation for $f^*(\mathbf{x})$ for all $\mathbf{x}$, a different approach is needed. 
+In the steepest decent algorithm above $\mathbf{x}$ and $y$ are considered stochastic variables, but in practice their distributions are not known. For finite data $\{\mathbf{x}_i, y_i\}_{i = 1}^{N}$, $E_y \left[\: \cdot \mid \mathbf{x} \right]$ can not be accurately estimated, and $g_m(\mathbf{x})$ is defined only at the data points. As the goal is to find a good approximation for $f^*(\mathbf{x})$ for all $\mathbf{x}$, a different approach is needed. 
 \\
 \\
 Impose a parameterized form of $f$ in the form of additive basis functions, and return to the forward stagewise additive modeling problem in \eqref{eq:forStageWise}. Suppose this problem is hard to solve under the constraints of the basis functions $h(\mathbf{x}; \bm \gamma)$.
@@ -144,7 +146,7 @@ Then $f_m$ is updated using,
 These last three equations are know as the \textit{Gradient Boosting} algorithm.
 As \eqref{eq:forStageWise} is replaced by \eqref{eq:gradBoostFit} and \eqref{eq:lineSearch}, $\tilde{y}_i = -g_m(\mathbf{x}_i)$ is often referred to as the ''pseudo-response''. 
 
-Note here that $h$ and $f$ are continuous functions and not classifiers. The classification is done after all the $M$ iterations, usually trough some relationship between $f_M$ and class probabilities. For the binomial deviance loss this relationships are the log-odds,
+Note here that $h$ and $f$ are continuous functions and not classifiers. The classification is done after all the $M$ iterations, usually trough some relationship between $f_M$ and class probabilities. For the binomial deviance loss this relationships are the log odds,
 \begin{align}
   \label{eq:boostLogOdds1} 
   &\hat P(y = 1 \mid  \mathbf{x}) = \left( 1+ \exp\left( -2 f_M (\mathbf{x}) \right) \right)^{-1},\\
@@ -153,8 +155,8 @@ Note here that $h$ and $f$ are continuous functions and not classifiers. The cla
 \end{align}
 \subsection{Regression Trees}
 \label{sub:Regression Trees}
-It was earlier mentioned that the basis functions $h(\mathbf{x}; \bm{\gamma}_m)$ in Gradient Boosting need to be able to approximates continuous functions. Therefore, classification trees can not be used and the regression framework needs to be explored.
-Section~\ref{sec:CART} showed how classification trees can be fitted using the CART method. CART stands for \textit{Classification And Regression Trees} and can obviously also be used for regression. The procedure for fitting of regression trees is almost identical to that for classification, but the functions used during growing and pruning are different. However, this will not be investigated deeply. This section discuss only how trees can be used in the boosting framework.\\
+It was earlier mentioned that the basis functions $h(\mathbf{x}; \bm{\gamma}_m)$ in Gradient Boosting need to be able to approximate continuous functions. Therefore, classification trees can not be used and the regression framework needs to be explored.
+Section~\ref{sec:CART} showed how classification trees can be fitted using the CART method. CART stands for \textit{Classification And Regression Trees} and can obviously also be used for regression. The procedure for fitting regression trees is almost identical to that for classification, but the functions used during growing and pruning are different. However, this will not be investigated deeply. This section discuss only how trees can be used in the boosting framework.\\
 \\
 A regression tree $T$ can be represented on the following form,
 \begin{align}
@@ -165,7 +167,7 @@ When fitting a tree to the response $\tilde y$ under squared error loss, it is s
 \begin{align}
   \hat{c}_j = \mathrm{ave}\{\tilde y_i \mid \mathbf{x}_i \in R_j\}.
 \end{align}
-The tree is grown sequentially, by finding the split that minimize the total squared error loss. When a larger tree is grown, it can then be pruned back using \textit{cost-complexity pruning} based on the squared error and penalized by the number of terminal nodes. In the boosting context however, pruning is not really an alternative. According to \cite{modstat}, usually $J \leq 10$ end-nodes will be sufficient, and thus growing a larger tree and pruning it back will only be very costly without much effect on the end results. The tree size will be further discussed in Section~\ref{sub:Tree size}.\\
+The tree is grown sequentially, by finding the split that minimize the total squared error loss. When a larger tree is grown, it can then be pruned back using \textit{cost-complexity pruning} based on squared error and penalized by the number of terminal nodes. In the boosting context however, pruning is not really an alternative. According to \cite{modstat}, usually $J \leq 10$ end-nodes will be sufficient, and thus growing a larger tree and pruning it back will only be very costly without much effect on the end results. The tree size will be further discussed in Section~\ref{sub:Tree size}.\\
 \\
 In Gradient Boosting, trees are fitted in \eqref{eq:gradBoostFit}, in place of $\beta h(\mathbf{x}_i; \bm{\gamma})$. Thus $f_m$ is given by, 
 \begin{align}
@@ -213,9 +215,9 @@ Here  $\tilde y_i$ is the pseudo response in \eqref{eq:ytildeGradboost}. $f$ can
   \label{eq:gradBoostUpdateF} 
   f_m(\mathbf{x}) = f_{m-1}(\mathbf{x}) +  \sum^{J}_{j=0} \eta_{m j} I\left\{ \mathbf{x} \in R_{m j} \right\}.
 \end{align}
-All this is repeated $M$ times, and classification can be done based on the log odds, as mentioned in \eqref{eq:boostLogOdds1} and \eqref{eq:boostLogOdds2}. \\
+All this is repeated $M$ times, and classification can be done based on the log odds in \eqref{eq:boostLogOdds1} and \eqref{eq:boostLogOdds2}. \\
 \\
-It is not hard to generalize the algorithm to the multiple classes. As mentioned earlier, the binomial deviance generalizes to the multinomial deviance in \eqref{eq:multinomialDeviance}. As there are now $K$ functions $f_k$, $K$ different trees has to be fitted at each iteration, one for each pair $(\tilde y_{k i}, f_k)$. Correspondingly, $J$ coefficients $\eta_{m k j}$ has to be fit for each tree, using the Newton-Raphson step. At the end the classifier is created based on the estimated class probabilities in \eqref{eq:multinomialDevianceProb}. For more details see \cite{friedman}.
+It is not hard to generalize the algorithm to multiple classes. As mentioned earlier, the binomial deviance generalizes to the multinomial deviance in \eqref{eq:multinomialDeviance}. As there are now $K$ functions $f_k$, $K$ different trees has to be fitted at each iteration, one for each pair $\{\tilde y_{k i}, f_k\}$. Correspondingly, $J$ coefficients $\eta_{m k j}$ has to be fit for each tree, using the Newton-Raphson step. At the end the classifier is created based on the estimated class probabilities in \eqref{eq:multinomialDevianceProb}. For more details see \cite{friedman}.
 
 \section{Tuning boosting algorithms}
 \label{sec:Tuning boosting algorithms}
@@ -229,14 +231,14 @@ The number of terminal nodes $J$ in the trees control the bias-variance tradeoff
   f^*(\mathbf{x}) = \sum_{i} f_i(x_i) + \sum_{ij} f_{ij}(x_i, x_j) + 
   \sum_{ijk} f_{ijk}(x_i, x_j, x_k) + \cdots,
 \end{align}
-where $\mathbf{x} = (x_1, x_2, \ldots, x_p)^T$. $f_i$ is called the \textit{main-effect}, $f_{ij}$ the \textit{second order interaction}, $f_{ijk}$ the \textit{third order interaction}, and so on. The expansion is such that the first sum is the best approximation to $f^*$ under the constraint of only main-effects. The second sum gives the best approximation to $f^*$ under the constrain of only main-effects and second order interactions. This way \eqref{eq:ANOVAexpansion} can be viewed as an additive model. 
+where $\mathbf{x} = (x_1, x_2, \ldots, x_p)^T$. The $f_i$'s are called the \textit{main-effects}, $f_{ij}$'s the \textit{second order interactions}, $f_{ijk}$'s the \textit{third order interactions}, and so on. The expansion is such that the first sum is the best approximation to $f^*$ under the constraint of only main-effects. The second sum gives the best approximation to $f^*$ under the constrain of only main-effects and second order interactions. 
 
-When fitting an additive model of trees with only two terminal nodes (commonly referred to as stumps), these will have the same structure as the main-effects. To capture interactions of order up to $J$, a tree with $J+1$  terminal nodes is needed. However, by setting $J$ to large, unnecessary variance is introduced in the trees. Boosting methods works by lowering the bias through the forward stagewise process, so it might be advantageous to use high bias low variance trees, but ideally one would of course try to be close to the dominant interaction order of $f^*$.
+When fitting an additive model of trees with only two terminal nodes (commonly referred to as stumps), these will have the same structure as the main-effects. To capture interactions of order up to $J$, a tree with $J+1$  terminal nodes is needed. However, by setting $J$ too large, unnecessary variance is introduced in the trees. Boosting methods works by lowering the bias through the forward stagewise process, so it might be advantageous to use high bias low variance trees. Ideally one would of course try to be close to the dominant interaction order of $f^*$.
 According to \cite{modstat}, $4 \leq J \leq 8$ usually works well, and $J>10$ is rarely needed.  
 
 \subsection{Shrinkage}
 \label{sub:Shrinkage}
-As previously discussed, regularization is mainly controlled by number of boosting iterations $M$. However, \cite{copas1983} shows that \textit{shrinkage} might improve the results compared with only restricting on $M$. For the Gradient Boosting algorithm it is straight forward to include this. 
+As previously discussed, regularization is mainly controlled by number of boosting iterations $M$. However, \cite{copas1983} shows that \textit{shrinkage} might improve results obtained by only restricting on $M$. For the Gradient Boosting algorithm it is straight forward to include this. 
 The update of $f$ in \eqref{eq:gradBoostUpdateF} is just changed to,
 \begin{align}
   f_m(\mathbf{x}) = f_{m-1}(\mathbf{x}) +  \nu \sum^{J}_{j=0} \eta_{m j} I\left\{ \mathbf{x} \in R_{m j} \right\}, \quad 0 < \nu < 1,
@@ -255,7 +257,7 @@ Under binomial deviance loss, at the $m$'th iteration, the problem at hand is to
   \label{eq:influence} 
   \sum_{i = 1}^{N} \log \left( 1 + \exp[ -2 y_i f_{m-1}(\mathbf{x}_i)] \exp [-2 y_i \rho h(\mathbf{x}_i; \bm \gamma)] \right),
 \end{align}
-over $\rho$ and $\bm \gamma$.  For $y_i f_{m-1}(\mathbf{x}_i)$ large, the effect of of $\rho h(\mathbf{x}_i; \bm{\gamma})$ is very small, and the minimization of \eqref{eq:influence} is more or less independent of $\rho h(\mathbf{x}_i; \bm \gamma)$. This means that the data point $(\mathbf{x}_i, y_i)$ can be removed from the calculations, without any substantial effect on $\rho$ and $\bm \gamma$. Removing such points during training is called \textit{influence trimming}, and can speed up the calculations. \cite{friedman} therefore proposed,
+over $\rho$ and $\bm \gamma$.  For $y_i f_{m-1}(\mathbf{x}_i)$ large, the effect of $\rho h(\mathbf{x}_i; \bm{\gamma})$ is very small, and the minimization of \eqref{eq:influence} is more or less independent of $\rho h(\mathbf{x}_i; \bm \gamma)$. This means that the data point $(\mathbf{x}_i, y_i)$ can be removed from the calculations, without any substantial effect on $\rho$ and $\bm \gamma$. Removing such points during training is called \textit{influence trimming}, and can speed up the calculations. \cite{friedman} therefore proposed,
 \begin{align}
   w_i = \exp (- 2 y_i f_{m-1}(\mathbf{x}_i)), 
 \end{align}

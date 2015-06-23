@@ -30,7 +30,7 @@
 % Preface
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{preface}
-This project is an introductory study of statistical classification preparing me for my master's thesis. Together they will completing my master's degree in industrial mathematics at NTNU.
+This project is an introductory study of statistical classification preparing me for my master's thesis. Together they will complete my master's degree in industrial mathematics at NTNU.
 
 I would like to thank my supervisor, professor Håvard Rue, for his good help and support with the project.
 \end{preface}
@@ -40,7 +40,7 @@ I would like to thank my supervisor, professor Håvard Rue, for his good help an
 % Abstract
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
-This report deals with classification methods based on trees. More specifically, it is an introduction to classification through CART and the ensemble methods Adaboost, Gradient Boosting, Bagging and Random Forests. The methods are explained and tested on a dataset. Emphasis is not on comparing performance, but rather the individual classifiers relations to various tuning parameters. 
+This report deals with classification methods based on trees. More specifically, it is an introduction to classification mostly through CART and the ensemble methods Adaboost, Gradient Boosting, Bagging and Random Forests. The methods are explained and tested on a dataset containing spam data. Emphasis is not on comparing performance between methods, but rather the individual classifiers relations to various tuning parameters. All results coincide with theory, except for the tree depth. Results showed that deeper trees gave better results.
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

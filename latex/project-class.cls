@@ -154,7 +154,7 @@
   \end{center}
   \vspace{-1cm}
   \list{}{
-    \setlength{\leftmargin}{1.5cm}%
+    \setlength{\leftmargin}{1cm}%
     \setlength{\rightmargin}{\leftmargin}%
   }%
   \item\relax
